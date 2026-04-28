@@ -41,11 +41,51 @@ p {
   padding: 8px 12px;
 }
 
-.empty-state {
+.track-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 32px;
+}
+
+.track-card {
   background: #ffffff;
   border: 1px solid #dce3e8;
   border-radius: 8px;
-  margin-top: 32px;
-  max-width: 720px;
   padding: 24px;
+}
+
+.track-card h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.track-card p {
+  color: #40505a;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.track-card dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.track-card dt {
+  color: #5a6b75;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.track-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.track-card a {
+  color: #0b6f85;
+  font-weight: 600;
 }

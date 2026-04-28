@@ -1,3 +1,5 @@
+import { tracks } from "./domain/tracks";
+
 export function App() {
   return (
     <main className="app-shell">
@@ -8,9 +10,23 @@ export function App() {
         </div>
         <span className="status-pill">Local Sync: checking</span>
       </header>
-      <section className="empty-state">
-        <h2>Learning manager scaffold is ready.</h2>
-        <p>Next tasks add SQLite, Obsidian sync, Notion sync, and the full management UI.</p>
+      <section className="track-grid" aria-label="Learning tracks">
+        {tracks.map((track) => (
+          <article className="track-card" key={track.id}>
+            <h2>{track.name}</h2>
+            <p>{track.description}</p>
+            <dl>
+              <div>
+                <dt>Obsidian entry</dt>
+                <dd>{track.obsidianEntry}</dd>
+              </div>
+              <div>
+                <dt>Canvas entry</dt>
+                <dd>{track.canvasEntry}</dd>
+              </div>
+            </dl>
+          </article>
+        ))}
       </section>
     </main>
   );
