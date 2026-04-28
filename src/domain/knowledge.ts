@@ -102,6 +102,33 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "control-formula-derivation-ladder",
+    track: "tsinghua-automation",
+    title: "Control formula derivation ladder",
+    stage: "Formula-first control learning",
+    focus:
+      "Use one core formula at a time to move from signals and state space into controllability, Lyapunov stability, LQR, Kalman filtering, MPC, and robust control.",
+    outputs: [
+      "one LaTeX derivation note with definitions, assumptions, and result",
+      "one engineering interpretation tied to vehicle control or state estimation",
+      "one minimal simulation, example, or KPI connection"
+    ],
+    sources: [
+      {
+        title: "Tsinghua Automation undergraduate program",
+        url: "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf"
+      },
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      },
+      {
+        title: "MIT 2.14 Feedback Control",
+        url: "https://ocw.mit.edu/courses/2-14-analysis-and-design-of-feedback-control-systems-spring-2014/"
+      }
+    ]
+  },
+  {
     id: "tsinghua-intelligent-systems",
     track: "tsinghua-automation",
     title: "Intelligent sensing, optimization, and robotics bridge",
@@ -206,6 +233,33 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "mit-eecs-full-coverage-map",
+    track: "mit-eecs",
+    title: "MIT EECS full coverage map",
+    stage: "Coverage and selection",
+    focus:
+      "Map MIT EECS undergraduate and graduate resources into what to study deeply, what to use as reference, and what can stay out of scope for now.",
+    outputs: [
+      "one selected MIT direction marked as deep, optional, or out of scope",
+      "one lecture, assignment, or reading linked to a durable note",
+      "one connection to control engineering, world/spatial models, or validation tooling"
+    ],
+    sources: [
+      {
+        title: "MIT EECS undergraduate programs",
+        url: "https://www.eecs.mit.edu/academics/undergraduate-programs/"
+      },
+      {
+        title: "MIT EECS curriculum",
+        url: "https://www.eecs.mit.edu/academics/undergraduate-programs/curriculum/"
+      },
+      {
+        title: "MIT OpenCourseWare",
+        url: "https://ocw.mit.edu/"
+      }
+    ]
+  },
+  {
     id: "mit-ai-robotics",
     track: "mit-eecs",
     title: "Machine learning and robotics line",
@@ -295,6 +349,37 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "world-spatial-paper-reproduction-map",
+    track: "world-spatial-models",
+    title: "World and spatial paper reproduction ladder",
+    stage: "Research to experiment",
+    focus:
+      "Read world model, BEV, occupancy, NeRF, and 3DGS papers through representation, objective, failure mode, and minimal reproduction.",
+    outputs: [
+      "one paper card with problem, representation, objective, and assumptions",
+      "one LaTeX derivation of a model, loss, rendering equation, or planner cost",
+      "one CARLA/Autoware validation hook for the paper's failure modes"
+    ],
+    sources: [
+      {
+        title: "PlaNet",
+        url: "https://arxiv.org/abs/1811.04551"
+      },
+      {
+        title: "DreamerV3",
+        url: "https://arxiv.org/abs/2301.04104"
+      },
+      {
+        title: "BEVFormer",
+        url: "https://arxiv.org/abs/2203.17270"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      }
+    ]
+  },
+  {
     id: "ielts-scoring-loop",
     track: "ielts",
     title: "IELTS scoring and rubric loop",
@@ -305,6 +390,29 @@ export const knowledgeModules: KnowledgeModule[] = [
       "one baseline score sheet",
       "one writing rubric checklist",
       "one speaking recording review with fluency, vocabulary, grammar, and pronunciation notes"
+    ],
+    sources: [
+      {
+        title: "IELTS scoring in detail",
+        url: "https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail"
+      },
+      {
+        title: "IELTS Speaking band descriptors",
+        url: "https://ielts.org/cdn/ielts-guides/ielts-speaking-band-descriptors.pdf"
+      }
+    ]
+  },
+  {
+    id: "ielts-output-loop",
+    track: "ielts",
+    title: "IELTS output and error-attribution loop",
+    stage: "Practice to scoring",
+    focus:
+      "Turn each listening, reading, writing, or speaking practice into an output, score estimate, and error attribution.",
+    outputs: [
+      "one raw answer or recording record",
+      "one band descriptor or correct-rate check",
+      "one error-log entry with cause and fix"
     ],
     sources: [
       {
@@ -341,6 +449,33 @@ export const knowledgeModules: KnowledgeModule[] = [
       {
         title: "Open Yale Philosophy courses",
         url: "https://oyc.yale.edu/philosophy"
+      }
+    ]
+  },
+  {
+    id: "philosophy-reading-ladder",
+    track: "philosophy",
+    title: "Philosophy reading ladder",
+    stage: "Argument to judgment",
+    focus:
+      "Use logic, epistemology, philosophy of science, ethics, philosophy of mind, and AI ethics to improve argument quality and engineering judgment.",
+    outputs: [
+      "one thesis-premise-objection argument map",
+      "one evidence-quality note connected to validation",
+      "one AI or autonomous-systems ethics decision memo"
+    ],
+    sources: [
+      {
+        title: "Stanford Encyclopedia of Philosophy",
+        url: "https://plato.stanford.edu/"
+      },
+      {
+        title: "SEP Scientific Method",
+        url: "https://plato.stanford.edu/entries/scientific-method/"
+      },
+      {
+        title: "SEP Ethics of Artificial Intelligence and Robotics",
+        url: "https://plato.stanford.edu/entries/ethics-ai/"
       }
     ]
   },
@@ -403,6 +538,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
       "Self-paced derivation item: define assumptions, derive the matrix exponential solution, explain controllability, and connect it to vehicle control."
   },
   {
+    id: "seed_control_formula_ladder",
+    title: "Pick one formula from the control derivation ladder",
+    track: "tsinghua-automation",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/",
+    notes:
+      "Self-paced item: choose one formula, write definitions, assumptions, derivation, result, engineering use, and one failure mode."
+  },
+  {
     id: "seed_tsinghua_intelligent_systems_bridge",
     title: "Map intelligent sensing and robotics to validation cases",
     track: "tsinghua-automation",
@@ -425,6 +572,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://www.eecs.mit.edu/academics/undergraduate-programs/",
     notes:
       "Self-paced queue item: pick algorithms, systems, signals, AI, or ML and leave one exercise, code artifact, or engineering note."
+  },
+  {
+    id: "seed_mit_eecs_full_coverage_review",
+    title: "Classify one MIT EECS area as deep, optional, or out of scope",
+    track: "mit-eecs",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.eecs.mit.edu/academics/undergraduate-programs/",
+    notes:
+      "Use the MIT coverage map to avoid collecting every course; keep only material that supports control, world/spatial models, software systems, or validation."
   },
   {
     id: "seed_mit_6006_algorithms_problem",
@@ -475,6 +634,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
       "Self-paced LaTeX item: derive s u = K[R|t]X, occupancy field f(x,y,z), and connect BEV/occupancy errors to planner cost."
   },
   {
+    id: "seed_world_spatial_paper_ladder",
+    title: "Turn one world/spatial paper into a reproduction card",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/1811.04551",
+    notes:
+      "Pick PlaNet, DreamerV3, Lift-Splat-Shoot, BEVFormer, NeRF, or 3DGS and capture representation, objective, failure mode, and a minimal reproduction."
+  },
+  {
     id: "seed_mit_6003_signals_companion",
     title: "Use MIT 6.003 as the signals companion",
     track: "mit-eecs",
@@ -511,6 +682,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
       "Review fluency, lexical resource, grammatical range and accuracy, and pronunciation with concrete fixes."
   },
   {
+    id: "seed_ielts_output_error_loop",
+    title: "Run one IELTS output and error-attribution loop",
+    track: "ielts",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail",
+    notes:
+      "Produce one raw answer or recording, estimate score, and log the exact error cause and fix."
+  },
+  {
     id: "seed_philosophy_argument_map",
     title: "Create the first philosophy argument map",
     track: "philosophy",
@@ -533,6 +716,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://plato.stanford.edu/entries/ethics-ai/",
     notes:
       "Connect autonomy, responsibility, opacity, fairness, and safety to one validation or failcase decision."
+  },
+  {
+    id: "seed_philosophy_reading_ladder",
+    title: "Use the philosophy reading ladder on one concept",
+    track: "philosophy",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://plato.stanford.edu/",
+    notes:
+      "Pick logic, epistemology, philosophy of science, ethics, mind, or AI ethics and write thesis, premises, objection, and validation connection."
   },
   {
     id: "seed_work_weekly_validation_digest",

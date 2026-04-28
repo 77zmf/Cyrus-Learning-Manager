@@ -8,9 +8,14 @@ describe("CoursesView", () => {
 
     expect(screen.getByText("Tsinghua Automation undergraduate full path")).toBeInTheDocument();
     expect(screen.getByText("Graduate control engineering path")).toBeInTheDocument();
+    expect(screen.getByText("Control formula derivation ladder")).toBeInTheDocument();
+    expect(screen.getByText("MIT EECS full coverage map")).toBeInTheDocument();
     expect(screen.getByText("World models and latent dynamics")).toBeInTheDocument();
     expect(screen.getByText("Spatial models, 3D geometry, BEV, and occupancy")).toBeInTheDocument();
+    expect(screen.getByText("World and spatial paper reproduction ladder")).toBeInTheDocument();
     expect(screen.getByText("IELTS scoring and rubric loop")).toBeInTheDocument();
+    expect(screen.getByText("IELTS output and error-attribution loop")).toBeInTheDocument();
+    expect(screen.getByText("Philosophy reading ladder")).toBeInTheDocument();
     expect(screen.getAllByText("Knowledge modules").length).toBeGreaterThan(0);
     expect(screen.getAllByText("MIT 6.241J Dynamic Systems and Control")[0]).toHaveAttribute(
       "href",
