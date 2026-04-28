@@ -5,7 +5,7 @@ import { openDatabase } from "./db";
 import { registerRoutes } from "./routes";
 
 const config = loadConfig();
-openDatabase();
+const db = openDatabase();
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-registerRoutes(app, config);
+registerRoutes(app, config, db);
 
 app.listen(config.port, "127.0.0.1", () => {
   console.log(`Cyrus local sync service listening on http://127.0.0.1:${config.port}`);

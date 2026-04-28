@@ -1,7 +1,11 @@
 import type { Express } from "express";
+import type Database from "better-sqlite3";
 import type { AppConfig } from "./config";
+import { isWriteAllowed } from "./auth";
+import { createTask, listTasks, updateTaskStatus } from "./tasks";
+import type { TaskPriority, TaskStatus, TrackId } from "../src/domain/types";
 
-export function registerRoutes(app: Express, config: AppConfig) {
+export function registerRoutes(app: Express, config: AppConfig, db: Database.Database) {
   app.get("/health", (_req, res) => {
     res.json({
       ok: true,
@@ -10,4 +14,54 @@ export function registerRoutes(app: Express, config: AppConfig) {
       obsidianConfigured: Boolean(config.obsidianVaultPath)
     });
   });
+
+  app.get("/tasks", (req, res) => {
+    try {
+      res.json({
+        tasks: listTasks(db, {
+          search: readQueryValue(req.query.search),
+          track: readQueryValue(req.query.track) as TrackId | undefined,
+          status: readQueryValue(req.query.status) as TaskStatus | undefined,
+          priority: readQueryValue(req.query.priority) as TaskPriority | undefined
+        })
+      });
+    } catch (error) {
+      res.status(400).json({ error: error instanceof Error ? error.message : "Invalid task filters" });
+    }
+  });
+
+  app.post("/tasks", (req, res) => {
+    if (!isWriteAllowed(config.localAppKey, req.header("x-cyrus-app-key"), req.header("origin"))) {
+      res.status(401).json({ error: "Missing or invalid app key" });
+      return;
+    }
+
+    try {
+      res.status(201).json({ task: createTask(db, req.body) });
+    } catch (error) {
+      res.status(400).json({ error: error instanceof Error ? error.message : "Invalid task" });
+    }
+  });
+
+  app.patch("/tasks/:id/status", (req, res) => {
+    if (!isWriteAllowed(config.localAppKey, req.header("x-cyrus-app-key"), req.header("origin"))) {
+      res.status(401).json({ error: "Missing or invalid app key" });
+      return;
+    }
+
+    try {
+      const task = updateTaskStatus(db, req.params.id, req.body.status, req.body.progress);
+      if (!task) {
+        res.status(404).json({ error: "Task not found" });
+        return;
+      }
+      res.json({ task });
+    } catch (error) {
+      res.status(400).json({ error: error instanceof Error ? error.message : "Invalid status" });
+    }
+  });
+}
+
+function readQueryValue(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
