@@ -261,12 +261,14 @@ Environment variables:
 
 ```text
 NOTION_TOKEN=
-NOTION_PARENT_PAGE_ID=350ef7e6aaa980629326e56e121a39cb
+NOTION_PARENT_PAGE_ID=
 NOTION_TASKS_DATABASE_ID=
-OBSIDIAN_VAULT_PATH=/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge
-LOCAL_SYNC_PORT=8787
+OBSIDIAN_VAULT_PATH=
+LOCAL_SYNC_PORT=
 LOCAL_APP_KEY=
 ```
+
+`.env.example` intentionally documents variable names with empty values only. Local development defaults, including the parent page ID, Obsidian vault path, and sync port, are applied by `server/config.ts` and must not be committed into `.env.example`.
 
 Notion target:
 

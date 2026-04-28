@@ -6,6 +6,8 @@
 
 **Architecture:** React/Vite builds a static frontend for GitHub Pages at `/Cyrus-Learning-Manager/`. A local Node/Express service runs at `127.0.0.1:8787`, owns SQLite, writes generated Markdown under the Cyrus Obsidian vault, and calls the official Notion API using secrets from `.env.local`.
 
+`.env.example` uses empty values only. Local defaults such as port, parent page ID, and Obsidian vault path are applied by `server/config.ts`, not committed in `.env.example`.
+
 **Tech Stack:** React, TypeScript, Vite, Node.js, Express, better-sqlite3, Vitest, Testing Library, Notion JavaScript SDK, GitHub Actions Pages.
 
 ---
@@ -327,12 +329,14 @@ Create `.env.example` with:
 
 ```bash
 NOTION_TOKEN=
-NOTION_PARENT_PAGE_ID=350ef7e6aaa980629326e56e121a39cb
+NOTION_PARENT_PAGE_ID=
 NOTION_TASKS_DATABASE_ID=
-OBSIDIAN_VAULT_PATH=/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge
-LOCAL_SYNC_PORT=8787
+OBSIDIAN_VAULT_PATH=
+LOCAL_SYNC_PORT=
 LOCAL_APP_KEY=
 ```
+
+Expected: `.env.example` documents the supported variable names with empty values only. `server/config.ts` supplies local defaults when these values are unset.
 
 - [ ] **Step 6: Create GitHub Pages workflow**
 
@@ -2590,6 +2594,6 @@ Expected: `Deploy GitHub Pages` workflow appears. If GitHub Pages is unavailable
 ## Self-Review Notes
 
 - Spec coverage: this plan covers GitHub Pages, local sync service, local app-key protection, SQLite, Obsidian Markdown sync, Notion safe disabled mode, Notion schema validation, task CRUD/search/filter, UI task creation/status updates, build verification, and push.
-- Secret handling: `NOTION_TOKEN` is only in `.env.example` as an empty variable and `.env.local` is ignored.
+- Secret handling: `.env.example` lists all supported environment variables with empty values only and `.env.local` is ignored. Local defaults are supplied by `server/config.ts`.
 - GitHub Pages limitation: the plan keeps all private writes in the local sync service.
 - Notion setup boundary: the implementation validates an existing `NOTION_TASKS_DATABASE_ID`; if the database ID is missing, the app reports a setup error and keeps local SQLite plus Obsidian sync working.
