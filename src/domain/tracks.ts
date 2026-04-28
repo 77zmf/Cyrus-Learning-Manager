@@ -16,6 +16,13 @@ export const tracks: Track[] = [
     canvasEntry: "80_Canvas/Learning System.canvas"
   },
   {
+    id: "world-spatial-models",
+    name: "World & Spatial Models",
+    description: "World models, spatial intelligence, BEV, occupancy, NeRF, 3DGS, and validation.",
+    obsidianEntry: "20_Courses/World-Spatial-Models/00-Course-Map.md",
+    canvasEntry: "80_Canvas/Learning System.canvas"
+  },
+  {
     id: "ielts",
     name: "IELTS",
     description: "English input/output system with weekly practice and error logs.",

@@ -229,6 +229,72 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "world-latent-dynamics",
+    track: "world-spatial-models",
+    title: "World models and latent dynamics",
+    stage: "Predictive representation",
+    focus:
+      "Learn latent dynamics, imagined rollouts, model-based RL, RSSM/Dreamer-style training, and world-model failure modes for autonomous systems.",
+    outputs: [
+      "one LaTeX derivation of p(z_{t+1}|z_t,a_t) and imagined rollout objective",
+      "one RSSM or Dreamer-style loss note",
+      "one autonomous-driving world-model failure taxonomy"
+    ],
+    sources: [
+      {
+        title: "World Models",
+        url: "https://worldmodels.github.io/"
+      },
+      {
+        title: "PlaNet: Learning Latent Dynamics for Planning from Pixels",
+        url: "https://arxiv.org/abs/1811.04551"
+      },
+      {
+        title: "DreamerV3",
+        url: "https://arxiv.org/abs/2301.04104"
+      },
+      {
+        title: "Berkeley CS 285 Deep RL",
+        url: "https://rail.eecs.berkeley.edu/deeprlcourse/"
+      }
+    ]
+  },
+  {
+    id: "spatial-geometry-occupancy",
+    track: "world-spatial-models",
+    title: "Spatial models, 3D geometry, BEV, and occupancy",
+    stage: "Spatial representation",
+    focus:
+      "Use camera geometry, epipolar constraints, occupancy fields, BEV maps, NeRF, and 3D Gaussian Splatting as the spatial layer for robotics and validation.",
+    outputs: [
+      "one LaTeX derivation of camera projection or epipolar geometry",
+      "one occupancy-field or BEV planner-cost note",
+      "one NeRF vs 3DGS vs occupancy comparison tied to CARLA assets"
+    ],
+    sources: [
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "Occupancy Networks",
+        url: "https://arxiv.org/abs/1812.03828"
+      },
+      {
+        title: "NeRF project",
+        url: "https://www.matthewtancik.com/nerf"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      },
+      {
+        title: "BEVFormer",
+        url: "https://arxiv.org/abs/2203.17270"
+      }
+    ]
+  },
+  {
     id: "ielts-scoring-loop",
     track: "ielts",
     title: "IELTS scoring and rubric loop",
@@ -383,6 +449,30 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://doi.org/10.1115/1.3662552",
     notes:
       "Write a paper card with problem, assumptions, derivation, result, reproduction idea, and Autoware/CARLA connection."
+  },
+  {
+    id: "seed_world_model_latent_dynamics",
+    title: "Derive a world-model latent dynamics objective",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://worldmodels.github.io/",
+    notes:
+      "Self-paced LaTeX item: derive p(z_{t+1}|z_t,a_t), imagined rollout objective, and one autonomous-driving failure mode."
+  },
+  {
+    id: "seed_spatial_model_projection_occupancy",
+    title: "Derive camera projection and occupancy representation",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://web.stanford.edu/class/cs231a/",
+    notes:
+      "Self-paced LaTeX item: derive s u = K[R|t]X, occupancy field f(x,y,z), and connect BEV/occupancy errors to planner cost."
   },
   {
     id: "seed_mit_6003_signals_companion",
