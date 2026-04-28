@@ -1,20 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Playfair+Display:wght@700;900&display=swap");
 
 :root {
-  --ink: #16242f;
-  --ink-soft: #334450;
-  --muted: #66716f;
-  --paper: #f1eee5;
-  --paper-soft: #fbfaf5;
-  --paper-tint: #e7dfcf;
-  --line: #c9c0b1;
-  --line-strong: #928a7e;
-  --indigo: #1d5372;
-  --indigo-deep: #12384f;
-  --green: #2c6a58;
-  --gold: #8b6d24;
-  --rust: #9b3f2e;
-  --shadow: rgba(22, 36, 47, 0.08);
+  --ink: #0a0a0a;
+  --ink-soft: #2b2b2b;
+  --muted: #666666;
+  --paper: #f3f3f3;
+  --paper-soft: #ffffff;
+  --paper-tint: #e7e7e7;
+  --line: #d0d0d0;
+  --line-strong: #8a8a8a;
+  --indigo: #111111;
+  --indigo-deep: #000000;
+  --green: #303030;
+  --gold: #5a5a5a;
+  --rust: #1f1f1f;
+  --shadow: rgba(0, 0, 0, 0.1);
   color: var(--ink);
   background: var(--paper);
   font-family: Inter, "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -33,8 +33,8 @@ body {
   min-width: 320px;
   overflow-x: hidden;
   background:
-    linear-gradient(90deg, rgba(22, 36, 47, 0.045) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(22, 36, 47, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
     var(--paper);
   background-size: 44px 44px;
 }
@@ -155,7 +155,7 @@ label,
 }
 
 .tabs button {
-  background: rgba(251, 250, 245, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   border: 0;
   border-left: 1px solid var(--line);
   color: var(--ink-soft);
@@ -182,7 +182,7 @@ label,
 
 .panel {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(251, 250, 245, 0.92)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(248, 248, 248, 0.96)),
     var(--paper-soft);
   border: 1px solid var(--line-strong);
   border-radius: 8px;
@@ -214,7 +214,7 @@ label,
 .status-card,
 .progress-row,
 .task-row {
-  background: rgba(251, 250, 245, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -251,7 +251,7 @@ label,
 }
 
 .track-card {
-  background: rgba(251, 250, 245, 0.9);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 20px;
@@ -396,7 +396,7 @@ label {
 input,
 select {
   appearance: none;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--line-strong);
   border-radius: 6px;
   color: var(--ink);
@@ -527,18 +527,18 @@ progress::-moz-progress-bar {
 }
 
 .status-pill.is-ready {
-  border-color: rgba(44, 106, 88, 0.55);
+  border-color: #777777;
   color: var(--green);
 }
 
 .status-pill.is-muted {
-  border-color: rgba(139, 109, 36, 0.55);
+  border-color: #9a9a9a;
   color: var(--gold);
 }
 
 .error {
-  background: #fff6ef;
-  border: 1px solid rgba(155, 63, 46, 0.45);
+  background: #f8f8f8;
+  border: 1px solid #777777;
   border-radius: 8px;
   color: var(--rust);
   margin-bottom: 18px;
@@ -547,7 +547,7 @@ progress::-moz-progress-bar {
 }
 
 .empty-state {
-  background: rgba(251, 250, 245, 0.9);
+  background: rgba(255, 255, 255, 0.94);
   border: 1px dashed var(--line-strong);
   border-radius: 8px;
   color: var(--muted);

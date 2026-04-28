@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cyrus Testing Review"
+  short_description: "Choose tests, review diffs, and gate quality."
+policy:
+  allow_implicit_invocation: true

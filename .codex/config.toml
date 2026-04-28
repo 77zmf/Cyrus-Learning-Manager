@@ -1,0 +1,35 @@
+# Project-scoped Codex configuration for Cyrus Learning Manager.
+# Codex loads this only after the repository is trusted.
+
+# Keep enough room for AGENTS.md plus the Codex docs referenced by this repo.
+project_doc_max_bytes = 65536
+
+# AGENTS.md is the primary instruction file. These fallback names help only in
+# directories that do not have AGENTS.md or AGENTS.override.md.
+project_doc_fallback_filenames = ["CODEX.md", "CLAUDE.md", "GEMINI.md", "instructions.md"]
+
+# The repo has frontend, backend, tests, sync behavior, and personal-learning
+# semantics; use deeper reasoning by default for code changes and reviews.
+model_reasoning_effort = "high"
+
+# Cached search is safer for routine repo tasks. Use a one-off live search when
+# a task explicitly needs current external API or dependency information.
+web_search = "cached"
+
+[features]
+shell_snapshot = true
+
+[shell_environment_policy]
+# Keep the normal development toolchain available, but avoid leaking secrets or
+# local personal data into subprocesses launched by Codex.
+inherit = "core"
+ignore_default_excludes = false
+exclude = [
+  "NOTION_*",
+  "LOCAL_APP_KEY",
+  "OBSIDIAN_VAULT_PATH",
+  "*TOKEN*",
+  "*SECRET*",
+  "*PASSWORD*",
+  "*API_KEY*"
+]

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cyrus Learning Roadmap"
+  short_description: "Turn repo work into learning tasks and evidence."
+policy:
+  allow_implicit_invocation: true

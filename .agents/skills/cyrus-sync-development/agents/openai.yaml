@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cyrus Sync Development"
+  short_description: "Safe workflow for Notion, Obsidian, SQLite, and local API changes."
+policy:
+  allow_implicit_invocation: true

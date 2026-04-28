@@ -1,0 +1,5 @@
+interface:
+  display_name: "Cyrus Repo Onboarding"
+  short_description: "Understand architecture, risks, and next tasks."
+policy:
+  allow_implicit_invocation: true
