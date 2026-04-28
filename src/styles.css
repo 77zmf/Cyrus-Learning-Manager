@@ -320,7 +320,9 @@ label,
 }
 
 .module-block strong,
-.module-block span {
+.module-block span,
+.module-block em,
+.module-block a {
   display: block;
 }
 
@@ -331,6 +333,39 @@ label,
 .module-block span {
   color: var(--muted);
   font-size: 0.84rem;
+}
+
+.module-block p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.48;
+  margin: 4px 0 2px;
+}
+
+.module-output,
+.source-links {
+  display: grid;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.module-block em {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  font-style: normal;
+}
+
+.module-block em::before {
+  content: "-> ";
+  color: var(--green);
+}
+
+.module-block a {
+  color: var(--indigo-deep);
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .filters,

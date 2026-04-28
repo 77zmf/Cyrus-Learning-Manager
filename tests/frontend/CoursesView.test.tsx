@@ -6,8 +6,13 @@ describe("CoursesView", () => {
   it("renders sourced first-batch knowledge modules", () => {
     render(<CoursesView />);
 
-    expect(screen.getByText("Signals, systems, and control spine")).toBeInTheDocument();
+    expect(screen.getByText("Tsinghua Automation undergraduate full path")).toBeInTheDocument();
+    expect(screen.getByText("Graduate control engineering path")).toBeInTheDocument();
     expect(screen.getByText("IELTS scoring and rubric loop")).toBeInTheDocument();
-    expect(screen.getAllByText("First knowledge blocks").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Knowledge modules").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("MIT 6.241J Dynamic Systems and Control")[0]).toHaveAttribute(
+      "href",
+      "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+    );
   });
 });

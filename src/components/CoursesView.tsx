@@ -6,7 +6,10 @@ export function CoursesView() {
     <section className="panel">
       <div className="section-heading">
         <h2>Courses</h2>
-        <p>Track source assets and entry points for the local learning system.</p>
+        <p>
+          Self-paced course modules with source links, derivation outputs, video entry points, and
+          paper queues.
+        </p>
       </div>
       <div className="track-grid">
         {tracks.map((track) => {
@@ -26,12 +29,25 @@ export function CoursesView() {
                 </div>
               </dl>
               <div className="module-block">
-                <h4>First knowledge blocks</h4>
+                <h4>Knowledge modules</h4>
                 <ul>
                   {modules.map((module) => (
                     <li key={module.id}>
                       <strong>{module.title}</strong>
                       <span>{module.stage}</span>
+                      <p>{module.focus}</p>
+                      <div className="module-output">
+                        {module.outputs.map((output) => (
+                          <em key={output}>{output}</em>
+                        ))}
+                      </div>
+                      <div className="source-links">
+                        {module.sources.map((source) => (
+                          <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
+                            {source.title}
+                          </a>
+                        ))}
+                      </div>
                     </li>
                   ))}
                 </ul>

@@ -29,6 +29,29 @@ export interface KnowledgeSeedTask {
 
 export const knowledgeModules: KnowledgeModule[] = [
   {
+    id: "tsinghua-undergraduate-full-path",
+    track: "tsinghua-automation",
+    title: "Tsinghua Automation undergraduate full path",
+    stage: "Undergraduate backbone",
+    focus:
+      "Map the automation undergraduate curriculum into math, programming, circuits, signals, control, intelligence, robotics, and engineering labs.",
+    outputs: [
+      "one self-paced curriculum map",
+      "one derivation-heavy note for a signal or control concept",
+      "one lab or exercise connected to Autoware/CARLA validation"
+    ],
+    sources: [
+      {
+        title: "Tsinghua Automation undergraduate program",
+        url: "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf"
+      },
+      {
+        title: "XuetangX Tsinghua automation/control search",
+        url: "https://www.xuetangx.com/search?query=%E8%87%AA%E5%8A%A8%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86%20%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6"
+      }
+    ]
+  },
+  {
     id: "tsinghua-control-spine",
     track: "tsinghua-automation",
     title: "Signals, systems, and control spine",
@@ -48,6 +71,33 @@ export const knowledgeModules: KnowledgeModule[] = [
       {
         title: "MIT OCW 6.003 Signals and Systems",
         url: "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"
+      }
+    ]
+  },
+  {
+    id: "tsinghua-graduate-control-engineering",
+    track: "tsinghua-automation",
+    title: "Graduate control engineering path",
+    stage: "Graduate control spine",
+    focus:
+      "Use control science and engineering as the graduate path: linear systems, optimal control, robust control, estimation, MPC, nonlinear control, and robotics.",
+    outputs: [
+      "one state-space derivation note",
+      "one Kalman/LQR/MPC derivation and simulation",
+      "one controller comparison tied to a vehicle-control validation case"
+    ],
+    sources: [
+      {
+        title: "Tsinghua Automation research directions",
+        url: "https://www.au.tsinghua.edu.cn/?columnId=00509"
+      },
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      },
+      {
+        title: "MIT 2.14 Feedback Control",
+        url: "https://ocw.mit.edu/courses/2-14-analysis-and-design-of-feedback-control-systems-spring-2014/"
       }
     ]
   },
@@ -75,6 +125,33 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "mit-undergraduate-full-path",
+    track: "mit-eecs",
+    title: "MIT EECS undergraduate full path",
+    stage: "Undergraduate executable resources",
+    focus:
+      "Use MIT EECS open resources for programming, discrete math, algorithms, systems, signals, AI, machine learning, and robotics.",
+    outputs: [
+      "one executable course map",
+      "one algorithm or systems exercise",
+      "one connection from MIT material to the validation platform"
+    ],
+    sources: [
+      {
+        title: "MIT EECS undergraduate programs",
+        url: "https://www.eecs.mit.edu/academics/undergraduate-programs/"
+      },
+      {
+        title: "MIT OCW 6.006 Introduction to Algorithms",
+        url: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/"
+      },
+      {
+        title: "MIT OCW 6.003 Signals and Systems",
+        url: "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"
+      }
+    ]
+  },
+  {
     id: "mit-algorithms-systems",
     track: "mit-eecs",
     title: "Algorithms, software, and systems execution line",
@@ -94,6 +171,37 @@ export const knowledgeModules: KnowledgeModule[] = [
       {
         title: "MIT OCW 6.033 Computer System Engineering",
         url: "https://ocw.mit.edu/courses/6-033-computer-system-engineering-spring-2018/"
+      }
+    ]
+  },
+  {
+    id: "mit-graduate-control-engineering",
+    track: "mit-eecs",
+    title: "MIT graduate control engineering path",
+    stage: "Graduate control resources",
+    focus:
+      "Follow the MIT side through dynamic systems, feedback control, multivariable control, stochastic control, optimization, and underactuated robotics.",
+    outputs: [
+      "one derivation note for controllability, observability, Lyapunov, LQR, Kalman, or MPC",
+      "one simulation for estimation or control",
+      "one paper card from the control/autonomous-driving queue"
+    ],
+    sources: [
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      },
+      {
+        title: "MIT 6.245 Multivariable Control Systems",
+        url: "https://ocw.mit.edu/courses/6-245-multivariable-control-systems-spring-2004/"
+      },
+      {
+        title: "MIT 6.231 Dynamic Programming and Stochastic Control",
+        url: "https://ocw.mit.edu/courses/6-231-dynamic-programming-and-stochastic-control-fall-2015/"
+      },
+      {
+        title: "MIT Underactuated Robotics",
+        url: "https://underactuated.mit.edu/"
       }
     ]
   },
@@ -205,6 +313,30 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
       "Create one spine note linking signal transforms, system response, feedback, and automatic control to vehicle-control validation."
   },
   {
+    id: "seed_tsinghua_undergraduate_full_path",
+    title: "Use the Tsinghua Automation undergraduate full path as the backbone",
+    track: "tsinghua-automation",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf",
+    notes:
+      "Self-paced queue item: pick one undergraduate module, then produce a derivation note, solved exercise, or validation connection."
+  },
+  {
+    id: "seed_graduate_control_state_space_derivation",
+    title: "Derive the state-space solution and controllability condition",
+    track: "tsinghua-automation",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/",
+    notes:
+      "Self-paced derivation item: define assumptions, derive the matrix exponential solution, explain controllability, and connect it to vehicle control."
+  },
+  {
     id: "seed_tsinghua_intelligent_systems_bridge",
     title: "Map intelligent sensing and robotics to validation cases",
     track: "tsinghua-automation",
@@ -217,6 +349,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
       "Turn intelligent sensing, optimization, and robotics topics into concrete perception, planning, and CARLA scenario notes."
   },
   {
+    id: "seed_mit_undergraduate_full_path",
+    title: "Use the MIT EECS undergraduate full path as executable support",
+    track: "mit-eecs",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.eecs.mit.edu/academics/undergraduate-programs/",
+    notes:
+      "Self-paced queue item: pick algorithms, systems, signals, AI, or ML and leave one exercise, code artifact, or engineering note."
+  },
+  {
     id: "seed_mit_6006_algorithms_problem",
     title: "Start MIT 6.006 with one algorithms problem note",
     track: "mit-eecs",
@@ -227,6 +371,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/",
     notes:
       "Use one lecture/problem set to capture model, data structure, correctness argument, complexity, and implementation hook."
+  },
+  {
+    id: "seed_control_paper_kalman_or_mpc",
+    title: "Read one control-engineering paper: Kalman 1960 or Mayne 2000 MPC",
+    track: "mit-eecs",
+    status: "backlog",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://doi.org/10.1115/1.3662552",
+    notes:
+      "Write a paper card with problem, assumptions, derivation, result, reproduction idea, and Autoware/CARLA connection."
   },
   {
     id: "seed_mit_6003_signals_companion",
