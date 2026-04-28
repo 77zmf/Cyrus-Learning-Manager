@@ -38,7 +38,7 @@ export interface SyncEvent {
   entityType: "task";
   entityId: string;
   target: "obsidian" | "notion";
-  status: "pending" | "success" | "failed";
+  status: "pending" | "success" | "failed" | "skipped";
   message: string;
   attemptCount: number;
   createdAt: string;

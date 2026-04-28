@@ -2,6 +2,7 @@ import type { Express } from "express";
 import type Database from "better-sqlite3";
 import type { AppConfig } from "./config";
 import { isWriteAllowed } from "./auth";
+import { recordSyncFailure, syncTask } from "./sync/queue";
 import { createTask, listTasks, updateTaskStatus } from "./tasks";
 import type { TaskPriority, TaskStatus, TrackId } from "../src/domain/types";
 
@@ -37,7 +38,16 @@ export function registerRoutes(app: Express, config: AppConfig, db: Database.Dat
     }
 
     try {
-      res.status(201).json({ task: createTask(db, req.body) });
+      const task = createTask(db, req.body);
+      void syncTask(db, task, config).catch((error: unknown) => {
+        recordSyncFailure(
+          db,
+          task.id,
+          "obsidian",
+          error instanceof Error ? error.message : "Unexpected sync failure"
+        );
+      });
+      res.status(201).json({ task });
     } catch (error) {
       res.status(400).json({ error: error instanceof Error ? error.message : "Invalid task" });
     }
@@ -55,6 +65,14 @@ export function registerRoutes(app: Express, config: AppConfig, db: Database.Dat
         res.status(404).json({ error: "Task not found" });
         return;
       }
+      void syncTask(db, task, config).catch((error: unknown) => {
+        recordSyncFailure(
+          db,
+          task.id,
+          "obsidian",
+          error instanceof Error ? error.message : "Unexpected sync failure"
+        );
+      });
       res.json({ task });
     } catch (error) {
       res.status(400).json({ error: error instanceof Error ? error.message : "Invalid status" });
