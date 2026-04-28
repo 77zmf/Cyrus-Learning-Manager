@@ -2,10 +2,12 @@ import cors from "cors";
 import express from "express";
 import { loadConfig } from "./config";
 import { openDatabase } from "./db";
+import { seedKnowledgeBase } from "./knowledge-seed";
 import { registerRoutes } from "./routes";
 
 const config = loadConfig();
 const db = openDatabase();
+seedKnowledgeBase(db);
 
 const app = express();
 

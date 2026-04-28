@@ -290,6 +290,49 @@ label,
   overflow-wrap: anywhere;
 }
 
+.module-block {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.module-block h4 {
+  color: var(--indigo-deep);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.74rem;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.module-block ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.module-block li {
+  border-left: 3px solid var(--indigo);
+  display: grid;
+  gap: 4px;
+  padding-left: 10px;
+}
+
+.module-block strong,
+.module-block span {
+  display: block;
+}
+
+.module-block strong {
+  color: var(--ink);
+}
+
+.module-block span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
 .filters,
 .create-task {
   display: grid;

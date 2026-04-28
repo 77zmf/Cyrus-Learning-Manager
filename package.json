@@ -6,6 +6,7 @@
   "scripts": {
     "dev:web": "vite --host 127.0.0.1 --port 5173",
     "dev:sync": "tsx server/index.ts",
+    "seed:knowledge": "tsx server/seed-knowledge.ts",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
