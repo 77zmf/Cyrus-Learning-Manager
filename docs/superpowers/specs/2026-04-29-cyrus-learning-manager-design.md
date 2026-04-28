@@ -54,6 +54,13 @@ Primary screens:
    - pending retries
    - failed writes with actionable error messages
 
+Visual language:
+
+- Reference `guizang-ppt-skill` as an editorial, e-ink style direction rather than a literal slide deck.
+- Use serif display titles, sans-serif operational text, and monospace metadata labels.
+- Prefer paper-like backgrounds, ruled grids, restrained indigo/ink accents, and strong information hierarchy over decorative dashboard chrome.
+- Keep the first screen as the usable learning manager, not a marketing hero page.
+
 ## Architecture
 
 Use a GitHub Pages frontend plus a local backend:
