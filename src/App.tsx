@@ -9,6 +9,7 @@ import {
 import { CoursesView } from "./components/CoursesView";
 import { Dashboard } from "./components/Dashboard";
 import { ProgressView } from "./components/ProgressView";
+import { StudyLab } from "./components/StudyLab";
 import { SyncCenter } from "./components/SyncCenter";
 import { TasksView } from "./components/TasksView";
 import type {
@@ -19,8 +20,8 @@ import type {
   TrackId
 } from "./domain/types";
 
-type Tab = "dashboard" | "tasks" | "courses" | "progress" | "sync";
-const tabs: Tab[] = ["dashboard", "tasks", "courses", "progress", "sync"];
+type Tab = "dashboard" | "study" | "tasks" | "courses" | "progress" | "sync";
+const tabs: Tab[] = ["dashboard", "study", "tasks", "courses", "progress", "sync"];
 
 export function App() {
   const [tab, setTab] = useState<Tab>("dashboard");
@@ -100,6 +101,7 @@ export function App() {
 
       {error && tab !== "sync" ? <p className="error" role="status">{error}</p> : null}
       {tab === "dashboard" ? <Dashboard tasks={tasks} /> : null}
+      {tab === "study" ? <StudyLab onCreateTask={handleCreateTask} /> : null}
       {tab === "tasks" ? (
         <TasksView
           tasks={tasks}
