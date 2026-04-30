@@ -37,6 +37,7 @@ describe("App", () => {
 
     expect(screen.getByRole("heading", { name: "Cyrus Learning Manager" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Hermes" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Tasks" })).toBeInTheDocument();
     expect(await screen.findByText("Local Sync: connected")).toBeInTheDocument();
   });

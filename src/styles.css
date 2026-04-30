@@ -41,7 +41,8 @@ body {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -395,7 +396,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   appearance: none;
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--line-strong);
@@ -408,9 +410,16 @@ select {
 
 input:focus,
 select:focus,
+textarea:focus,
 button:focus-visible {
   outline: 2px solid var(--indigo);
   outline-offset: 2px;
+}
+
+textarea {
+  line-height: 1.45;
+  min-height: 96px;
+  resize: vertical;
 }
 
 .create-task button {
@@ -587,6 +596,87 @@ button:focus-visible {
   margin: 4px 0 0;
 }
 
+.hermes-console {
+  display: grid;
+  gap: 18px;
+}
+
+.hermes-layout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+}
+
+.hermes-command,
+.hermes-form,
+.hermes-output {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.hermes-command {
+  border-left: 5px solid var(--ink);
+}
+
+.hermes-command h3 {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+
+.hermes-command code,
+.hermes-output pre {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.hermes-command code {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  display: block;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  padding: 12px;
+}
+
+.hermes-command p {
+  color: var(--ink-soft);
+  line-height: 1.52;
+  margin: 14px 0 0;
+}
+
+.hermes-command p code {
+  display: inline;
+  padding: 1px 4px;
+}
+
+.hermes-form {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hermes-form .wide-field,
+.hermes-form button {
+  grid-column: 1 / -1;
+}
+
+.hermes-form button {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  color: var(--paper-soft);
+  font-weight: 700;
+  justify-self: start;
+  min-height: 42px;
+  padding: 10px 14px;
+}
+
+.hermes-output {
+  grid-column: 1 / -1;
+}
+
 .task-list {
   display: grid;
   gap: 12px;
@@ -759,7 +849,9 @@ progress::-moz-progress-bar {
   .filters,
   .create-task,
   .study-controls,
-  .study-workspace {
+  .study-workspace,
+  .hermes-layout,
+  .hermes-form {
     grid-template-columns: 1fr;
   }
 
