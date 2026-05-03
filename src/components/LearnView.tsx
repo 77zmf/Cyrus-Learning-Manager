@@ -1,4 +1,4 @@
-import { learningLaunchQueue, learningToolRoles } from "../domain/learning-workflow";
+import { guidedControlLessons, learningLaunchQueue, learningToolRoles } from "../domain/learning-workflow";
 import { InteractiveTutor } from "./InteractiveTutor";
 
 export function LearnView() {
@@ -19,6 +19,51 @@ export function LearnView() {
           ))}
         </div>
       </div>
+
+      <section className="panel guided-path">
+        <div className="section-heading">
+          <h2>Cyrus Guided Path</h2>
+          <p>不用每日计划。每次想学时，打开这一节，从第一张卡开始：网页读、GoodNotes 写、Obsidian 连、Notion 留证据。</p>
+        </div>
+        <div className="guided-lesson-grid">
+          {guidedControlLessons.map((lesson) => (
+            <article className="guided-lesson-card" key={lesson.title}>
+              <span>{lesson.goal}</span>
+              <h3>{lesson.title}</h3>
+              <pre className="formula-block">{lesson.formula}</pre>
+              <strong>{lesson.now}</strong>
+              <dl className="compact-dl">
+                <div>
+                  <dt>GoodNotes</dt>
+                  <dd>{lesson.goodNotesPage}</dd>
+                </div>
+                <div>
+                  <dt>Obsidian</dt>
+                  <dd>{lesson.obsidianNode}</dd>
+                </div>
+                <div>
+                  <dt>Notion</dt>
+                  <dd>{lesson.notionRow}</dd>
+                </div>
+              </dl>
+              <ol className="guided-step-list">
+                {lesson.steps.map((step) => (
+                  <li key={step.label}>
+                    <span>{step.label}</span>
+                    <strong>{step.instruction}</strong>
+                    <p>{step.output}</p>
+                  </li>
+                ))}
+              </ol>
+              <div className="self-check" aria-label={`${lesson.title} self check`}>
+                {lesson.selfCheck.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="panel action-surface">
         <div className="section-heading">

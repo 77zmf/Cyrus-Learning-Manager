@@ -12,6 +12,14 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
+    expect(screen.getByText("第 1 课：状态空间模型")).toBeInTheDocument();
+    expect(screen.getByText("第 2 课：可控性 rank test")).toBeInTheDocument();
+    expect(screen.getByText("第 3 课：稳定性与特征值")).toBeInTheDocument();
+    expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
+    expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
+    expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();

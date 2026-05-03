@@ -19,6 +19,24 @@ export interface LearningLaunchItem {
   notion: string;
 }
 
+export interface GuidedLessonStep {
+  label: string;
+  instruction: string;
+  output: string;
+}
+
+export interface GuidedLesson {
+  title: string;
+  goal: string;
+  formula: string;
+  now: string;
+  goodNotesPage: string;
+  obsidianNode: string;
+  notionRow: string;
+  steps: GuidedLessonStep[];
+  selfCheck: string[];
+}
+
 export interface GoodNotesDerivationCard {
   title: string;
   formula: string;
@@ -103,6 +121,120 @@ export const goodNotesSections = [
   "工程直觉",
   "GoodNotes Summary",
   "下一题"
+];
+
+export const guidedControlLessons: GuidedLesson[] = [
+  {
+    title: "第 1 课：状态空间模型",
+    goal: "把车辆状态写成 x_dot = Ax + Bu，并知道 A/B 分别控制什么。",
+    formula: "\\dot{x}=Ax+Bu",
+    now: "现在做：先在网页读公式，再在 GoodNotes 写 Page 001。",
+    goodNotesPage: "GoodNotes Page 001：状态空间模型",
+    obsidianNode: "Obsidian node：Control -> State Space Model",
+    notionRow: "Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "在网页读公式 \\dot{x}=Ax+Bu。",
+        output: "说清楚 x 是状态，u 是输入，A 是系统矩阵，B 是控制矩阵。"
+      },
+      {
+        label: "Step 2",
+        instruction: "在 GoodNotes 写 Page 001。",
+        output: "写 definitions、主公式、一个车辆状态例子。"
+      },
+      {
+        label: "Step 3",
+        instruction: "把例子写成 \\dot{p}=v, \\dot{v}=a。",
+        output: "确认 A 保留速度项，B 把输入送到加速度状态。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian Canvas 连到 Control -> State Space Model。",
+        output: "补一个概念节点和一条关系边。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Notion 记复习行。",
+        output: "Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001。"
+      }
+    ],
+    selfCheck: ["A 是系统矩阵", "B 是控制矩阵", "x_dot 是状态变化率"]
+  },
+  {
+    title: "第 2 课：可控性 rank test",
+    goal: "会算 C=[B AB ...]，并能解释 rank(C)<n 为什么不可控。",
+    formula: "\\mathcal{C}=\\begin{bmatrix}B&AB&\\cdots&A^{n-1}B\\end{bmatrix},\\quad rank(\\mathcal{C})=n",
+    now: "现在做：先完成下面 Interactive Tutor 的 3 个小题。",
+    goodNotesPage: "GoodNotes Page 002：可控性",
+    obsidianNode: "Obsidian node：Control -> Controllability",
+    notionRow: "Notion row：Topic=Controllability, Mastery=2, Evidence=GoodNotes Page 002",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写出 B，再算 AB。",
+        output: "不要先背结论，先看输入能不能被 A 传播到其他状态。"
+      },
+      {
+        label: "Step 2",
+        instruction: "把 \\mathcal{C}=[B\\ AB] 写成矩阵。",
+        output: "对二阶系统检查两列是否线性无关。"
+      },
+      {
+        label: "Step 3",
+        instruction: "在 GoodNotes 写 Page 002。",
+        output: "保留完整 rank 计算，不怕公式推导。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian Canvas 连到 Control -> Controllability。",
+        output: "把 rank(C)<n 标成一个 failure mode。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Notion 加一条 evidence。",
+        output: "Evidence=GoodNotes Page 002，并把 Mastery 保持在 2，等你会独立算再升。"
+      }
+    ],
+    selfCheck: ["可控性看输入能否影响全部状态", "rank(C)=n 是满秩", "rank(C)<n 说明至少一个方向不可控"]
+  },
+  {
+    title: "第 3 课：稳定性与特征值",
+    goal: "用特征值实部判断线性系统局部稳定性。",
+    formula: "x(t)=e^{At}x(0),\\quad Re(\\lambda_i(A))<0",
+    now: "现在做：在 GoodNotes 写两个一维系统的解。",
+    goodNotesPage: "GoodNotes Page 003：稳定性与特征值",
+    obsidianNode: "Obsidian node：Control -> Stability",
+    notionRow: "Notion row：Topic=Stability eigenvalues, Mastery=1, Evidence=GoodNotes Page 003",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写 \\dot{x}=\\lambda x 的解析解。",
+        output: "得到 x(t)=e^{\\lambda t}x(0)。"
+      },
+      {
+        label: "Step 2",
+        instruction: "分别代入 \\lambda=-1 和 \\lambda=+1。",
+        output: "看清一个收敛、一个发散。"
+      },
+      {
+        label: "Step 3",
+        instruction: "把一维直觉推广到矩阵 A。",
+        output: "用 A 的特征值实部判断线性系统稳定性。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian Canvas 连到 Control -> Stability。",
+        output: "把“实部大于 0 会发散”接到车辆不稳定直觉。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Notion 把 Mastery 先设为 1。",
+        output: "等你能解释 e^{At} 和 eigenvalue 关系后再升到 2。"
+      }
+    ],
+    selfCheck: ["实部小于 0 收敛", "实部大于 0 发散", "e^{At} 是状态转移的核心对象"]
+  }
 ];
 
 export const learningLaunchQueue: LearningLaunchItem[] = [

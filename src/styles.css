@@ -622,6 +622,94 @@ textarea {
   overflow-wrap: anywhere;
 }
 
+.guided-path {
+  display: grid;
+  gap: 18px;
+}
+
+.guided-lesson-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.guided-lesson-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  display: grid;
+  gap: 14px;
+  min-height: 100%;
+  padding: 18px;
+}
+
+.guided-lesson-card > span,
+.guided-step-list span,
+.self-check span {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.guided-lesson-card h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.36rem;
+  line-height: 1.22;
+  margin: 0;
+}
+
+.guided-lesson-card > strong {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  line-height: 1.45;
+  padding: 12px;
+}
+
+.guided-step-list {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.guided-step-list li {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.guided-step-list strong {
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.guided-step-list p {
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.self-check {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.self-check span {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  padding: 7px 9px;
+}
+
 .review-overview {
   display: grid;
   gap: 18px;
@@ -1284,6 +1372,7 @@ progress::-moz-progress-bar {
   .study-controls,
   .study-workspace,
   .workflow-strip,
+  .guided-lesson-grid,
   .notebook-layout,
   .map-layout,
   .map-board,
