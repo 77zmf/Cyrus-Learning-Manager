@@ -677,6 +677,142 @@ textarea {
   grid-column: 1 / -1;
 }
 
+.tutor-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.tutor-layout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+}
+
+.tutor-question {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.tutor-question span,
+.tutor-page {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.tutor-question h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.48rem;
+  margin: 0;
+}
+
+.tutor-question strong {
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.tutor-question pre,
+.tutor-notes pre,
+.tutor-closeout pre {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  margin: 0;
+  overflow-x: auto;
+  padding: 14px;
+  white-space: pre-wrap;
+}
+
+.choice-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.choice-grid button {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--ink);
+  min-height: 44px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.choice-grid button.is-correct {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper-soft);
+}
+
+.choice-grid button.is-wrong {
+  background: var(--paper-tint);
+  border-style: dashed;
+}
+
+.feedback {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.feedback strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.feedback p {
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.feedback.is-correct {
+  border-left: 5px solid var(--ink);
+}
+
+.feedback.is-wrong {
+  background: #f8f8f8;
+  border-left: 5px solid var(--line-strong);
+}
+
+.next-question {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  color: var(--paper-soft);
+  font-weight: 700;
+  justify-self: start;
+  min-height: 42px;
+  padding: 10px 14px;
+}
+
+.lesson-complete {
+  background: var(--ink);
+  border-radius: 6px;
+  color: var(--paper-soft);
+  font-weight: 700;
+  justify-self: start;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.tutor-notes,
+.tutor-closeout {
+  grid-column: auto;
+}
+
 .task-list {
   display: grid;
   gap: 12px;
@@ -851,7 +987,8 @@ progress::-moz-progress-bar {
   .study-controls,
   .study-workspace,
   .hermes-layout,
-  .hermes-form {
+  .hermes-form,
+  .tutor-layout {
     grid-template-columns: 1fr;
   }
 
