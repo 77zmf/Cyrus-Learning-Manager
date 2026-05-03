@@ -20,6 +20,12 @@ describe("learning workflow views", () => {
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText("状态向量 x")).toBeInTheDocument();
+    expect(screen.getByText("系统矩阵 A")).toBeInTheDocument();
+    expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
+    expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
+    expect(screen.getByText("特征值实部")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
@@ -36,7 +42,10 @@ describe("learning workflow views", () => {
     expect(screen.getByText("错题重写")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Derivation Cards" })).toBeInTheDocument();
     expect(screen.getByText("State transition solution")).toBeInTheDocument();
-    expect(screen.getByText(/\\dot\{x\}=Ax\+Bu/)).toBeInTheDocument();
+    expect(screen.getAllByText(/\\dot\{x\}=Ax\+Bu/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
+    expect(screen.getByText("Riccati 方程")).toBeInTheDocument();
     expect(screen.getAllByText(/GoodNotes Summary/).length).toBeGreaterThan(0);
   });
 

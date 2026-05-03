@@ -1,4 +1,5 @@
 import { guidedControlLessons, learningLaunchQueue, learningToolRoles } from "../domain/learning-workflow";
+import { FormulaVisual } from "./FormulaVisual";
 import { InteractiveTutor } from "./InteractiveTutor";
 
 export function LearnView() {
@@ -30,7 +31,7 @@ export function LearnView() {
             <article className="guided-lesson-card" key={lesson.title}>
               <span>{lesson.goal}</span>
               <h3>{lesson.title}</h3>
-              <pre className="formula-block">{lesson.formula}</pre>
+              <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
               <strong>{lesson.now}</strong>
               <dl className="compact-dl">
                 <div>

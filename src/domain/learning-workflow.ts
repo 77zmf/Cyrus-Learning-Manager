@@ -1,3 +1,12 @@
+import {
+  controllabilityFormulaTerms,
+  lqrFormulaTerms,
+  stabilityFormulaTerms,
+  stateSpaceFormulaTerms,
+  stateTransitionFormulaTerms
+} from "./formula-visuals";
+import type { FormulaTerm } from "./formula-visuals";
+
 export interface ToolRole {
   tool: string;
   role: string;
@@ -29,6 +38,7 @@ export interface GuidedLesson {
   title: string;
   goal: string;
   formula: string;
+  formulaTerms: FormulaTerm[];
   now: string;
   goodNotesPage: string;
   obsidianNode: string;
@@ -40,6 +50,7 @@ export interface GuidedLesson {
 export interface GoodNotesDerivationCard {
   title: string;
   formula: string;
+  formulaTerms: FormulaTerm[];
   steps: string[];
   output: string;
 }
@@ -128,6 +139,7 @@ export const guidedControlLessons: GuidedLesson[] = [
     title: "第 1 课：状态空间模型",
     goal: "把车辆状态写成 x_dot = Ax + Bu，并知道 A/B 分别控制什么。",
     formula: "\\dot{x}=Ax+Bu",
+    formulaTerms: stateSpaceFormulaTerms,
     now: "现在做：先在网页读公式，再在 GoodNotes 写 Page 001。",
     goodNotesPage: "GoodNotes Page 001：状态空间模型",
     obsidianNode: "Obsidian node：Control -> State Space Model",
@@ -165,6 +177,7 @@ export const guidedControlLessons: GuidedLesson[] = [
     title: "第 2 课：可控性 rank test",
     goal: "会算 C=[B AB ...]，并能解释 rank(C)<n 为什么不可控。",
     formula: "\\mathcal{C}=\\begin{bmatrix}B&AB&\\cdots&A^{n-1}B\\end{bmatrix},\\quad rank(\\mathcal{C})=n",
+    formulaTerms: controllabilityFormulaTerms,
     now: "现在做：先完成下面 Interactive Tutor 的 3 个小题。",
     goodNotesPage: "GoodNotes Page 002：可控性",
     obsidianNode: "Obsidian node：Control -> Controllability",
@@ -202,6 +215,7 @@ export const guidedControlLessons: GuidedLesson[] = [
     title: "第 3 课：稳定性与特征值",
     goal: "用特征值实部判断线性系统局部稳定性。",
     formula: "x(t)=e^{At}x(0),\\quad Re(\\lambda_i(A))<0",
+    formulaTerms: stabilityFormulaTerms,
     now: "现在做：在 GoodNotes 写两个一维系统的解。",
     goodNotesPage: "GoodNotes Page 003：稳定性与特征值",
     obsidianNode: "Obsidian node：Control -> Stability",
@@ -268,6 +282,7 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
   {
     title: "State transition solution",
     formula: "\\dot{x}=Ax+Bu,\\quad x(t)=e^{At}x(0)+\\int_0^t e^{A(t-\\tau)}Bu(\\tau)d\\tau",
+    formulaTerms: stateTransitionFormulaTerms,
     steps: [
       "写出齐次解 x_h(t)=e^{At}x(0)",
       "用变参数法加入输入项",
@@ -278,6 +293,7 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
   {
     title: "Controllability rank test",
     formula: "\\mathcal{C}=\\begin{bmatrix}B&AB&\\cdots&A^{n-1}B\\end{bmatrix},\\quad rank(\\mathcal{C})=n",
+    formulaTerms: controllabilityFormulaTerms,
     steps: [
       "先算 B, AB, A^2B",
       "列出可控性矩阵",
@@ -288,6 +304,7 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
   {
     title: "LQR cost and Riccati equation",
     formula: "J=\\int_0^\\infty (x^TQx+u^TRu)dt,\\quad A^TP+PA-PBR^{-1}B^TP+Q=0",
+    formulaTerms: lqrFormulaTerms,
     steps: [
       "定义 Q/R 惩罚的工程含义",
       "推到 u=-R^{-1}B^TPx",

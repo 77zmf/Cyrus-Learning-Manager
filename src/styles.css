@@ -806,6 +806,90 @@ textarea {
   white-space: pre-wrap;
 }
 
+.formula-visual {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  overflow: hidden;
+  padding: 14px;
+}
+
+.formula-visual figcaption {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.formula-render {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  overflow-x: auto;
+  padding: 14px;
+}
+
+.formula-render .katex-display {
+  margin: 0;
+}
+
+.latex-source {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px dashed var(--line-strong);
+  border-radius: 6px;
+  color: var(--ink-soft);
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+.formula-term-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin: 0;
+}
+
+.formula-term-grid div {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.formula-term-grid dt {
+  color: var(--ink);
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.formula-term-grid dd {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+
+.formula-term-grid code {
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+}
+
+.formula-term-grid span {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .map-board {
   display: grid;
   gap: 14px;

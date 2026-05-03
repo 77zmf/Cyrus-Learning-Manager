@@ -1,3 +1,6 @@
+import { controllabilityFormulaTerms, tutorControllabilityTerms } from "./formula-visuals";
+import type { FormulaTerm } from "./formula-visuals";
+
 export interface TutorChoice {
   id: string;
   label: string;
@@ -10,6 +13,7 @@ export interface TutorStep {
   goodNotesPage: string;
   prompt: string;
   formula: string;
+  formulaTerms: FormulaTerm[];
   choices: TutorChoice[];
   correctChoiceId: string;
   correctFeedback: string;
@@ -25,6 +29,7 @@ export const controllabilityTutorSteps: TutorStep[] = [
     prompt: "Calculate AB for the system below.",
     formula:
       "A = \\begin{bmatrix}0 & 0\\\\0 & 1\\end{bmatrix},\\quad B = \\begin{bmatrix}1\\\\0\\end{bmatrix}",
+    formulaTerms: tutorControllabilityTerms,
     choices: [
       {
         id: "A",
@@ -61,6 +66,7 @@ export const controllabilityTutorSteps: TutorStep[] = [
     prompt: "Use B and AB to build the controllability matrix C = [B AB].",
     formula:
       "B = \\begin{bmatrix}1\\\\0\\end{bmatrix},\\quad AB = \\begin{bmatrix}0\\\\0\\end{bmatrix}",
+    formulaTerms: controllabilityFormulaTerms,
     choices: [
       {
         id: "A",
@@ -94,6 +100,7 @@ export const controllabilityTutorSteps: TutorStep[] = [
     goodNotesPage: "002 可控性 Controllability",
     prompt: "The system has n = 2 states. What does this controllability matrix imply?",
     formula: "\\mathcal{C}=\\begin{bmatrix}1 & 0\\\\0 & 0\\end{bmatrix}",
+    formulaTerms: controllabilityFormulaTerms,
     choices: [
       {
         id: "A",

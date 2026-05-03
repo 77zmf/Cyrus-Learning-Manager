@@ -9,6 +9,8 @@ describe("InteractiveTutor", () => {
     expect(screen.getByRole("heading", { name: "Interactive Tutor" })).toBeInTheDocument();
     expect(screen.getByText("001 Controllability: calculate AB")).toBeInTheDocument();
     expect(screen.getByText(/GoodNotes page/)).toBeInTheDocument();
+    expect(screen.getByLabelText("Formula visual: Controllability question formula")).toBeInTheDocument();
+    expect(screen.getByText("可控性传播 AB")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /B\./ }));
 

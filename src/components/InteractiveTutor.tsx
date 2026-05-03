@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { controllabilityTutorSteps } from "../domain/interactive-tutor";
+import { FormulaVisual } from "./FormulaVisual";
 
 export function InteractiveTutor() {
   const [stepIndex, setStepIndex] = useState(0);
@@ -65,7 +66,11 @@ export function InteractiveTutor() {
           <h3>{currentStep.title}</h3>
           <p className="tutor-page">GoodNotes page: {currentStep.goodNotesPage}</p>
           <strong>{currentStep.prompt}</strong>
-          <pre>{currentStep.formula}</pre>
+          <FormulaVisual
+            label="Controllability question formula"
+            latex={currentStep.formula}
+            terms={currentStep.formulaTerms}
+          />
 
           <div className="choice-grid" aria-label="Answer choices">
             {currentStep.choices.map((choice) => (
