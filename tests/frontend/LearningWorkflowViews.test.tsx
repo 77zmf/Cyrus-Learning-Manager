@@ -26,6 +26,7 @@ describe("learning workflow views", () => {
     expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
     expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
     expect(screen.getByText("特征值实部")).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
@@ -46,6 +47,7 @@ describe("learning workflow views", () => {
     expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
     expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
     expect(screen.getByText("Riccati 方程")).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
     expect(screen.getAllByText(/GoodNotes Summary/).length).toBeGreaterThan(0);
   });
 

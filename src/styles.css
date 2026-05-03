@@ -630,7 +630,7 @@ textarea {
 .guided-lesson-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .guided-lesson-card {
@@ -825,17 +825,29 @@ textarea {
   text-transform: uppercase;
 }
 
+.formula-render-stack {
+  display: grid;
+  gap: 10px;
+}
+
 .formula-render {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--ink);
+  font-size: 0.95rem;
   overflow-x: auto;
   padding: 14px;
 }
 
 .formula-render .katex-display {
   margin: 0;
+  text-align: left;
+}
+
+.formula-render .katex-display > .katex {
+  max-width: 100%;
+  text-align: left;
 }
 
 .latex-source {
