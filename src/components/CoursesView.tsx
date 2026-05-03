@@ -5,10 +5,9 @@ export function CoursesView() {
   return (
     <section className="panel">
       <div className="section-heading">
-        <h2>Courses</h2>
+        <h2>Library</h2>
         <p>
-          Self-paced course modules with source links, derivation outputs, video entry points, and
-          paper queues.
+          Course modules, source links, video entry points, derivation outputs, and paper queues.
         </p>
       </div>
       <div className="track-grid">

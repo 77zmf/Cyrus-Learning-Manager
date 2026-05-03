@@ -36,10 +36,15 @@ describe("App", () => {
     render(<App />);
 
     expect(screen.getByRole("heading", { name: "Cyrus Learning Manager" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Tutor" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Learn" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Notebook" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Map" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Library" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Review" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Hermes" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Tasks" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Dashboard" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tasks" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Progress" })).not.toBeInTheDocument();
     expect(await screen.findByText("Local Sync: connected")).toBeInTheDocument();
   });
 });

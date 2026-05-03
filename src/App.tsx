@@ -7,13 +7,12 @@ import {
   type CreateTaskInput
 } from "./api/client";
 import { CoursesView } from "./components/CoursesView";
-import { Dashboard } from "./components/Dashboard";
 import { HermesConsole } from "./components/HermesConsole";
-import { InteractiveTutor } from "./components/InteractiveTutor";
-import { ProgressView } from "./components/ProgressView";
-import { StudyLab } from "./components/StudyLab";
+import { LearnView } from "./components/LearnView";
+import { MindMapView } from "./components/MindMapView";
+import { NotebookView } from "./components/NotebookView";
+import { ReviewView } from "./components/ReviewView";
 import { SyncCenter } from "./components/SyncCenter";
-import { TasksView } from "./components/TasksView";
 import type {
   HealthResponse,
   LearningTask,
@@ -22,11 +21,11 @@ import type {
   TrackId
 } from "./domain/types";
 
-type Tab = "dashboard" | "study" | "tutor" | "hermes" | "tasks" | "courses" | "progress" | "sync";
-const tabs: Tab[] = ["dashboard", "study", "tutor", "hermes", "tasks", "courses", "progress", "sync"];
+type Tab = "learn" | "notebook" | "map" | "library" | "review" | "hermes" | "sync";
+const tabs: Tab[] = ["learn", "notebook", "map", "library", "review", "hermes", "sync"];
 
 export function App() {
-  const [tab, setTab] = useState<Tab>("dashboard");
+  const [tab, setTab] = useState<Tab>("learn");
   const [tasks, setTasks] = useState<LearningTask[]>([]);
   const [health, setHealth] = useState<HealthResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -102,12 +101,12 @@ export function App() {
       </nav>
 
       {error && tab !== "sync" ? <p className="error" role="status">{error}</p> : null}
-      {tab === "dashboard" ? <Dashboard tasks={tasks} /> : null}
-      {tab === "study" ? <StudyLab onCreateTask={handleCreateTask} /> : null}
-      {tab === "tutor" ? <InteractiveTutor /> : null}
-      {tab === "hermes" ? <HermesConsole onCreateTask={handleCreateTask} /> : null}
-      {tab === "tasks" ? (
-        <TasksView
+      {tab === "learn" ? <LearnView /> : null}
+      {tab === "notebook" ? <NotebookView /> : null}
+      {tab === "map" ? <MindMapView /> : null}
+      {tab === "library" ? <CoursesView /> : null}
+      {tab === "review" ? (
+        <ReviewView
           tasks={tasks}
           search={search}
           track={track}
@@ -121,13 +120,13 @@ export function App() {
           onStatusUpdate={handleStatusUpdate}
         />
       ) : null}
-      {tab === "courses" ? <CoursesView /> : null}
-      {tab === "progress" ? <ProgressView tasks={tasks} /> : null}
+      {tab === "hermes" ? <HermesConsole onCreateTask={handleCreateTask} /> : null}
       {tab === "sync" ? <SyncCenter health={health} error={error} /> : null}
     </main>
   );
 }
 
 function tabLabel(tab: Tab) {
+  if (tab === "map") return "Map";
   return tab[0].toUpperCase() + tab.slice(1);
 }

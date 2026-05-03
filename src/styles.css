@@ -534,6 +534,113 @@ textarea {
   padding: 10px 14px;
 }
 
+.learning-cockpit,
+.notebook-view,
+.mindmap-view {
+  display: grid;
+  gap: 18px;
+}
+
+.cockpit-hero {
+  display: grid;
+  gap: 18px;
+}
+
+.workflow-strip {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.workflow-strip article {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--ink);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  min-height: 148px;
+  padding: 16px;
+}
+
+.workflow-strip strong,
+.field-grid span {
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.workflow-strip span {
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.workflow-strip p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.notebook-layout,
+.map-layout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(220px, 0.85fr));
+}
+
+.map-layout {
+  grid-template-columns: minmax(0, 1.1fr) repeat(3, minmax(180px, 1fr));
+}
+
+.compact-dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.compact-dl div {
+  border-left: 3px solid var(--line-strong);
+  padding-left: 10px;
+}
+
+.compact-dl dt {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.compact-dl dd {
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.review-overview {
+  display: grid;
+  gap: 18px;
+}
+
+.field-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.field-grid span {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  min-height: 42px;
+  padding: 12px;
+}
+
 .study-card h3 {
   border-bottom: 1px solid var(--line);
   font-size: 1rem;
@@ -986,6 +1093,9 @@ progress::-moz-progress-bar {
   .create-task,
   .study-controls,
   .study-workspace,
+  .workflow-strip,
+  .notebook-layout,
+  .map-layout,
   .hermes-layout,
   .hermes-form,
   .tutor-layout {
