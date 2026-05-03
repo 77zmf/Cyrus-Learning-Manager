@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import type { CreateTaskInput } from "../api/client";
+import { hermesLearningPresets, type LearningHandoffStatus } from "../domain/learning-workflow";
 
 interface HermesConsoleProps {
   onCreateTask: (input: CreateTaskInput) => void;
 }
 
-type HermesStatus = "active" | "blocked" | "done" | "mixed";
+type HermesStatus = LearningHandoffStatus;
 
 interface HermesDraft {
   topic: string;
@@ -72,6 +73,24 @@ export function HermesConsole({ onCreateTask }: HermesConsoleProps) {
     });
   }
 
+  function applyPreset(presetId: string) {
+    const preset = hermesLearningPresets.find((item) => item.id === presetId);
+    if (!preset) return;
+
+    setDraft({
+      topic: preset.topic,
+      scope: preset.scope,
+      line: preset.line,
+      evidence: preset.evidence,
+      status: preset.status,
+      blocker: preset.blocker,
+      owner: preset.owner,
+      nextAction: preset.nextAction,
+      verificationPath: preset.verificationPath,
+      rollback: preset.rollback
+    });
+  }
+
   return (
     <section className="panel hermes-console">
       <div className="section-heading">
@@ -91,6 +110,18 @@ export function HermesConsole({ onCreateTask }: HermesConsoleProps) {
             <code>cyrus login --provider openai-codex</code> before asking Hermes to update the
             vault directly.
           </p>
+        </article>
+
+        <article className="hermes-presets">
+          <h3>Learning Presets</h3>
+          <p>Use a preset when the handoff is a learning artifact rather than a work failcase.</p>
+          <div className="preset-grid">
+            {hermesLearningPresets.map((preset) => (
+              <button key={preset.id} type="button" onClick={() => applyPreset(preset.id)}>
+                {preset.buttonLabel}
+              </button>
+            ))}
+          </div>
         </article>
 
         <form className="hermes-form">

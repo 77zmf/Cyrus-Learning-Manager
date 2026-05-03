@@ -1,5 +1,5 @@
 import type { CreateTaskInput } from "../api/client";
-import { notionLearningFields } from "../domain/learning-workflow";
+import { notionLearningFields, notionReviewViews } from "../domain/learning-workflow";
 import type { LearningTask, TaskPriority, TaskStatus, TrackId } from "../domain/types";
 import { ProgressView } from "./ProgressView";
 import { TasksView } from "./TasksView";
@@ -44,6 +44,30 @@ export function ReviewView(props: ReviewViewProps) {
             <span key={field}>{field}</span>
           ))}
         </div>
+
+        <section className="subsection-block">
+          <div className="section-heading">
+            <h2>Notion Review Views</h2>
+            <p>Notion 负责筛选和复盘，不负责长篇解释。</p>
+          </div>
+          <div className="review-view-grid">
+            {notionReviewViews.map((view) => (
+              <article className="study-card" key={view.name}>
+                <h3>{view.name}</h3>
+                <dl className="compact-dl">
+                  <div>
+                    <dt>Filter</dt>
+                    <dd>{view.filter}</dd>
+                  </div>
+                  <div>
+                    <dt>Purpose</dt>
+                    <dd>{view.purpose}</dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
 
       <ProgressView tasks={props.tasks} />

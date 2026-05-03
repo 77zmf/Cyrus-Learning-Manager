@@ -27,6 +27,18 @@ describe("HermesConsole", () => {
     expect(screen.getByText(/Status: mixed/)).toBeInTheDocument();
     expect(screen.getByText(/Evidence: run_result\.json shows control gate failed/i)).toBeInTheDocument();
     expect(screen.getByText(/Owner: Cyrus/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Learning Presets" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Use control lesson preset" })).toBeInTheDocument();
+  });
+
+  it("applies a learning handoff preset", () => {
+    render(<HermesConsole onCreateTask={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Use control lesson preset" }));
+
+    expect(screen.getByDisplayValue("Control lesson closeout")).toBeInTheDocument();
+    expect(screen.getAllByText(/GoodNotes page and Obsidian node updated/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Line: Learning/)).toBeInTheDocument();
   });
 
   it("creates a work-validation task from the Hermes handoff", () => {

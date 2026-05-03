@@ -1,4 +1,5 @@
 import { modulesForTrack } from "../domain/knowledge";
+import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
 
 export function CoursesView() {
@@ -10,6 +11,21 @@ export function CoursesView() {
           Course modules, source links, video entry points, derivation outputs, and paper queues.
         </p>
       </div>
+      <section className="subsection-block route-block">
+        <div className="section-heading">
+          <h2>Track Routes</h2>
+          <p>Routes are self-paced paths across the source library. Pick by output, not by date.</p>
+        </div>
+        <div className="route-grid">
+          {libraryTrackRoutes.map((route) => (
+            <article className="route-card" key={route.title}>
+              <span>{route.tracks}</span>
+              <h3>{route.title}</h3>
+              <p>{route.output}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <div className="track-grid">
         {tracks.map((track) => {
           const modules = modulesForTrack(track.id);

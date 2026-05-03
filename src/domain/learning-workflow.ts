@@ -10,6 +10,70 @@ export interface MindMapEntry {
   purpose: string;
 }
 
+export interface LearningLaunchItem {
+  title: string;
+  focus: string;
+  prompt: string;
+  goodNotes: string;
+  obsidian: string;
+  notion: string;
+}
+
+export interface GoodNotesDerivationCard {
+  title: string;
+  formula: string;
+  steps: string[];
+  output: string;
+}
+
+export interface CanvasGraphNode {
+  kind: string;
+  title: string;
+  detail: string;
+}
+
+export interface CanvasGraphEdge {
+  title: string;
+  from: string;
+  to: string;
+  action: string;
+}
+
+export interface NotionReviewView {
+  name: string;
+  filter: string;
+  purpose: string;
+}
+
+export interface LibraryTrackRoute {
+  title: string;
+  tracks: string;
+  output: string;
+}
+
+export interface SyncReadinessCheck {
+  label: string;
+  target: string;
+  command: string;
+}
+
+export type LearningHandoffStatus = "active" | "blocked" | "done" | "mixed";
+
+export interface HermesLearningPreset {
+  id: string;
+  buttonLabel: string;
+  topic: string;
+  scope: string;
+  line: string;
+  status: LearningHandoffStatus;
+  evidence: string;
+  blocker: string;
+  owner: string;
+  nextAction: string;
+  verificationPath: string;
+  rollback: string;
+}
+
 export const learningToolRoles: ToolRole[] = [
   {
     tool: "Web",
@@ -41,6 +105,66 @@ export const goodNotesSections = [
   "下一题"
 ];
 
+export const learningLaunchQueue: LearningLaunchItem[] = [
+  {
+    title: "State-space controllability sprint",
+    focus: "Use the web tutor to answer rank-test questions before touching notes.",
+    prompt: "Explain A, B, AB, C=[B AB], and rank(C)<n in your own words.",
+    goodNotes: "GoodNotes: 002 可控性",
+    obsidian: "Obsidian: Control -> Controllability",
+    notion: "Notion: Mastery = 2, Next Review = after one solved example"
+  },
+  {
+    title: "World model loss sprint",
+    focus: "Read one objective and separate representation, transition, and reward prediction.",
+    prompt: "Write the latent dynamics factorization and one failure mode for imagined rollouts.",
+    goodNotes: "GoodNotes: 021 World Models",
+    obsidian: "Obsidian: World Model -> Latent Dynamics",
+    notion: "Notion: Resource Type = Paper, Status = Active"
+  },
+  {
+    title: "IELTS output correction sprint",
+    focus: "Practice output first, then classify the error by rubric instead of time.",
+    prompt: "Produce one paragraph or one speaking answer and tag the weakest band descriptor.",
+    goodNotes: "GoodNotes: IELTS Error Log",
+    obsidian: "Obsidian: IELTS -> Error Attribution",
+    notion: "Notion: Evidence = raw answer + correction"
+  }
+];
+
+export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
+  {
+    title: "State transition solution",
+    formula: "\\dot{x}=Ax+Bu,\\quad x(t)=e^{At}x(0)+\\int_0^t e^{A(t-\\tau)}Bu(\\tau)d\\tau",
+    steps: [
+      "写出齐次解 x_h(t)=e^{At}x(0)",
+      "用变参数法加入输入项",
+      "标出每个矩阵维度和工程含义"
+    ],
+    output: "one GoodNotes page ending with a vehicle-state interpretation"
+  },
+  {
+    title: "Controllability rank test",
+    formula: "\\mathcal{C}=\\begin{bmatrix}B&AB&\\cdots&A^{n-1}B\\end{bmatrix},\\quad rank(\\mathcal{C})=n",
+    steps: [
+      "先算 B, AB, A^2B",
+      "列出可控性矩阵",
+      "用秩解释哪些状态无法被输入影响"
+    ],
+    output: "one solved example plus one unstable or under-actuated intuition"
+  },
+  {
+    title: "LQR cost and Riccati equation",
+    formula: "J=\\int_0^\\infty (x^TQx+u^TRu)dt,\\quad A^TP+PA-PBR^{-1}B^TP+Q=0",
+    steps: [
+      "定义 Q/R 惩罚的工程含义",
+      "推到 u=-R^{-1}B^TPx",
+      "连接到轨迹跟踪或横向控制"
+    ],
+    output: "one formula card and one control-parameter intuition note"
+  }
+];
+
 export const mindMapEntries: MindMapEntry[] = [
   {
     title: "Learning System",
@@ -59,6 +183,50 @@ export const mindMapEntries: MindMapEntry[] = [
   }
 ];
 
+export const canvasGraphNodes: CanvasGraphNode[] = [
+  {
+    kind: "Course",
+    title: "MIT 6.241J / Tsinghua Control",
+    detail: "source lectures, assignments, and prerequisite structure"
+  },
+  {
+    kind: "Formula",
+    title: "State transition, controllability, LQR, Kalman, MPC",
+    detail: "LaTeX derivations that must survive without multiple choice"
+  },
+  {
+    kind: "Paper",
+    title: "Kalman 1960, MPC survey, Dreamer, BEVFormer, 3DGS",
+    detail: "problem, assumptions, objective, reproduction hook"
+  },
+  {
+    kind: "Engineering Application",
+    title: "Autoware, CARLA, KPI gates, failcase closure",
+    detail: "where the idea changes a validation decision"
+  }
+];
+
+export const canvasGraphEdges: CanvasGraphEdge[] = [
+  {
+    title: "Control formula -> GoodNotes derivation",
+    from: "Formula",
+    to: "GoodNotes",
+    action: "Every formula node links to the exact handwritten page number."
+  },
+  {
+    title: "Paper -> Engineering failure mode",
+    from: "Paper",
+    to: "Engineering Application",
+    action: "Every paper card names one CARLA, Autoware, or validation hook."
+  },
+  {
+    title: "Course -> Review queue",
+    from: "Course",
+    to: "Notion",
+    action: "Every finished lecture creates one review row with mastery and evidence."
+  }
+];
+
 export const notionLearningFields = [
   "Topic",
   "Track",
@@ -70,4 +238,99 @@ export const notionLearningFields = [
   "GoodNotes Page",
   "Paper or Video URL",
   "Evidence"
+];
+
+export const notionReviewViews: NotionReviewView[] = [
+  {
+    name: "Next Review Queue",
+    filter: "Status != Done and Next Review is due",
+    purpose: "Choose what to review when you want to study without a daily schedule."
+  },
+  {
+    name: "Paper Queue",
+    filter: "Resource Type = Paper",
+    purpose: "Keep control, world-model, spatial-model, and autonomy papers in one reproducible queue."
+  },
+  {
+    name: "Evidence Ledger",
+    filter: "Evidence is not empty",
+    purpose: "Show which topics have GoodNotes pages, Obsidian nodes, code, tests, or KPI evidence."
+  }
+];
+
+export const libraryTrackRoutes: LibraryTrackRoute[] = [
+  {
+    title: "Control spine route",
+    tracks: "Tsinghua Automation + MIT EECS",
+    output: "state-space derivation, controllability example, LQR/Kalman/MPC card"
+  },
+  {
+    title: "World and spatial route",
+    tracks: "World & Spatial Models",
+    output: "latent dynamics note, BEV/occupancy comparison, paper reproduction hook"
+  },
+  {
+    title: "Output-first IELTS route",
+    tracks: "IELTS",
+    output: "raw answer, band-descriptor diagnosis, error-attribution note"
+  },
+  {
+    title: "Argument-quality route",
+    tracks: "Philosophy + Work Validation",
+    output: "argument map, objection, evidence-quality decision memo"
+  }
+];
+
+export const syncReadinessChecks: SyncReadinessCheck[] = [
+  {
+    label: "Vite page",
+    target: "http://127.0.0.1:5173/Cyrus-Learning-Manager/",
+    command: "npm run dev:web"
+  },
+  {
+    label: "Local sync service",
+    target: "http://127.0.0.1:8787/health",
+    command: "npm run dev:sync"
+  },
+  {
+    label: "Obsidian vault",
+    target: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge",
+    command: "set OBSIDIAN_VAULT_PATH in .env.local when overriding the default"
+  },
+  {
+    label: "Notion database",
+    target: "Notion Learning Database",
+    command: "set NOTION_TOKEN and NOTION_TASKS_DATABASE_ID in .env.local"
+  }
+];
+
+export const hermesLearningPresets: HermesLearningPreset[] = [
+  {
+    id: "control-lesson",
+    buttonLabel: "Use control lesson preset",
+    topic: "Control lesson closeout",
+    scope: "learning-plan",
+    line: "learning",
+    status: "active",
+    evidence: "GoodNotes page and Obsidian node updated for the current control lesson",
+    blocker: "not recorded",
+    owner: "Cyrus",
+    nextAction: "Ask one follow-up question and create one review row in Notion",
+    verificationPath: "Explain the formula without looking at the multiple-choice options",
+    rollback: "Keep the raw GoodNotes page even if the Obsidian node needs restructuring"
+  },
+  {
+    id: "paper-card",
+    buttonLabel: "Use paper card preset",
+    topic: "Paper reproduction card",
+    scope: "concept-reuse",
+    line: "shadow",
+    status: "active",
+    evidence: "paper problem, assumptions, objective, and reproduction hook captured",
+    blocker: "not recorded",
+    owner: "Cyrus",
+    nextAction: "Connect the paper to one CARLA, Autoware, or validation scenario",
+    verificationPath: "One equation, one failure mode, one experiment hook",
+    rollback: "Mark the paper optional if no validation hook exists"
+  }
 ];

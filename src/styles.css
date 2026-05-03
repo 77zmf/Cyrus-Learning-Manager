@@ -641,6 +641,172 @@ textarea {
   padding: 12px;
 }
 
+.subsection-block {
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 22px;
+}
+
+.subsection-block .section-heading {
+  margin-bottom: 16px;
+}
+
+.action-surface {
+  display: grid;
+  gap: 18px;
+}
+
+.action-grid,
+.derivation-grid,
+.review-view-grid,
+.route-grid,
+.readiness-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.action-card,
+.route-card,
+.node-card,
+.hermes-presets {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.action-card {
+  border-left: 5px solid var(--ink);
+  display: grid;
+  gap: 12px;
+}
+
+.action-card > span,
+.route-card span,
+.node-card span {
+  color: var(--muted);
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.action-card strong,
+.derivation-card strong {
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.derivation-card {
+  display: grid;
+  gap: 12px;
+}
+
+.formula-block {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+  overflow-x: auto;
+  padding: 12px;
+  white-space: pre-wrap;
+}
+
+.map-board {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+}
+
+.node-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.node-card {
+  min-height: 160px;
+}
+
+.node-card h3,
+.route-card h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.18rem;
+  margin: 10px 0 8px;
+}
+
+.node-card p,
+.route-card p,
+.hermes-presets p {
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.edge-list {
+  display: grid;
+  gap: 12px;
+}
+
+.edge-list article {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.edge-list p,
+.edge-list span {
+  color: var(--ink-soft);
+  display: block;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.edge-list p {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.route-block {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.readiness-card {
+  display: grid;
+  gap: 10px;
+}
+
+.readiness-card strong {
+  font-size: 0.98rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.readiness-card code {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  padding: 10px;
+}
+
 .study-card h3 {
   border-bottom: 1px solid var(--line);
   font-size: 1rem;
@@ -715,6 +881,7 @@ textarea {
 }
 
 .hermes-command,
+.hermes-presets,
 .hermes-form,
 .hermes-output {
   background: rgba(255, 255, 255, 0.94);
@@ -723,11 +890,13 @@ textarea {
   padding: 18px;
 }
 
-.hermes-command {
+.hermes-command,
+.hermes-presets {
   border-left: 5px solid var(--ink);
 }
 
-.hermes-command h3 {
+.hermes-command h3,
+.hermes-presets h3 {
   border-bottom: 1px solid var(--line);
   padding-bottom: 10px;
 }
@@ -778,6 +947,27 @@ textarea {
   justify-self: start;
   min-height: 42px;
   padding: 10px 14px;
+}
+
+.preset-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.preset-grid button {
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--ink);
+  font-weight: 700;
+  min-height: 42px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.preset-grid button:hover {
+  background: var(--paper-tint);
 }
 
 .hermes-output {
@@ -1096,6 +1286,8 @@ progress::-moz-progress-bar {
   .workflow-strip,
   .notebook-layout,
   .map-layout,
+  .map-board,
+  .node-grid,
   .hermes-layout,
   .hermes-form,
   .tutor-layout {

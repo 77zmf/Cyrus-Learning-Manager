@@ -1,4 +1,4 @@
-import { goodNotesSections } from "../domain/learning-workflow";
+import { goodNotesDerivationCards, goodNotesSections } from "../domain/learning-workflow";
 
 export function NotebookView() {
   return (
@@ -39,6 +39,27 @@ GoodNotes Summary:
 Next:`}</pre>
         </article>
       </div>
+
+      <section className="subsection-block">
+        <div className="section-heading">
+          <h2>Derivation Cards</h2>
+          <p>这些卡片用于 GoodNotes：先抄公式，再补步骤，最后写工程解释。</p>
+        </div>
+        <div className="derivation-grid">
+          {goodNotesDerivationCards.map((card) => (
+            <article className="study-card derivation-card" key={card.title}>
+              <h3>{card.title}</h3>
+              <pre className="formula-block">{card.formula}</pre>
+              <ol>
+                {card.steps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+              <strong>{card.output}</strong>
+            </article>
+          ))}
+        </div>
+      </section>
     </section>
   );
 }

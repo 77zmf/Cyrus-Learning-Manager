@@ -17,6 +17,10 @@ describe("CoursesView", () => {
     expect(screen.getByText("IELTS output and error-attribution loop")).toBeInTheDocument();
     expect(screen.getByText("Philosophy reading ladder")).toBeInTheDocument();
     expect(screen.getAllByText("Knowledge modules").length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Track Routes" })).toBeInTheDocument();
+    expect(screen.getByText("Control spine route")).toBeInTheDocument();
+    expect(screen.getByText("World and spatial route")).toBeInTheDocument();
+    expect(screen.getByText("Output-first IELTS route")).toBeInTheDocument();
     expect(screen.getAllByText("MIT 6.241J Dynamic Systems and Control")[0]).toHaveAttribute(
       "href",
       "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"

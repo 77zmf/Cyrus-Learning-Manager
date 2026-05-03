@@ -1,3 +1,4 @@
+import { syncReadinessChecks } from "../domain/learning-workflow";
 import type { HealthResponse } from "../domain/types";
 
 interface SyncCenterProps {
@@ -28,6 +29,21 @@ export function SyncCenter({ health, error }: SyncCenterProps) {
           active={Boolean(health?.obsidianConfigured)}
         />
       </div>
+      <section className="subsection-block">
+        <div className="section-heading">
+          <h2>Sync Readiness</h2>
+          <p>Use these checks when the web app loads but Obsidian or Notion writes are paused.</p>
+        </div>
+        <div className="readiness-grid">
+          {syncReadinessChecks.map((check) => (
+            <article className="status-card readiness-card" key={check.label}>
+              <span>{check.label}</span>
+              <strong>{check.target}</strong>
+              <code>{check.command}</code>
+            </article>
+          ))}
+        </div>
+      </section>
     </section>
   );
 }

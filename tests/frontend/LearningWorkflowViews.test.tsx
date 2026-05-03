@@ -4,6 +4,7 @@ import { LearnView } from "../../src/components/LearnView";
 import { MindMapView } from "../../src/components/MindMapView";
 import { NotebookView } from "../../src/components/NotebookView";
 import { ReviewView } from "../../src/components/ReviewView";
+import { SyncCenter } from "../../src/components/SyncCenter";
 
 describe("learning workflow views", () => {
   it("renders web learning as the primary interactive surface", () => {
@@ -11,6 +12,10 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
+    expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
+    expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian: Control -> Controllability")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Interactive Tutor" })).toBeInTheDocument();
   });
 
@@ -21,6 +26,9 @@ describe("learning workflow views", () => {
     expect(screen.getByText("GoodNotes")).toBeInTheDocument();
     expect(screen.getByText("公式推导")).toBeInTheDocument();
     expect(screen.getByText("错题重写")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Derivation Cards" })).toBeInTheDocument();
+    expect(screen.getByText("State transition solution")).toBeInTheDocument();
+    expect(screen.getByText(/\\dot\{x\}=Ax\+Bu/)).toBeInTheDocument();
     expect(screen.getAllByText(/GoodNotes Summary/).length).toBeGreaterThan(0);
   });
 
@@ -31,6 +39,12 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Obsidian Canvas")).toBeInTheDocument();
     expect(screen.getByText("80_Canvas/Learning System.canvas")).toBeInTheDocument();
     expect(screen.getAllByText(/课程.*公式.*论文.*工程应用/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Graph Nodes" })).toBeInTheDocument();
+    expect(screen.getByText("Course")).toBeInTheDocument();
+    expect(screen.getByText("Formula")).toBeInTheDocument();
+    expect(screen.getByText("Paper")).toBeInTheDocument();
+    expect(screen.getByText("Engineering Application")).toBeInTheDocument();
+    expect(screen.getByText("Control formula -> GoodNotes derivation")).toBeInTheDocument();
   });
 
   it("renders Notion as the structured review and index database", () => {
@@ -56,5 +70,24 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Next Review")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page")).toBeInTheDocument();
     expect(screen.getByText("Evidence")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Notion Review Views" })).toBeInTheDocument();
+    expect(screen.getByText("Next Review Queue")).toBeInTheDocument();
+    expect(screen.getByText("Paper Queue")).toBeInTheDocument();
+    expect(screen.getByText("Evidence Ledger")).toBeInTheDocument();
+  });
+
+  it("renders sync readiness checks for local integrations", () => {
+    render(
+      <SyncCenter
+        health={{ ok: true, service: "cyrus-local-sync", notionConfigured: false, obsidianConfigured: true }}
+        error={null}
+      />
+    );
+
+    expect(screen.getByRole("heading", { name: "Sync Readiness" })).toBeInTheDocument();
+    expect(screen.getByText("Vite page")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian vault")).toBeInTheDocument();
+    expect(screen.getByText("Notion database")).toBeInTheDocument();
+    expect(screen.getByText("http://127.0.0.1:5173/Cyrus-Learning-Manager/")).toBeInTheDocument();
   });
 });

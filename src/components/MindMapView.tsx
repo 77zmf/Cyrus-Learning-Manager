@@ -1,4 +1,4 @@
-import { mindMapEntries } from "../domain/learning-workflow";
+import { canvasGraphEdges, canvasGraphNodes, mindMapEntries } from "../domain/learning-workflow";
 
 export function MindMapView() {
   return (
@@ -34,6 +34,37 @@ export function MindMapView() {
           </article>
         ))}
       </div>
+
+      <section className="subsection-block">
+        <div className="section-heading">
+          <h2>Graph Nodes</h2>
+          <p>Canvas 只保留少量高价值节点：课程、公式、论文、工程应用，避免变成文件夹复制。</p>
+        </div>
+        <div className="map-board">
+          <div className="node-grid">
+            {canvasGraphNodes.map((node) => (
+              <article className="node-card" key={node.kind}>
+                <span>{node.kind}</span>
+                <h3>{node.title}</h3>
+                <p>{node.detail}</p>
+              </article>
+            ))}
+          </div>
+          <div className="edge-list" aria-label="Canvas graph edges">
+            {canvasGraphEdges.map((edge) => (
+              <article key={edge.title}>
+                <h3>{edge.title}</h3>
+                <p>
+                  {edge.from}
+                  {" -> "}
+                  {edge.to}
+                </p>
+                <span>{edge.action}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
     </section>
   );
 }
