@@ -278,7 +278,7 @@ label,
 }
 
 .track-card dt,
-.study-main span {
+.study-main > span {
   color: var(--muted);
   font-size: 0.74rem;
   font-weight: 700;
@@ -322,7 +322,7 @@ label,
 }
 
 .module-block strong,
-.module-block span,
+.module-block li > span,
 .module-block em,
 .module-block a {
   display: block;
@@ -332,7 +332,7 @@ label,
   color: var(--ink);
 }
 
-.module-block span {
+.module-block li > span {
   color: var(--muted);
   font-size: 0.84rem;
 }
@@ -500,7 +500,7 @@ textarea {
   gap: 12px;
 }
 
-.study-main span {
+.study-main > span {
   display: block;
   text-transform: uppercase;
 }
@@ -645,8 +645,8 @@ textarea {
 }
 
 .guided-lesson-card > span,
-.guided-step-list span,
-.self-check span {
+.guided-step-list li > span,
+.self-check > span {
   color: var(--muted);
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.72rem;
@@ -702,7 +702,7 @@ textarea {
   gap: 8px;
 }
 
-.self-check span {
+.self-check > span {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -771,8 +771,8 @@ textarea {
 }
 
 .action-card > span,
-.route-card span,
-.node-card span {
+.route-card > span,
+.node-card > span {
   color: var(--muted);
   display: block;
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -862,6 +862,32 @@ textarea {
   font-size: 1em;
 }
 
+.app-shell .math-inline {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: inherit;
+  padding: 0;
+  text-transform: none;
+}
+
+.app-shell .katex,
+.app-shell .katex * {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  letter-spacing: normal;
+  padding: 0;
+  text-transform: none;
+}
+
+.app-shell .katex {
+  color: inherit;
+}
+
 .formula-term-grid {
   display: grid;
   gap: 10px;
@@ -893,7 +919,7 @@ textarea {
   font-size: 0.82rem;
 }
 
-.formula-term-grid span {
+.formula-term-grid dd > span:not(.math-inline) {
   color: var(--ink-soft);
   font-size: 0.86rem;
   line-height: 1.45;
@@ -1187,7 +1213,8 @@ textarea {
   padding: 18px;
 }
 
-.tutor-question span,
+.tutor-question > span,
+.choice-grid button > span,
 .tutor-page {
   color: var(--muted);
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
