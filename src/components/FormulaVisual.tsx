@@ -56,7 +56,6 @@ export function FormulaVisual({ label, latex, terms = [] }: FormulaVisualProps) 
           />
         ))}
       </div>
-      <code className="latex-source">{latex}</code>
       {terms.length > 0 ? (
         <dl className="formula-term-grid">
           {terms.map((term) => (

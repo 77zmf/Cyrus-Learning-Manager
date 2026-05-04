@@ -850,20 +850,6 @@ textarea {
   text-align: left;
 }
 
-.latex-source {
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px dashed var(--line-strong);
-  border-radius: 6px;
-  color: var(--ink-soft);
-  display: block;
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.74rem;
-  line-height: 1.45;
-  overflow-x: auto;
-  padding: 10px;
-  white-space: pre-wrap;
-}
-
 .formula-term-grid {
   display: grid;
   gap: 10px;

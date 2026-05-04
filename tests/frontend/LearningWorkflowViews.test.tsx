@@ -8,7 +8,7 @@ import { SyncCenter } from "../../src/components/SyncCenter";
 
 describe("learning workflow views", () => {
   it("renders web learning as the primary interactive surface", () => {
-    render(<LearnView />);
+    const { container } = render(<LearnView />);
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
@@ -27,6 +27,7 @@ describe("learning workflow views", () => {
     expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
     expect(screen.getByText("特征值实部")).toBeInTheDocument();
     expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
+    expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
@@ -35,7 +36,7 @@ describe("learning workflow views", () => {
   });
 
   it("renders GoodNotes as the handwritten derivation notebook", () => {
-    render(<NotebookView />);
+    const { container } = render(<NotebookView />);
 
     expect(screen.getByRole("heading", { name: "Notebook" })).toBeInTheDocument();
     expect(screen.getByText("GoodNotes")).toBeInTheDocument();
@@ -43,11 +44,11 @@ describe("learning workflow views", () => {
     expect(screen.getByText("错题重写")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Derivation Cards" })).toBeInTheDocument();
     expect(screen.getByText("State transition solution")).toBeInTheDocument();
-    expect(screen.getAllByText(/\\dot\{x\}=Ax\+Bu/).length).toBeGreaterThan(0);
     expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
     expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
     expect(screen.getByText("Riccati 方程")).toBeInTheDocument();
     expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
+    expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getAllByText(/GoodNotes Summary/).length).toBeGreaterThan(0);
   });
 
