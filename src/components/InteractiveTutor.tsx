@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { controllabilityTutorSteps } from "../domain/interactive-tutor";
 import { FormulaVisual } from "./FormulaVisual";
+import { InlineFormula, MathLines, MathText } from "./MathText";
 
 export function InteractiveTutor() {
   const [stepIndex, setStepIndex] = useState(0);
@@ -19,24 +20,22 @@ export function InteractiveTutor() {
     });
 
     return [
-      "## GoodNotes Summary",
       "Page: 002 可控性 Controllability",
       "Topic: rank test for controllability",
       ...lines
-    ].join("\n");
+    ];
   }, [answeredSteps, answers]);
 
   const hermesCloseout = useMemo(
     () =>
       [
-        "## Hermes Closeout",
         `Evidence: completed ${answeredSteps.length}/${controllabilityTutorSteps.length} interaction checks`,
         `Status: ${lessonComplete ? "done" : "active"}`,
         "Blocker: wrong or unanswered checks need review",
         "Owner: Cyrus",
         `Next action: ${lessonComplete ? "move to observability or LQR" : "answer the current question"}`,
         "Verification path: explain AB, C=[B AB], and rank(C)<n without looking at the options"
-      ].join("\n"),
+      ],
     [answeredSteps.length, lessonComplete]
   );
 
@@ -65,7 +64,9 @@ export function InteractiveTutor() {
           </span>
           <h3>{currentStep.title}</h3>
           <p className="tutor-page">GoodNotes page: {currentStep.goodNotesPage}</p>
-          <strong>{currentStep.prompt}</strong>
+          <strong>
+            <MathText text={currentStep.prompt} />
+          </strong>
           <FormulaVisual
             label="Controllability question formula"
             latex={currentStep.formula}
@@ -80,7 +81,8 @@ export function InteractiveTutor() {
                 onClick={() => chooseAnswer(choice.id)}
                 type="button"
               >
-                {choice.label}. {choice.value}
+                <span>{choice.label}. </span>
+                <InlineFormula latex={choice.value} label={`${currentStep.title} option ${choice.label}`} />
               </button>
             ))}
           </div>
@@ -88,7 +90,9 @@ export function InteractiveTutor() {
           {selectedChoiceId ? (
             <div className={isCorrect ? "feedback is-correct" : "feedback is-wrong"} role="status">
               <strong>{isCorrect ? "Correct" : "Not yet"}</strong>
-              <p>{isCorrect ? currentStep.correctFeedback : currentStep.incorrectFeedback}</p>
+              <p>
+                <MathText text={isCorrect ? currentStep.correctFeedback : currentStep.incorrectFeedback} />
+              </p>
             </div>
           ) : null}
 
@@ -107,7 +111,7 @@ export function InteractiveTutor() {
           role="region"
         >
           <h3>GoodNotes Summary</h3>
-          <pre>{goodNotesSummary}</pre>
+          <MathLines lines={goodNotesSummary} />
         </article>
 
         <article
@@ -116,7 +120,7 @@ export function InteractiveTutor() {
           role="region"
         >
           <h3>Hermes Closeout</h3>
-          <pre>{hermesCloseout}</pre>
+          <MathLines lines={hermesCloseout} />
         </article>
       </div>
     </section>

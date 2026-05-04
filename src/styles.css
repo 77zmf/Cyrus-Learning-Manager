@@ -850,6 +850,18 @@ textarea {
   text-align: left;
 }
 
+.math-inline {
+  display: inline-block;
+  line-height: 1.25;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: -0.12em;
+}
+
+.math-inline .katex {
+  font-size: 1em;
+}
+
 .formula-term-grid {
   display: grid;
   gap: 10px;
@@ -876,10 +888,9 @@ textarea {
   margin: 8px 0 0;
 }
 
-.formula-term-grid code {
+.formula-term-grid .math-inline {
   color: var(--ink);
-  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.76rem;
+  font-size: 0.82rem;
 }
 
 .formula-term-grid span {
@@ -1000,7 +1011,8 @@ textarea {
   grid-column: 1 / -1;
 }
 
-.template-card pre {
+.template-card pre,
+.math-line-stack {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -1012,6 +1024,16 @@ textarea {
   overflow-x: auto;
   padding: 14px;
   white-space: pre-wrap;
+}
+
+.math-line-stack {
+  display: grid;
+  gap: 8px;
+  white-space: normal;
+}
+
+.math-line-stack p {
+  margin: 0;
 }
 
 .hermes-card dl {

@@ -1,5 +1,6 @@
 import { goodNotesDerivationCards, goodNotesSections } from "../domain/learning-workflow";
 import { FormulaVisual } from "./FormulaVisual";
+import { MathText } from "./MathText";
 
 export function NotebookView() {
   return (
@@ -53,10 +54,14 @@ Next:`}</pre>
               <FormulaVisual label={card.title} latex={card.formula} terms={card.formulaTerms} />
               <ol>
                 {card.steps.map((step) => (
-                  <li key={step}>{step}</li>
+                  <li key={step}>
+                    <MathText text={step} />
+                  </li>
                 ))}
               </ol>
-              <strong>{card.output}</strong>
+              <strong>
+                <MathText text={card.output} />
+              </strong>
             </article>
           ))}
         </div>

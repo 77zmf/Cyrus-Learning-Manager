@@ -22,9 +22,7 @@ describe("InteractiveTutor", () => {
 
     expect(screen.getByText("Correct")).toBeInTheDocument();
     const goodNotesPanel = screen.getByRole("region", { name: "GoodNotes Summary" });
-    expect(
-      within(goodNotesPanel).getByText(/AB = \\begin\{bmatrix\}0\\\\0\\end\{bmatrix\}/)
-    ).toBeInTheDocument();
+    expect(within(goodNotesPanel).getByLabelText(/Formula: AB =/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Next question" }));
 

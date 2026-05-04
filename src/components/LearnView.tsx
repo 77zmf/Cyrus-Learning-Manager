@@ -1,6 +1,7 @@
 import { guidedControlLessons, learningLaunchQueue, learningToolRoles } from "../domain/learning-workflow";
 import { FormulaVisual } from "./FormulaVisual";
 import { InteractiveTutor } from "./InteractiveTutor";
+import { MathText } from "./MathText";
 
 export function LearnView() {
   return (
@@ -29,10 +30,14 @@ export function LearnView() {
         <div className="guided-lesson-grid">
           {guidedControlLessons.map((lesson) => (
             <article className="guided-lesson-card" key={lesson.title}>
-              <span>{lesson.goal}</span>
+              <span>
+                <MathText text={lesson.goal} />
+              </span>
               <h3>{lesson.title}</h3>
               <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
-              <strong>{lesson.now}</strong>
+              <strong>
+                <MathText text={lesson.now} />
+              </strong>
               <dl className="compact-dl">
                 <div>
                   <dt>GoodNotes</dt>
@@ -51,14 +56,20 @@ export function LearnView() {
                 {lesson.steps.map((step) => (
                   <li key={step.label}>
                     <span>{step.label}</span>
-                    <strong>{step.instruction}</strong>
-                    <p>{step.output}</p>
+                    <strong>
+                      <MathText text={step.instruction} />
+                    </strong>
+                    <p>
+                      <MathText text={step.output} />
+                    </p>
                   </li>
                 ))}
               </ol>
               <div className="self-check" aria-label={`${lesson.title} self check`}>
                 {lesson.selfCheck.map((item) => (
-                  <span key={item}>{item}</span>
+                  <span key={item}>
+                    <MathText text={item} />
+                  </span>
                 ))}
               </div>
             </article>
@@ -76,7 +87,9 @@ export function LearnView() {
             <article className="action-card" key={item.title}>
               <span>{item.focus}</span>
               <h3>{item.title}</h3>
-              <strong>{item.prompt}</strong>
+              <strong>
+                <MathText text={item.prompt} />
+              </strong>
               <dl className="compact-dl">
                 <div>
                   <dt>GoodNotes</dt>

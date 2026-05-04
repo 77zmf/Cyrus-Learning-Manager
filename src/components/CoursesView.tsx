@@ -1,6 +1,7 @@
 import { modulesForTrack } from "../domain/knowledge";
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
+import { MathText } from "./MathText";
 
 export function CoursesView() {
   return (
@@ -21,7 +22,9 @@ export function CoursesView() {
             <article className="route-card" key={route.title}>
               <span>{route.tracks}</span>
               <h3>{route.title}</h3>
-              <p>{route.output}</p>
+              <p>
+                <MathText text={route.output} />
+              </p>
             </article>
           ))}
         </div>
@@ -50,10 +53,14 @@ export function CoursesView() {
                     <li key={module.id}>
                       <strong>{module.title}</strong>
                       <span>{module.stage}</span>
-                      <p>{module.focus}</p>
+                      <p>
+                        <MathText text={module.focus} />
+                      </p>
                       <div className="module-output">
                         {module.outputs.map((output) => (
-                          <em key={output}>{output}</em>
+                          <em key={output}>
+                            <MathText text={output} />
+                          </em>
                         ))}
                       </div>
                       <div className="source-links">

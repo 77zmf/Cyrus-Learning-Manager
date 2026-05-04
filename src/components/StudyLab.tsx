@@ -10,6 +10,7 @@ import {
 } from "../domain/study-lab";
 import { tracks } from "../domain/tracks";
 import type { TrackId } from "../domain/types";
+import { MathLines, MathText } from "./MathText";
 
 interface StudyLabProps {
   onCreateTask: (input: CreateTaskInput) => void;
@@ -82,8 +83,12 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
         <article className="study-main">
           <span>{displayTrackName(activeTrack?.name ?? plan.track)}</span>
           <h3>{plan.title}</h3>
-          <strong>{plan.question}</strong>
-          <p>{plan.prompt}</p>
+          <strong>
+            <MathText text={plan.question} />
+          </strong>
+          <p>
+            <MathText text={plan.prompt} />
+          </p>
           <button type="button" onClick={createStudyTask}>
             Create study task
           </button>
@@ -93,14 +98,16 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
           <h3>Checklist</h3>
           <ol>
             {plan.checklist.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>
+                <MathText text={item} />
+              </li>
             ))}
           </ol>
         </article>
 
         <article className="study-card template-card">
           <h3>Output Template</h3>
-          <pre>{plan.template}</pre>
+          <MathLines lines={templateLines(plan.template)} />
         </article>
 
         <article className="study-card hermes-card">
@@ -128,6 +135,13 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
       </div>
     </section>
   );
+}
+
+function templateLines(template: string) {
+  return template
+    .split("\n")
+    .map((line) => line.trimEnd())
+    .filter((line) => line.trim() !== "$$");
 }
 
 function displayTrackName(name: string) {

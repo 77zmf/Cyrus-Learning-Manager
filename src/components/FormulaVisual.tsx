@@ -2,6 +2,7 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 import { useMemo } from "react";
 import type { FormulaTerm } from "../domain/formula-visuals";
+import { InlineFormula, MathText } from "./MathText";
 
 interface FormulaVisualProps {
   label: string;
@@ -62,8 +63,10 @@ export function FormulaVisual({ label, latex, terms = [] }: FormulaVisualProps) 
             <div key={term.label}>
               <dt>{term.label}</dt>
               <dd>
-                <code>{term.symbol}</code>
-                <span>{term.meaning}</span>
+                <InlineFormula latex={term.symbol} label={term.label} />
+                <span>
+                  <MathText text={term.meaning} />
+                </span>
               </dd>
             </div>
           ))}
