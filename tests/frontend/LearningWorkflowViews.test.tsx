@@ -13,20 +13,31 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
-    expect(screen.getByText("第 1 课：状态空间模型")).toBeInTheDocument();
-    expect(screen.getByText("第 2 课：可控性 rank test")).toBeInTheDocument();
-    expect(screen.getByText("第 3 课：稳定性与特征值")).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 2 课：可控性 rank test" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 3 课：稳定性与特征值" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 4 课：可观性 Observability" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 7 课：LQR 最优控制" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 8 课：Kalman Filter 状态估计" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 10 课：MPC 模型预测控制" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 13 课：随机控制与动态规划" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 14 课：世界模型与空间模型接口" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /第 10 课：MPC 模型预测控制/ })).toHaveAttribute(
+      "href",
+      "#lesson-mpc"
+    );
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
-    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(14);
     expect(screen.getByText("状态向量 x")).toBeInTheDocument();
     expect(screen.getByText("系统矩阵 A")).toBeInTheDocument();
     expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
     expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
     expect(screen.getByText("特征值实部")).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
+    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(20);
     expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();

@@ -27,9 +27,19 @@ export function LearnView() {
           <h2>Cyrus Guided Path</h2>
           <p>不用每日计划。每次想学时，打开这一节，从第一张卡开始：网页读、GoodNotes 写、Obsidian 连、Notion 留证据。</p>
         </div>
+        <nav aria-label="Course directory" className="course-toc">
+          <h3>课程目录</h3>
+          <ol>
+            {guidedControlLessons.map((lesson) => (
+              <li key={lesson.id}>
+                <a href={`#${lesson.id}`}>{lesson.title}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
         <div className="guided-lesson-grid">
           {guidedControlLessons.map((lesson) => (
-            <article className="guided-lesson-card" key={lesson.title}>
+            <article className="guided-lesson-card" id={lesson.id} key={lesson.title}>
               <span>
                 <MathText text={lesson.goal} />
               </span>

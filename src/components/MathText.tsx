@@ -48,6 +48,14 @@ const formulaMatchers: FormulaMatcher[] = [
     normalize: () => "\\dot{x}=Ax+Bu"
   },
   {
+    pattern: /x_dot\s*=\s*f\(x,u\)/,
+    normalize: () => "\\dot{x}=f(x,u)"
+  },
+  {
+    pattern: /V_dot/,
+    normalize: () => "\\dot{V}"
+  },
+  {
     pattern: /C=\[B AB(?: \.\.\.)?\]/,
     normalize: (match) => (match.includes("...") ? "\\mathcal{C}=[B\\;AB\\;\\cdots]" : "\\mathcal{C}=[B\\;AB]")
   },
@@ -55,10 +63,19 @@ const formulaMatchers: FormulaMatcher[] = [
     pattern: /rank\(\\mathcal\{C\}\)\s*=\s*n/
   },
   {
+    pattern: /rank\(\\mathcal\{O\}\)\s*=\s*n/
+  },
+  {
     pattern: /rank\(C\)\s*<\s*n/
   },
   {
+    pattern: /rank\(O\)\s*<\s*n/
+  },
+  {
     pattern: /rank\(C\)\s*=\s*n/
+  },
+  {
+    pattern: /rank\(O\)\s*=\s*n/
   },
   {
     pattern: /rank\(C\)\s*=\s*\d+/
@@ -94,11 +111,47 @@ const formulaMatchers: FormulaMatcher[] = [
     pattern: /u=-R\^{-1\}B\^TPx/
   },
   {
+    pattern: /u=-Kx/
+  },
+  {
+    pattern: /A-BK/
+  },
+  {
+    pattern: /x_\{k\+1\}=Ax_k\+Bu_k/
+  },
+  {
+    pattern: /K_k/
+  },
+  {
+    pattern: /\\hat\{x\}/
+  },
+  {
+    pattern: /V_t\(x\)/
+  },
+  {
+    pattern: /\\dot\{V\}/
+  },
+  {
+    pattern: /\\\|T_\{zw\}\\\|_\\infty/
+  },
+  {
+    pattern: /\\dot\{x\}=f\(x,u\)/
+  },
+  {
+    pattern: /A=\\frac\{\\partial f\}\{\\partial x\}/
+  },
+  {
     pattern: /p\(z_\{t\+1\}\|z_t,a_t\)/
+  },
+  {
+    pattern: /p\(z_\{t\+1\}\\mid z_t,a_t\)/
   },
   {
     pattern: /s u = K\[R\|t\]X/,
     normalize: () => "s u = K[R\\mid t]X"
+  },
+  {
+    pattern: /s\\mathbf\{u\}=K\[R\|t\]X/
   },
   {
     pattern: /f\(x,y,z\)/

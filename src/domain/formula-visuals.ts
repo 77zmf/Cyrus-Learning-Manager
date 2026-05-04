@@ -58,6 +58,60 @@ export const stabilityFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const observabilityFormulaTerms: FormulaTerm[] = [
+  {
+    label: "输出矩阵 C",
+    symbol: "C",
+    meaning: "把内部状态 x 映射成传感器或可测输出 y。"
+  },
+  {
+    label: "可观性传播 CA",
+    symbol: "CA",
+    meaning: "看输出在系统自然传播后，能不能暴露更多状态方向。"
+  },
+  {
+    label: "可观性满秩",
+    symbol: "rank(\\mathcal{O})=n",
+    meaning: "秩等于状态维度 n 时，可以从输出反推出全部状态。"
+  }
+];
+
+export const lyapunovFormulaTerms: FormulaTerm[] = [
+  {
+    label: "能量函数 V",
+    symbol: "V(x)",
+    meaning: "像能量一样衡量系统离平衡点有多远。"
+  },
+  {
+    label: "正定矩阵 P",
+    symbol: "P\\succ0",
+    meaning: "保证 V(x)=x^TPx 除原点外都为正。"
+  },
+  {
+    label: "下降条件",
+    symbol: "\\dot{V}(x)<0",
+    meaning: "能量沿系统轨迹持续下降，状态会回到平衡点附近。"
+  }
+];
+
+export const stateFeedbackFormulaTerms: FormulaTerm[] = [
+  {
+    label: "状态反馈",
+    symbol: "u=-Kx",
+    meaning: "根据当前状态直接给控制输入。"
+  },
+  {
+    label: "闭环矩阵",
+    symbol: "A-BK",
+    meaning: "控制器接入后真正决定系统动态的矩阵。"
+  },
+  {
+    label: "极点配置",
+    symbol: "\\lambda(A-BK)",
+    meaning: "通过 K 调整闭环特征值位置，从而改变响应速度和稳定性。"
+  }
+];
+
 export const stateTransitionFormulaTerms: FormulaTerm[] = [
   {
     label: "齐次解",
@@ -91,6 +145,132 @@ export const lqrFormulaTerms: FormulaTerm[] = [
     label: "Riccati 方程",
     symbol: "A^TP+PA-PBR^{-1}B^TP+Q=0",
     meaning: "求解 LQR 最优反馈增益的核心方程。"
+  }
+];
+
+export const kalmanFormulaTerms: FormulaTerm[] = [
+  {
+    label: "预测状态",
+    symbol: "\\hat{x}_{k|k-1}",
+    meaning: "只根据模型和上一时刻信息得到的状态估计。"
+  },
+  {
+    label: "Kalman 增益",
+    symbol: "K_k",
+    meaning: "决定更相信模型预测还是传感器观测。"
+  },
+  {
+    label: "估计修正",
+    symbol: "\\hat{x}_{k|k}",
+    meaning: "把观测残差加回预测状态后的最终估计。"
+  }
+];
+
+export const lqgFormulaTerms: FormulaTerm[] = [
+  {
+    label: "估计状态",
+    symbol: "\\hat{x}",
+    meaning: "不能直接测全状态时，用 Kalman Filter 得到的状态估计。"
+  },
+  {
+    label: "LQR 控制",
+    symbol: "u=-L\\hat{x}",
+    meaning: "把最优反馈作用在估计状态上。"
+  },
+  {
+    label: "分离原则",
+    symbol: "L,K",
+    meaning: "在经典线性高斯条件下，控制器和估计器可以分别设计。"
+  }
+];
+
+export const mpcFormulaTerms: FormulaTerm[] = [
+  {
+    label: "预测时域 N",
+    symbol: "N",
+    meaning: "每次优化往前看多少步。"
+  },
+  {
+    label: "滚动优化",
+    symbol: "\\min_{u_{0:N-1}}",
+    meaning: "每个控制周期重算一段未来输入，只执行第一步。"
+  },
+  {
+    label: "约束",
+    symbol: "x_k\\in\\mathcal{X},\\ u_k\\in\\mathcal{U}",
+    meaning: "把车辆边界、速度、加速度、转角等限制写进优化问题。"
+  }
+];
+
+export const robustFormulaTerms: FormulaTerm[] = [
+  {
+    label: "扰动输入",
+    symbol: "w",
+    meaning: "模型误差、外界扰动或不确定输入。"
+  },
+  {
+    label: "性能输出",
+    symbol: "z",
+    meaning: "我们希望限制的误差、控制代价或安全指标。"
+  },
+  {
+    label: "H 无穷界",
+    symbol: "\\|T_{zw}\\|_\\infty<\\gamma",
+    meaning: "把最坏情况下的扰动放大控制在阈值以内。"
+  }
+];
+
+export const nonlinearFormulaTerms: FormulaTerm[] = [
+  {
+    label: "非线性动力学",
+    symbol: "\\dot{x}=f(x,u)",
+    meaning: "真实车辆、机器人或世界模型通常不是线性的。"
+  },
+  {
+    label: "线性化 A",
+    symbol: "A=\\frac{\\partial f}{\\partial x}",
+    meaning: "在工作点附近看状态扰动如何传播。"
+  },
+  {
+    label: "线性化 B",
+    symbol: "B=\\frac{\\partial f}{\\partial u}",
+    meaning: "在工作点附近看输入扰动如何影响状态。"
+  }
+];
+
+export const stochasticFormulaTerms: FormulaTerm[] = [
+  {
+    label: "值函数",
+    symbol: "V_t(x)",
+    meaning: "从当前状态开始，未来最优期望代价是多少。"
+  },
+  {
+    label: "Bellman 递推",
+    symbol: "\\min_u\\mathbb{E}[\\ell+V_{t+1}]",
+    meaning: "把长期问题拆成当前动作和下一步值函数。"
+  },
+  {
+    label: "随机扰动",
+    symbol: "w",
+    meaning: "把噪声、风险和不确定性显式写进控制问题。"
+  }
+];
+
+export const worldSpatialFormulaTerms: FormulaTerm[] = [
+  {
+    label: "潜变量动态",
+    symbol: "p(z_{t+1}\\mid z_t,a_t)",
+    meaning: "世界模型预测动作之后的隐藏状态如何变化。"
+  },
+  {
+    label: "相机投影",
+    symbol: "s\\mathbf{u}=K[R|t]X",
+    meaning: "把三维点投到图像或 BEV 相关表示。"
+  },
+  {
+    label: "空间场",
+    symbol: "f(x,y,z)",
+    meaning: "用占据、NeRF 或 3DGS 表达空间几何。"
   }
 ];
 

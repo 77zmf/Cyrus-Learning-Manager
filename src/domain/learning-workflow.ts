@@ -1,9 +1,19 @@
 import {
   controllabilityFormulaTerms,
+  kalmanFormulaTerms,
   lqrFormulaTerms,
+  lqgFormulaTerms,
+  lyapunovFormulaTerms,
+  mpcFormulaTerms,
+  nonlinearFormulaTerms,
+  observabilityFormulaTerms,
+  robustFormulaTerms,
   stabilityFormulaTerms,
+  stateFeedbackFormulaTerms,
   stateSpaceFormulaTerms,
-  stateTransitionFormulaTerms
+  stateTransitionFormulaTerms,
+  stochasticFormulaTerms,
+  worldSpatialFormulaTerms
 } from "./formula-visuals";
 import type { FormulaTerm } from "./formula-visuals";
 
@@ -35,6 +45,7 @@ export interface GuidedLessonStep {
 }
 
 export interface GuidedLesson {
+  id: string;
   title: string;
   goal: string;
   formula: string;
@@ -136,6 +147,7 @@ export const goodNotesSections = [
 
 export const guidedControlLessons: GuidedLesson[] = [
   {
+    id: "lesson-state-space",
     title: "第 1 课：状态空间模型",
     goal: "把车辆状态写成 x_dot = Ax + Bu，并知道 A/B 分别控制什么。",
     formula: "\\dot{x}=Ax+Bu",
@@ -174,6 +186,7 @@ export const guidedControlLessons: GuidedLesson[] = [
     selfCheck: ["A 是系统矩阵", "B 是控制矩阵", "x_dot 是状态变化率"]
   },
   {
+    id: "lesson-controllability",
     title: "第 2 课：可控性 rank test",
     goal: "会算 C=[B AB ...]，并能解释 rank(C)<n 为什么不可控。",
     formula: "\\mathcal{C}=\\begin{bmatrix}B&AB&\\cdots&A^{n-1}B\\end{bmatrix},\\quad rank(\\mathcal{C})=n",
@@ -212,6 +225,7 @@ export const guidedControlLessons: GuidedLesson[] = [
     selfCheck: ["可控性看输入能否影响全部状态", "rank(C)=n 是满秩", "rank(C)<n 说明至少一个方向不可控"]
   },
   {
+    id: "lesson-stability",
     title: "第 3 课：稳定性与特征值",
     goal: "用特征值实部判断线性系统局部稳定性。",
     formula: "x(t)=e^{At}x(0),\\quad Re(\\lambda_i(A))<0",
@@ -248,6 +262,435 @@ export const guidedControlLessons: GuidedLesson[] = [
       }
     ],
     selfCheck: ["实部小于 0 收敛", "实部大于 0 发散", "e^{At} 是状态转移的核心对象"]
+  },
+  {
+    id: "lesson-observability",
+    title: "第 4 课：可观性 Observability",
+    goal: "会写 O=[C; CA; ...]，并解释输出 y 能不能反推出全部状态。",
+    formula: "\\mathcal{O}=\\begin{bmatrix}C\\\\CA\\\\\\cdots\\\\CA^{n-1}\\end{bmatrix},\\quad rank(\\mathcal{O})=n",
+    formulaTerms: observabilityFormulaTerms,
+    now: "现在做：把可观性和可控性并排写在 GoodNotes Page 004。",
+    goodNotesPage: "GoodNotes Page 004：可观性 Observability",
+    obsidianNode: "Obsidian node：Control -> Observability",
+    notionRow: "Notion row：Topic=Observability, Mastery=1, Evidence=GoodNotes Page 004",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写出输出方程 y=Cx+Du。",
+        output: "说明 C 是传感器能直接看到哪些状态。"
+      },
+      {
+        label: "Step 2",
+        instruction: "把 C, CA, ... 纵向堆起来。",
+        output: "和可控性矩阵横向拼 B, AB 形成对照。"
+      },
+      {
+        label: "Step 3",
+        instruction: "检查 rank(O)=n 还是 rank(O)<n。",
+        output: "满秩表示全部状态能被输出反推；不满秩表示有隐藏状态看不见。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian Canvas 连到 Estimation -> Sensor Model。",
+        output: "把可观性接到传感器配置、定位和状态估计。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Notion 建 Observability review row。",
+        output: "Evidence=GoodNotes Page 004，Mastery 先设为 1。"
+      }
+    ],
+    selfCheck: ["可观性看输出能否反推状态", "rank(O)=n 是满秩", "rank(O)<n 说明至少一个状态方向看不见"]
+  },
+  {
+    id: "lesson-lyapunov",
+    title: "第 5 课：Lyapunov 稳定性",
+    goal: "不用先解微分方程，用能量函数 V 判断系统会不会收敛。",
+    formula: "V(x)=x^TPx,\\quad P\\succ0,\\quad \\dot{V}(x)=x^T(A^TP+PA)x<0",
+    formulaTerms: lyapunovFormulaTerms,
+    now: "现在做：在 GoodNotes 写一个一维和一个二维 Lyapunov 判断。",
+    goodNotesPage: "GoodNotes Page 005：Lyapunov 稳定性",
+    obsidianNode: "Obsidian node：Control -> Lyapunov Stability",
+    notionRow: "Notion row：Topic=Lyapunov, Mastery=1, Evidence=GoodNotes Page 005",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先把 V(x) 理解成能量。",
+        output: "状态离平衡点越远，V 越大；在原点 V 等于 0。"
+      },
+      {
+        label: "Step 2",
+        instruction: "沿系统轨迹计算 V_dot。",
+        output: "如果 V_dot 小于 0，能量下降，状态会靠近平衡点。"
+      },
+      {
+        label: "Step 3",
+        instruction: "把 A^TP+PA 写成矩阵不等式。",
+        output: "为后面的 LQR 和鲁棒控制打基础。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 接到 Stability 和 LQR。",
+        output: "Lyapunov 是稳定性证明和最优控制之间的桥。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个证明型 evidence。",
+        output: "把 evidence 写成“我能独立算 V_dot”。"
+      }
+    ],
+    selfCheck: ["V 正定", "V_dot 负定", "不用显式求解也能证明稳定"]
+  },
+  {
+    id: "lesson-state-feedback",
+    title: "第 6 课：状态反馈与极点配置",
+    goal: "知道 u=-Kx 后闭环矩阵变成 A-BK，并能用极点位置调响应。",
+    formula: "u=-Kx,\\quad \\dot{x}=(A-BK)x,\\quad \\lambda(A-BK)",
+    formulaTerms: stateFeedbackFormulaTerms,
+    now: "现在做：用二阶系统手算一个 K 对闭环极点的影响。",
+    goodNotesPage: "GoodNotes Page 006：状态反馈与极点配置",
+    obsidianNode: "Obsidian node：Control -> State Feedback",
+    notionRow: "Notion row：Topic=State feedback, Mastery=1, Evidence=GoodNotes Page 006",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写出开环矩阵 A 和输入矩阵 B。",
+        output: "先检查系统可控，否则无法任意配置极点。"
+      },
+      {
+        label: "Step 2",
+        instruction: "代入 u=-Kx。",
+        output: "把系统改写成闭环动态 A-BK。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写目标特征多项式。",
+        output: "把期望响应速度、阻尼和稳定性转成极点位置。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 连到 Controllability。",
+        output: "极点配置依赖可控性，这是一个前置边。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个手算 K 的例子。",
+        output: "Evidence=GoodNotes Page 006。"
+      }
+    ],
+    selfCheck: ["闭环矩阵是 A-BK", "极点决定响应", "可控性是极点配置前提"]
+  },
+  {
+    id: "lesson-lqr",
+    title: "第 7 课：LQR 最优控制",
+    goal: "把状态误差和控制代价放进 J，理解 Q/R 怎么改变控制行为。",
+    formula: "J=\\int_0^\\infty (x^TQx+u^TRu)dt,\\quad u=-R^{-1}B^TPx",
+    formulaTerms: lqrFormulaTerms,
+    now: "现在做：写一页 Q/R 调参直觉，不急着背 Riccati 方程。",
+    goodNotesPage: "GoodNotes Page 007：LQR 最优控制",
+    obsidianNode: "Obsidian node：Control -> LQR",
+    notionRow: "Notion row：Topic=LQR, Mastery=1, Evidence=GoodNotes Page 007",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "定义代价函数 J。",
+        output: "Q 惩罚状态误差，R 惩罚控制输入大小。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 Riccati 方程但先不强行背。",
+        output: "先知道 P 是从优化问题里求出来的能量矩阵。"
+      },
+      {
+        label: "Step 3",
+        instruction: "把 u=-R^{-1}B^TPx 写成反馈形式。",
+        output: "LQR 仍然是状态反馈，只是 K 来自优化。"
+      },
+      {
+        label: "Step 4",
+        instruction: "连接到轨迹跟踪或横向控制。",
+        output: "写一个车辆偏差 e 和横摆角误差的应用。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录 Q/R 的一条调参直觉。",
+        output: "Mastery 先保持 1，等能做例题再升。"
+      }
+    ],
+    selfCheck: ["Q 惩罚状态", "R 惩罚控制", "LQR 是优化出来的反馈控制"]
+  },
+  {
+    id: "lesson-kalman",
+    title: "第 8 课：Kalman Filter 状态估计",
+    goal: "理解预测、观测残差和 Kalman 增益如何融合模型与传感器。",
+    formula: "x_{k+1}=Ax_k+Bu_k+w_k,\\quad y_k=Cx_k+v_k,\\quad K_k=P_k^-C^T(CP_k^-C^T+R)^{-1}",
+    formulaTerms: kalmanFormulaTerms,
+    now: "现在做：画一张 predict -> update 的状态估计流程图。",
+    goodNotesPage: "GoodNotes Page 008：Kalman Filter",
+    obsidianNode: "Obsidian node：Estimation -> Kalman Filter",
+    notionRow: "Notion row：Topic=Kalman Filter, Mastery=1, Evidence=GoodNotes Page 008",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写预测模型和观测模型。",
+        output: "把过程噪声 w 和观测噪声 v 明确写出来。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写预测协方差和观测残差。",
+        output: "残差表示传感器看到的和模型预测的差。"
+      },
+      {
+        label: "Step 3",
+        instruction: "解释 Kalman gain。",
+        output: "K 大表示更信观测，K 小表示更信模型。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 接到 Observability。",
+        output: "估计器能不能工作，先看系统是否可观。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个定位或感知融合例子。",
+        output: "Evidence=GoodNotes Page 008。"
+      }
+    ],
+    selfCheck: ["预测", "观测残差", "Kalman gain 权衡模型和传感器"]
+  },
+  {
+    id: "lesson-lqg",
+    title: "第 9 课：LQG 与分离原则",
+    goal: "把 Kalman 估计器和 LQR 控制器合起来，理解估计-控制分离。",
+    formula: "\\hat{x}_{k|k}=\\hat{x}_{k|k-1}+K_k(y_k-C\\hat{x}_{k|k-1}),\\quad u_k=-L\\hat{x}_{k|k}",
+    formulaTerms: lqgFormulaTerms,
+    now: "现在做：画两条链路：传感器到估计，估计到控制。",
+    goodNotesPage: "GoodNotes Page 009：LQG",
+    obsidianNode: "Obsidian node：Control -> LQG",
+    notionRow: "Notion row：Topic=LQG, Mastery=1, Evidence=GoodNotes Page 009",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "把 Kalman Filter 输出写成 x_hat。",
+        output: "控制器拿到的是估计状态，不一定是真实状态。"
+      },
+      {
+        label: "Step 2",
+        instruction: "把 LQR 的 u=-Lx 改成 u=-Lx_hat。",
+        output: "估计器和控制器串起来形成 LQG。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写清分离原则适用条件。",
+        output: "线性、高斯、模型匹配时可以分别设计。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 连 Kalman 和 LQR。",
+        output: "这是一条 Estimation -> Control 的边。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一条风险。",
+        output: "模型错、非线性强或噪声不高斯时，分离直觉可能失效。"
+      }
+    ],
+    selfCheck: ["LQG = Kalman + LQR", "控制用估计状态", "分离原则有条件"]
+  },
+  {
+    id: "lesson-mpc",
+    title: "第 10 课：MPC 模型预测控制",
+    goal: "理解滚动优化、预测时域、约束和只执行第一步的控制方式。",
+    formula: "\\min_{u_{0:N-1}}\\sum_{k=0}^{N-1}(x_k^TQx_k+u_k^TRu_k)+x_N^TPx_N,\\quad x_{k+1}=Ax_k+Bu_k",
+    formulaTerms: mpcFormulaTerms,
+    now: "现在做：写一个车辆速度、加速度、转角约束的 MPC 问题。",
+    goodNotesPage: "GoodNotes Page 010：MPC",
+    obsidianNode: "Obsidian node：Control -> MPC",
+    notionRow: "Notion row：Topic=MPC, Mastery=1, Evidence=GoodNotes Page 010",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写预测模型 x_{k+1}=Ax_k+Bu_k。",
+        output: "明确每一步状态如何滚动到下一步。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写时域 N 内的目标函数。",
+        output: "把每一步状态误差、输入代价和终端代价加起来。"
+      },
+      {
+        label: "Step 3",
+        instruction: "加入约束集合 X 和 U。",
+        output: "车辆控制里约束比 LQR 更接近真实系统。"
+      },
+      {
+        label: "Step 4",
+        instruction: "解释 receding horizon。",
+        output: "每次只执行第一步，下一周期重新优化。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个 Autoware 或规划控制连接。",
+        output: "Evidence=GoodNotes Page 010。"
+      }
+    ],
+    selfCheck: ["预测时域", "约束", "滚动优化只执行第一步"]
+  },
+  {
+    id: "lesson-robust",
+    title: "第 11 课：鲁棒控制与 H∞",
+    goal: "把模型误差和最坏情况扰动放进控制问题，而不是只看标称模型。",
+    formula: "\\|T_{zw}\\|_\\infty<\\gamma",
+    formulaTerms: robustFormulaTerms,
+    now: "现在做：写一个模型误差会导致控制失败的车辆例子。",
+    goodNotesPage: "GoodNotes Page 011：鲁棒控制",
+    obsidianNode: "Obsidian node：Control -> Robust Control",
+    notionRow: "Notion row：Topic=Robust Control, Mastery=1, Evidence=GoodNotes Page 011",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "区分标称模型和真实系统。",
+        output: "真实车辆参数、摩擦、延迟都可能和模型不同。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写扰动 w 和性能输出 z。",
+        output: "w 是外部或模型不确定性，z 是你要限制的误差。"
+      },
+      {
+        label: "Step 3",
+        instruction: "解释 H infinity norm。",
+        output: "它衡量最坏频率下扰动到性能输出的放大。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 接到 Validation failure mode。",
+        output: "鲁棒控制和仿真验证天然连接。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个 worst-case assumption。",
+        output: "把假设和验证路径写清楚。"
+      }
+    ],
+    selfCheck: ["扰动 w", "性能输出 z", "最坏情况放大受限"]
+  },
+  {
+    id: "lesson-nonlinear",
+    title: "第 12 课：非线性系统与线性化",
+    goal: "知道真实系统常是 f(x,u)，线性模型只是工作点附近的近似。",
+    formula: "\\dot{x}=f(x,u),\\quad A=\\frac{\\partial f}{\\partial x}\\bigg|_{x^*,u^*},\\quad B=\\frac{\\partial f}{\\partial u}\\bigg|_{x^*,u^*}",
+    formulaTerms: nonlinearFormulaTerms,
+    now: "现在做：把车辆或机器人模型在一个工作点线性化。",
+    goodNotesPage: "GoodNotes Page 012：非线性与线性化",
+    obsidianNode: "Obsidian node：Control -> Nonlinear Systems",
+    notionRow: "Notion row：Topic=Nonlinear linearization, Mastery=1, Evidence=GoodNotes Page 012",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写真实模型 x_dot=f(x,u)。",
+        output: "不要把所有系统默认当成线性。"
+      },
+      {
+        label: "Step 2",
+        instruction: "选工作点 x*, u*。",
+        output: "线性化只在这个点附近可靠。"
+      },
+      {
+        label: "Step 3",
+        instruction: "对 x 和 u 求偏导。",
+        output: "得到局部 A 和 B。"
+      },
+      {
+        label: "Step 4",
+        instruction: "连接到 EKF、LQR、MPC。",
+        output: "很多高级方法都依赖局部线性近似。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 写清适用范围。",
+        output: "记录“远离工作点会失效”。"
+      }
+    ],
+    selfCheck: ["真实模型 f(x,u)", "工作点", "Jacobian 线性化"]
+  },
+  {
+    id: "lesson-stochastic-control",
+    title: "第 13 课：随机控制与动态规划",
+    goal: "用值函数和 Bellman 递推理解不确定性下的最优决策。",
+    formula: "V_t(x)=\\min_u\\mathbb{E}[\\ell(x,u,w)+V_{t+1}(f(x,u,w))]",
+    formulaTerms: stochasticFormulaTerms,
+    now: "现在做：把一个带噪声的控制问题写成状态、动作、代价、扰动。",
+    goodNotesPage: "GoodNotes Page 013：随机控制与动态规划",
+    obsidianNode: "Obsidian node：Control -> Stochastic Control",
+    notionRow: "Notion row：Topic=Stochastic Control, Mastery=1, Evidence=GoodNotes Page 013",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "定义状态 x、动作 u、扰动 w。",
+        output: "把不确定性显式放进系统。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写即时损失 l(x,u,w)。",
+        output: "代价可以包括安全、误差、控制量和风险。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 Bellman 递推。",
+        output: "当前最优动作依赖下一步值函数。"
+      },
+      {
+        label: "Step 4",
+        instruction: "连接到强化学习和 MPC。",
+        output: "RL 和 stochastic MPC 都能从这条线继续。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 记录一个不确定性来源。",
+        output: "例如感知误差、交通参与者行为或路面摩擦。"
+      }
+    ],
+    selfCheck: ["值函数", "期望代价", "Bellman 递推"]
+  },
+  {
+    id: "lesson-world-spatial-interface",
+    title: "第 14 课：世界模型与空间模型接口",
+    goal: "把控制工程接到 latent dynamics、相机投影、BEV/occupancy 和 3D 重建。",
+    formula: "p(z_{t+1}\\mid z_t,a_t),\\quad s\\mathbf{u}=K[R|t]X,\\quad f(x,y,z)",
+    formulaTerms: worldSpatialFormulaTerms,
+    now: "现在做：选一个世界模型或空间模型论文，写 representation -> objective -> failure mode。",
+    goodNotesPage: "GoodNotes Page 014：世界模型与空间模型接口",
+    obsidianNode: "Obsidian node：World Model -> Control Interface",
+    notionRow: "Notion row：Topic=World/Spatial Interface, Mastery=1, Evidence=GoodNotes Page 014",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写 latent dynamics。",
+        output: "世界模型负责预测隐藏状态如何随动作演化。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 camera projection 或 occupancy field。",
+        output: "空间模型负责把三维几何变成可计算表示。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写一个 failure mode。",
+        output: "比如 imagined rollout 偏移、BEV 遮挡错误、重建几何不准。"
+      },
+      {
+        label: "Step 4",
+        instruction: "在 Obsidian 连接 Control、World Model、Spatial Model。",
+        output: "这节课是后续论文阅读和仿真实验的接口。"
+      },
+      {
+        label: "Step 5",
+        instruction: "Notion 建 Paper queue row。",
+        output: "Resource Type=Paper，Status=Active，Evidence=GoodNotes Page 014。"
+      }
+    ],
+    selfCheck: ["latent dynamics", "camera projection", "occupancy/3D representation"]
   }
 ];
 
