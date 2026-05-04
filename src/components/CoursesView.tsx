@@ -1,4 +1,4 @@
-import { modulesForTrack } from "../domain/knowledge";
+import { deepStudyCards, modulesForTrack } from "../domain/knowledge";
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
 import { MathText } from "./MathText";
@@ -25,6 +25,61 @@ export function CoursesView() {
               <p>
                 <MathText text={route.output} />
               </p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="subsection-block deep-study-block">
+        <div className="section-heading">
+          <h2>Deep Study Cards</h2>
+          <p>These cards turn large course areas into concrete study moves: foundation, concept, derivation, and output.</p>
+        </div>
+        <div className="deep-study-grid">
+          {deepStudyCards.map((card) => (
+            <article className="deep-study-card" key={card.id}>
+              <span>{card.layer}</span>
+              <h3>{card.title}</h3>
+              <p>
+                <MathText text={card.beginnerBridge} />
+              </p>
+              <dl className="deep-study-dl">
+                <div>
+                  <dt>先补基础</dt>
+                  <dd>
+                    <ul>
+                      {card.coreIdeas.map((idea) => (
+                        <li key={idea}>
+                          <MathText text={idea} />
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+                <div>
+                  <dt>推导入口</dt>
+                  <dd>
+                    <MathText text={card.derivationEntry} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>输出动作</dt>
+                  <dd>
+                    <MathText text={card.practice} />
+                  </dd>
+                </div>
+              </dl>
+              <div className="study-destinations">
+                <em>{card.goodNotes}</em>
+                <em>{card.obsidian}</em>
+                <em>{card.notion}</em>
+              </div>
+              <div className="source-links">
+                {card.sources.map((source) => (
+                  <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
+                    {source.title}
+                  </a>
+                ))}
+              </div>
             </article>
           ))}
         </div>

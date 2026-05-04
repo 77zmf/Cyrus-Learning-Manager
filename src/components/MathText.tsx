@@ -48,6 +48,10 @@ const formulaMatchers: FormulaMatcher[] = [
     normalize: () => "\\dot{x}=Ax+Bu"
   },
   {
+    pattern: /x_dot\s*=\s*ax/,
+    normalize: () => "\\dot{x}=ax"
+  },
+  {
     pattern: /x_dot\s*=\s*f\(x,u\)/,
     normalize: () => "\\dot{x}=f(x,u)"
   },
@@ -77,6 +81,13 @@ const formulaMatchers: FormulaMatcher[] = [
   {
     pattern: /C=\[B AB(?: \.\.\.)?\]/,
     normalize: (match) => (match.includes("...") ? "\\mathcal{C}=[B\\;AB\\;\\cdots]" : "\\mathcal{C}=[B\\;AB]")
+  },
+  {
+    pattern: /O=\[C; CA; \.\.\.\]/,
+    normalize: () => "\\mathcal{O}=[C;CA;\\cdots]"
+  },
+  {
+    pattern: /y=Cx/
   },
   {
     pattern: /rank\(\\mathcal\{C\}\)\s*=\s*n/
@@ -116,6 +127,9 @@ const formulaMatchers: FormulaMatcher[] = [
   },
   {
     pattern: /x\(t\)\s*=\s*e\^\{At\}x\(0\)/
+  },
+  {
+    pattern: /x\(t\)=e\^\{at\}x\(0\)/
   },
   {
     pattern: /e\^\{At\}x\(0\)/
@@ -168,6 +182,16 @@ const formulaMatchers: FormulaMatcher[] = [
   },
   {
     pattern: /p\(z_\{t\+1\}\\mid z_t,a_t\)/
+  },
+  {
+    pattern: /z_\{t\+1\}/,
+    normalize: () => "z_{t+1}"
+  },
+  {
+    pattern: /z_t/
+  },
+  {
+    pattern: /a_t/
   },
   {
     pattern: /s u = K\[R\|t\]X/,

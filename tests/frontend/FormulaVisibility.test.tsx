@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { InteractiveTutor } from "../../src/components/InteractiveTutor";
+import { CoursesView } from "../../src/components/CoursesView";
 import { LearnView } from "../../src/components/LearnView";
 import { NotebookView } from "../../src/components/NotebookView";
 import { StudyLab } from "../../src/components/StudyLab";
@@ -25,6 +26,10 @@ describe("formula visibility", () => {
     const notebook = render(<NotebookView />);
     expectNoRawFormulaText(notebook.container);
     notebook.unmount();
+
+    const courses = render(<CoursesView />);
+    expectNoRawFormulaText(courses.container);
+    courses.unmount();
   });
 
   it("renders tutor choices and summaries without raw formula notation", () => {

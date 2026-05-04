@@ -15,6 +15,21 @@ export interface KnowledgeModule {
   sources: KnowledgeSource[];
 }
 
+export interface DeepStudyCard {
+  id: string;
+  track: TrackId;
+  title: string;
+  layer: string;
+  beginnerBridge: string;
+  coreIdeas: string[];
+  derivationEntry: string;
+  practice: string;
+  goodNotes: string;
+  obsidian: string;
+  notion: string;
+  sources: KnowledgeSource[];
+}
+
 export interface KnowledgeSeedTask {
   id: string;
   title: string;
@@ -26,6 +41,246 @@ export interface KnowledgeSeedTask {
   source: string;
   notes: string;
 }
+
+export const deepStudyCards: DeepStudyCard[] = [
+  {
+    id: "deep-linear-algebra-state-space",
+    track: "tsinghua-automation",
+    title: "线性代数到状态空间",
+    layer: "数学基础 -> 控制入口",
+    beginnerBridge:
+      "先学标量，再学向量，再学矩阵：一个数描述一个量，一列数描述一组状态，矩阵描述状态之间如何互相影响。",
+    coreIdeas: [
+      "向量 x 是状态清单，不是抽象符号；车辆里可以是位置、速度、航向误差。",
+      "矩阵 A 负责状态自己怎么演化，矩阵 B 负责输入怎么进入系统。",
+      "矩阵乘法先理解成“加权组合”，不要一开始就死背行列计算。"
+    ],
+    derivationEntry: "从二维例子开始写 x_dot = Ax + Bu，再解释 A 的每个元素对应哪条影响边。",
+    practice: "用一个小车模型写 x=[位置, 速度]，令位置变化率等于速度，速度变化率等于控制输入。",
+    goodNotes: "GoodNotes: Page M001",
+    obsidian: "Obsidian: Concept Graph -> Linear Algebra",
+    notion: "Notion: mastery=1, evidence=Page M001, next=state-space two-state example",
+    sources: [
+      {
+        title: "Tsinghua Automation undergraduate program",
+        url: "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf"
+      },
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      }
+    ]
+  },
+  {
+    id: "deep-differential-equations-stability",
+    track: "tsinghua-automation",
+    title: "微分方程到稳定性",
+    layer: "变化率 -> 系统趋势",
+    beginnerBridge:
+      "微分方程先不用怕，它只是在说“现在的变化速度由什么决定”。稳定性就是看误差被推开后是回来还是放大。",
+    coreIdeas: [
+      "一阶系统先看 x_dot = ax：a 小于 0 会收敛，a 大于 0 会发散。",
+      "多维系统把 a 换成 A，趋势由特征值决定。",
+      "e^{At} 是状态从现在走到未来的传播器。"
+    ],
+    derivationEntry: "先解 x_dot = ax 得到 x(t)=e^{at}x(0)，再把标量 a 升级成矩阵 A。",
+    practice: "画 1, 0.5, 0.25 和 1, 2, 4 两条序列，标出收敛和发散。",
+    goodNotes: "GoodNotes: Page M002",
+    obsidian: "Obsidian: Control -> Stability -> Eigenvalue",
+    notion: "Notion: mastery=1, evidence=Page M002, next=matrix exponential intuition",
+    sources: [
+      {
+        title: "MIT 6.003 Signals and Systems",
+        url: "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"
+      },
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      }
+    ]
+  },
+  {
+    id: "deep-controllability-observability-rank",
+    track: "tsinghua-automation",
+    title: "可控性与可观性从图到 rank",
+    layer: "结构判断 -> rank test",
+    beginnerBridge:
+      "先把系统画成图：输入能沿着边影响哪些状态，输出能沿着边看见哪些状态。rank test 是把这张图变成矩阵检查。",
+    coreIdeas: [
+      "B 是输入直接碰到的方向，AB 是经过系统传播后碰到的方向。",
+      "rank(C)=n 表示输入影响方向够多；rank(C)<n 表示至少有一个方向不可控。",
+      "可观性把问题反过来：输出 y=Cx 能不能反推出内部状态。"
+    ],
+    derivationEntry: "先写 C=[B AB ...]，再写 O=[C; CA; ...]，最后用 rank 判断方向是否够。",
+    practice: "画两个状态节点和一个输入节点，标出直接影响和传播影响，再判断能否控制全部状态。",
+    goodNotes: "GoodNotes: Page M003",
+    obsidian: "Obsidian: Control -> Rank Tests",
+    notion: "Notion: mastery=1, evidence=Page M003, next=two-state rank example",
+    sources: [
+      {
+        title: "MIT 6.241J Dynamic Systems and Control",
+        url: "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+      }
+    ]
+  },
+  {
+    id: "deep-lqr-kalman-mpc",
+    track: "mit-eecs",
+    title: "LQR / Kalman / MPC 三件套",
+    layer: "现代控制主干",
+    beginnerBridge:
+      "把它们先分成三件事：LQR 决定怎么控，Kalman 决定怎么估，MPC 决定怎么带约束往未来看。",
+    coreIdeas: [
+      "LQR 的 Q 惩罚状态误差，R 惩罚控制太猛。",
+      "Kalman Filter 在模型预测和传感器观测之间做加权融合。",
+      "MPC 每次优化未来一段窗口，但只执行当前第一步。"
+    ],
+    derivationEntry:
+      "先写 J=sum(state cost + control cost)，再写 predict-update，最后写 constrained rollout。",
+    practice: "同一个跟车场景分别写 LQR、Kalman、MPC 各自解决的问题。",
+    goodNotes: "GoodNotes: Page C010",
+    obsidian: "Obsidian: Control -> LQR Kalman MPC",
+    notion: "Notion: mastery=1, evidence=Page C010, next=one controller comparison",
+    sources: [
+      {
+        title: "MIT 2.14 Feedback Control",
+        url: "https://ocw.mit.edu/courses/2-14-analysis-and-design-of-feedback-control-systems-spring-2014/"
+      },
+      {
+        title: "MIT 6.231 Dynamic Programming and Stochastic Control",
+        url: "https://ocw.mit.edu/courses/6-231-dynamic-programming-and-stochastic-control-fall-2015/"
+      }
+    ]
+  },
+  {
+    id: "deep-graduate-control-research",
+    track: "mit-eecs",
+    title: "鲁棒、非线性、随机控制研究生入口",
+    layer: "研究生控制工程",
+    beginnerBridge:
+      "研究生控制不是换一堆新名词，而是把“模型不准、系统非线性、未来不确定”这三类困难系统化处理。",
+    coreIdeas: [
+      "鲁棒控制问最坏扰动下还能不能保持性能。",
+      "非线性控制先从工作点线性化，再学习 Lyapunov、反馈线性化和局部/全局稳定。",
+      "随机控制把未来不确定性放进代价和 Bellman 递推。"
+    ],
+    derivationEntry: "先把真实系统写成 x_dot=f(x,u)，再比较线性化、扰动项 w、随机转移概率。",
+    practice: "拿自动驾驶横向控制写三个 failure mode：轮胎参数变、急弯非线性、前车动作不确定。",
+    goodNotes: "GoodNotes: Page G001",
+    obsidian: "Obsidian: Graduate Control -> Robust Nonlinear Stochastic",
+    notion: "Notion: mastery=1, evidence=Page G001, next=choose one graduate branch",
+    sources: [
+      {
+        title: "MIT 6.245 Multivariable Control Systems",
+        url: "https://ocw.mit.edu/courses/6-245-multivariable-control-systems-spring-2004/"
+      },
+      {
+        title: "MIT 6.231 Dynamic Programming and Stochastic Control",
+        url: "https://ocw.mit.edu/courses/6-231-dynamic-programming-and-stochastic-control-fall-2015/"
+      },
+      {
+        title: "MIT Underactuated Robotics",
+        url: "https://underactuated.mit.edu/"
+      }
+    ]
+  },
+  {
+    id: "deep-world-model-latent-dynamics",
+    track: "world-spatial-models",
+    title: "世界模型 latent dynamics",
+    layer: "预测世界 -> 想象 rollout",
+    beginnerBridge:
+      "世界模型先理解成“脑内预演”：给定现在的表示和动作，模型预测下一步可能发生什么。",
+    coreIdeas: [
+      "表示 z_t 压缩真实世界状态，动作 a_t 改变未来状态。",
+      "p(z_{t+1}|z_t,a_t) 是世界模型的核心问题。",
+      "自动驾驶里要特别记录失败模式：遮挡、长尾行为、分布外场景。"
+    ],
+    derivationEntry: "写 latent transition、reward/value prediction、imagined rollout 三行，不急着复现完整模型。",
+    practice: "把一个变道场景写成 z_t、a_t、z_{t+1}，并写出三个模型可能猜错的地方。",
+    goodNotes: "GoodNotes: Page W001",
+    obsidian: "Obsidian: World Models -> Latent Dynamics",
+    notion: "Notion: mastery=1, evidence=Page W001, next=PlaNet or Dreamer paper card",
+    sources: [
+      {
+        title: "World Models",
+        url: "https://worldmodels.github.io/"
+      },
+      {
+        title: "PlaNet",
+        url: "https://arxiv.org/abs/1811.04551"
+      },
+      {
+        title: "DreamerV3",
+        url: "https://arxiv.org/abs/2301.04104"
+      }
+    ]
+  },
+  {
+    id: "deep-spatial-model-geometry-bev",
+    track: "world-spatial-models",
+    title: "空间模型：相机几何、BEV、occupancy",
+    layer: "空间表示 -> 可规划地图",
+    beginnerBridge:
+      "空间模型先回答三个问题：东西在哪里、从相机怎么投到空间、 planner 能不能使用这个表示。",
+    coreIdeas: [
+      "相机模型把 3D 点投影成 2D 像素，核心是内参 K、外参 R/t。",
+      "BEV 把多视角信息整理到鸟瞰平面，便于规划和控制使用。",
+      "occupancy 问空间里每个位置是否被占用，比只检测框更接近可通行性。"
+    ],
+    derivationEntry: "先写 s u = K[R|t]X，再画 BEV grid 和 occupancy value。",
+    practice: "选一个路口场景，画相机视角、BEV 视角、占用栅格三张图。",
+    goodNotes: "GoodNotes: Page S001",
+    obsidian: "Obsidian: Spatial Models -> Geometry BEV Occupancy",
+    notion: "Notion: mastery=1, evidence=Page S001, next=BEVFormer or occupancy card",
+    sources: [
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "BEVFormer",
+        url: "https://arxiv.org/abs/2203.17270"
+      },
+      {
+        title: "Occupancy Networks",
+        url: "https://arxiv.org/abs/1812.03828"
+      }
+    ]
+  },
+  {
+    id: "deep-paper-reading-template",
+    track: "world-spatial-models",
+    title: "论文阅读模板：问题、假设、公式、复现",
+    layer: "论文 -> 可复现实验",
+    beginnerBridge:
+      "论文不要从摘要一路读到结尾。先抓四件事：它解决什么问题、做了哪些假设、核心公式是什么、最小复现怎么做。",
+    coreIdeas: [
+      "Problem：作者到底把哪个失败或能力缺口定义成问题。",
+      "Assumption：数据、传感器、模型、训练条件默认成立什么。",
+      "Reproduction hook：用一个最小场景、指标或可视化复现关键结论。"
+    ],
+    derivationEntry: "每篇论文只抄一个核心公式，然后写每个符号的工程含义。",
+    practice: "用 Kalman、MPC、Dreamer、BEVFormer、3DGS 中任意一篇填一张 paper card。",
+    goodNotes: "GoodNotes: Page P001",
+    obsidian: "Obsidian: Paper Queue -> Reproduction Cards",
+    notion: "Notion: mastery=1, evidence=Page P001, next=one paper card with validation hook",
+    sources: [
+      {
+        title: "Kalman 1960 DOI",
+        url: "https://doi.org/10.1115/1.3662552"
+      },
+      {
+        title: "BEVFormer",
+        url: "https://arxiv.org/abs/2203.17270"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      }
+    ]
+  }
+];
 
 export const knowledgeModules: KnowledgeModule[] = [
   {

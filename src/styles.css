@@ -370,6 +370,14 @@ label,
   text-underline-offset: 3px;
 }
 
+.source-links a {
+  color: var(--ink);
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .filters,
 .create-task {
   display: grid;
@@ -1111,6 +1119,97 @@ textarea {
   border-top: 0;
   margin-top: 0;
   padding-top: 0;
+}
+
+.deep-study-block {
+  display: grid;
+  gap: 16px;
+}
+
+.deep-study-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+}
+
+.deep-study-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.deep-study-card > span {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.deep-study-card h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.24rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.deep-study-card p {
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.deep-study-dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.deep-study-dl div {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.deep-study-dl dt {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.deep-study-dl dd {
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.deep-study-dl ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.study-destinations {
+  display: grid;
+  gap: 6px;
+}
+
+.study-destinations em {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font-style: normal;
+  line-height: 1.35;
+  padding: 9px 10px;
 }
 
 .readiness-card {
