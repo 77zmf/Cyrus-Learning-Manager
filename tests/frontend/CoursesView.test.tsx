@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { CoursesView } from "../../src/components/CoursesView";
 
@@ -32,6 +32,10 @@ describe("CoursesView", () => {
     expect(screen.getByText("论文阅读模板：问题、假设、公式、复现")).toBeInTheDocument();
     expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(8);
     expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getAllByText("交互练习").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getAllByText("小白题").length).toBeGreaterThanOrEqual(24);
+    expect(screen.getAllByText("公式选择").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getAllByText("GoodNotes 输出检查").length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText(/先学标量，再学向量，再学矩阵/)).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page M001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Concept Graph -> Linear Algebra")).toBeInTheDocument();
@@ -39,5 +43,18 @@ describe("CoursesView", () => {
       "href",
       "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
     );
+  });
+
+  it("lets a learner reveal answers, choose formula checks, and confirm GoodNotes output", () => {
+    render(<CoursesView />);
+
+    fireEvent.click(screen.getByRole("button", { name: "显示 线性代数到状态空间 第 1 题答案" }));
+    expect(screen.getByText(/答案：状态就是一列变量/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "线性代数到状态空间 公式选项 B" }));
+    expect(screen.getByText(/正确：状态空间入口就是状态变化率/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "确认 线性代数到状态空间 GoodNotes 输出" }));
+    expect(screen.getByText(/已记录：Page M001 应包含状态列向量、A\/B 含义、二维小车例子/)).toBeInTheDocument();
   });
 });

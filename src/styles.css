@@ -1212,6 +1212,122 @@ textarea {
   padding: 9px 10px;
 }
 
+.deep-study-practice {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.deep-study-practice h4,
+.micro-question > span,
+.formula-check > span,
+.goodnotes-output-check > span {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.micro-question-list {
+  display: grid;
+  gap: 8px;
+}
+
+.micro-question,
+.formula-check,
+.goodnotes-output-check {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.micro-question p,
+.formula-check p,
+.goodnotes-output-check p {
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.micro-question button,
+.formula-choice-grid button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1.25;
+  min-height: 38px;
+  padding: 8px 10px;
+  text-align: left;
+  width: fit-content;
+}
+
+.micro-question button:hover,
+.formula-choice-grid button:hover {
+  background: #f5f5f5;
+}
+
+.micro-question strong,
+.goodnotes-output-check strong {
+  background: #fff;
+  border-left: 3px solid var(--ink);
+  color: var(--ink);
+  line-height: 1.45;
+  padding: 8px;
+}
+
+.formula-choice-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.formula-choice-grid button {
+  justify-content: flex-start;
+  min-height: 42px;
+  width: 100%;
+}
+
+.formula-choice-grid button.is-correct {
+  background: #fff;
+  border-color: var(--ink);
+}
+
+.formula-choice-grid button.is-wrong {
+  background: #e7e7e7;
+  border-color: #8a8a8a;
+}
+
+.goodnotes-output-check label {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 700;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.goodnotes-output-check input {
+  accent-color: var(--ink);
+  inline-size: 16px;
+  block-size: 16px;
+}
+
 .readiness-card {
   display: grid;
   gap: 10px;

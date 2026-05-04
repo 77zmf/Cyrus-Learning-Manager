@@ -41,5 +41,8 @@ describe("knowledge seeds", () => {
     expect(deepStudyCards.every((card) => card.coreIdeas.length >= 3)).toBe(true);
     expect(deepStudyCards.every((card) => card.sources.length > 0)).toBe(true);
     expect(deepStudyCards.every((card) => card.goodNotes && card.obsidian && card.notion)).toBe(true);
+    expect(deepStudyCards.every((card) => card.practiceQuestions.length === 3)).toBe(true);
+    expect(deepStudyCards.every((card) => card.formulaCheck.choices.some((choice) => choice.isCorrect))).toBe(true);
+    expect(deepStudyCards.every((card) => card.goodNotesCheck.expected.length > 0)).toBe(true);
   });
 });

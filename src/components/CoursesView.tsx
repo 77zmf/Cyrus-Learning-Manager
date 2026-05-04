@@ -1,4 +1,10 @@
-import { deepStudyCards, modulesForTrack } from "../domain/knowledge";
+import { useState } from "react";
+import {
+  deepStudyCards,
+  modulesForTrack,
+  type DeepStudyCard,
+  type DeepStudyFormulaChoice
+} from "../domain/knowledge";
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
 import { MathText } from "./MathText";
@@ -73,6 +79,7 @@ export function CoursesView() {
                 <em>{card.obsidian}</em>
                 <em>{card.notion}</em>
               </div>
+              <DeepStudyPractice card={card} />
               <div className="source-links">
                 {card.sources.map((source) => (
                   <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
@@ -135,4 +142,128 @@ export function CoursesView() {
       </div>
     </section>
   );
+}
+
+function DeepStudyPractice({ card }: { card: DeepStudyCard }) {
+  const [openAnswers, setOpenAnswers] = useState<Set<number>>(() => new Set());
+  const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [goodNotesDone, setGoodNotesDone] = useState(false);
+  const selectedFormula = card.formulaCheck.choices.find(
+    (choice) => choice.label === selectedChoice
+  );
+
+  function toggleAnswer(index: number) {
+    setOpenAnswers((current) => {
+      const next = new Set(current);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  }
+
+  return (
+    <section className="deep-study-practice" aria-label={`${card.title} interactive practice`}>
+      <h4>交互练习</h4>
+      <div className="micro-question-list">
+        {card.practiceQuestions.map((question, index) => {
+          const isOpen = openAnswers.has(index);
+
+          return (
+            <article className="micro-question" key={question.prompt}>
+              <span>小白题</span>
+              <p>
+                <MathText text={question.prompt} />
+              </p>
+              <button
+                aria-label={`显示 ${card.title} 第 ${index + 1} 题答案`}
+                onClick={() => toggleAnswer(index)}
+                type="button"
+              >
+                {isOpen ? "收起答案" : "点击查看答案"}
+              </button>
+              {isOpen ? (
+                <strong>
+                  <MathText text={question.answer} />
+                </strong>
+              ) : null}
+            </article>
+          );
+        })}
+      </div>
+      <div className="formula-check">
+        <span>公式选择</span>
+        <p>
+          <MathText text={card.formulaCheck.prompt} />
+        </p>
+        <div className="formula-choice-grid">
+          {card.formulaCheck.choices.map((choice) => (
+            <button
+              aria-label={`${card.title} 公式选项 ${choice.label}`}
+              className={formulaChoiceClass(choice, selectedFormula)}
+              key={choice.label}
+              onClick={() => setSelectedChoice(choice.label)}
+              type="button"
+            >
+              <span>{choice.label}. </span>
+              <MathText text={choice.value} />
+            </button>
+          ))}
+        </div>
+        {selectedFormula ? (
+          <div
+            className={selectedFormula.isCorrect ? "feedback is-correct" : "feedback is-wrong"}
+            role="status"
+          >
+            <MathText text={selectedFormula.feedback} />
+          </div>
+        ) : null}
+      </div>
+      <div className="goodnotes-output-check">
+        <span>GoodNotes 输出检查</span>
+        <p>
+          <MathText text={card.goodNotesCheck.prompt} />
+        </p>
+        <label>
+          <input
+            aria-label={`确认 ${card.title} GoodNotes 输出`}
+            checked={goodNotesDone}
+            onChange={(event) => setGoodNotesDone(event.target.checked)}
+            type="checkbox"
+          />
+          我已写完 GoodNotes 输出检查
+        </label>
+        {goodNotesDone ? (
+          <strong role="status">
+            <MathText text={card.goodNotesCheck.expected} />
+          </strong>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function formulaChoiceClass(
+  choice: DeepStudyFormulaChoice,
+  selectedChoice: DeepStudyFormulaChoice | undefined
+) {
+  if (!selectedChoice) {
+    return "";
+  }
+
+  if (choice.label === selectedChoice.label && choice.isCorrect) {
+    return "is-correct";
+  }
+
+  if (choice.label === selectedChoice.label) {
+    return "is-wrong";
+  }
+
+  if (choice.isCorrect) {
+    return "is-correct";
+  }
+
+  return "";
 }

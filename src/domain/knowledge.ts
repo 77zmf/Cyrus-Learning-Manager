@@ -15,6 +15,28 @@ export interface KnowledgeModule {
   sources: KnowledgeSource[];
 }
 
+export interface DeepStudyPracticeQuestion {
+  prompt: string;
+  answer: string;
+}
+
+export interface DeepStudyFormulaChoice {
+  label: string;
+  value: string;
+  isCorrect: boolean;
+  feedback: string;
+}
+
+export interface DeepStudyFormulaCheck {
+  prompt: string;
+  choices: DeepStudyFormulaChoice[];
+}
+
+export interface DeepStudyGoodNotesCheck {
+  prompt: string;
+  expected: string;
+}
+
 export interface DeepStudyCard {
   id: string;
   track: TrackId;
@@ -27,6 +49,9 @@ export interface DeepStudyCard {
   goodNotes: string;
   obsidian: string;
   notion: string;
+  practiceQuestions: DeepStudyPracticeQuestion[];
+  formulaCheck: DeepStudyFormulaCheck;
+  goodNotesCheck: DeepStudyGoodNotesCheck;
   sources: KnowledgeSource[];
 }
 
@@ -60,6 +85,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page M001",
     obsidian: "Obsidian: Concept Graph -> Linear Algebra",
     notion: "Notion: mastery=1, evidence=Page M001, next=state-space two-state example",
+    practiceQuestions: [
+      {
+        prompt: "状态空间里的状态是什么？",
+        answer: "答案：状态就是一列变量，用来描述系统现在在哪里、速度多快、误差多大。"
+      },
+      {
+        prompt: "A 和 B 为什么要分开看？",
+        answer: "答案：A 描述系统自己怎么变，B 描述控制输入从哪里进入系统。"
+      },
+      {
+        prompt: "为什么先用二维小车例子？",
+        answer: "答案：二维例子只保留位置和速度，足够看清矩阵如何表达影响关系。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个公式是状态空间的最小入口？",
+      choices: [
+        {
+          label: "A",
+          value: "rank(C)=n",
+          isCorrect: false,
+          feedback: "还不对：rank(C)=n 是可控性检查，不是状态空间模型本体。"
+        },
+        {
+          label: "B",
+          value: "x_dot = Ax + Bu",
+          isCorrect: true,
+          feedback: "正确：状态空间入口就是状态变化率由系统矩阵和控制输入共同决定。"
+        },
+        {
+          label: "C",
+          value: "p(z_{t+1}|z_t,a_t)",
+          isCorrect: false,
+          feedback: "还不对：这是世界模型的 latent dynamics，不是线性状态空间入口。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page M001 写完了吗？",
+      expected: "已记录：Page M001 应包含状态列向量、A/B 含义、二维小车例子。"
+    },
     sources: [
       {
         title: "Tsinghua Automation undergraduate program",
@@ -88,6 +154,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page M002",
     obsidian: "Obsidian: Control -> Stability -> Eigenvalue",
     notion: "Notion: mastery=1, evidence=Page M002, next=matrix exponential intuition",
+    practiceQuestions: [
+      {
+        prompt: "微分方程最朴素的意思是什么？",
+        answer: "答案：它说明一个量现在变化得多快，以及这个变化速度由哪些量决定。"
+      },
+      {
+        prompt: "为什么 a 小于 0 会收敛？",
+        answer: "答案：变化方向会把状态往 0 拉，离 0 越远，往回拉的量越明显。"
+      },
+      {
+        prompt: "矩阵 A 和特征值有什么关系？",
+        answer: "答案：矩阵 A 的特征值描述不同模态是衰减、保持还是发散。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个公式最适合用来理解一阶稳定性？",
+      choices: [
+        {
+          label: "A",
+          value: "x_dot = ax",
+          isCorrect: true,
+          feedback: "正确：先看一维 x_dot = ax，才能理解多维 A 的特征值。"
+        },
+        {
+          label: "B",
+          value: "C=[B AB ...]",
+          isCorrect: false,
+          feedback: "还不对：这是可控性矩阵，不是稳定性的最小入口。"
+        },
+        {
+          label: "C",
+          value: "s u = K[R|t]X",
+          isCorrect: false,
+          feedback: "还不对：这是相机投影，属于空间模型。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page M002 写完了吗？",
+      expected: "已记录：Page M002 应包含一维收敛/发散序列、x_dot = ax、e^{At} 直觉。"
+    },
     sources: [
       {
         title: "MIT 6.003 Signals and Systems",
@@ -116,6 +223,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page M003",
     obsidian: "Obsidian: Control -> Rank Tests",
     notion: "Notion: mastery=1, evidence=Page M003, next=two-state rank example",
+    practiceQuestions: [
+      {
+        prompt: "可控性先问什么？",
+        answer: "答案：先问输入能不能通过直接影响和系统传播影响到全部状态方向。"
+      },
+      {
+        prompt: "可观性先问什么？",
+        answer: "答案：先问输出看到的信息够不够反推出内部状态。"
+      },
+      {
+        prompt: "rank 为什么会出现？",
+        answer: "答案：rank 用来数独立方向，方向够多才可能覆盖全部状态。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个判断表示线性系统可控方向够多？",
+      choices: [
+        {
+          label: "A",
+          value: "rank(C)=n",
+          isCorrect: true,
+          feedback: "正确：rank(C)=n 表示可控性矩阵提供了 n 个独立状态方向。"
+        },
+        {
+          label: "B",
+          value: "rank(C)<n",
+          isCorrect: false,
+          feedback: "还不对：rank(C)<n 表示至少一个方向不可控。"
+        },
+        {
+          label: "C",
+          value: "x_dot = ax",
+          isCorrect: false,
+          feedback: "还不对：这是稳定性的一维入口，不是 rank test 结论。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page M003 写完了吗？",
+      expected: "已记录：Page M003 应包含状态图、C=[B AB ...]、rank(C)=n 和 rank(C)<n 的区别。"
+    },
     sources: [
       {
         title: "MIT 6.241J Dynamic Systems and Control",
@@ -141,6 +289,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page C010",
     obsidian: "Obsidian: Control -> LQR Kalman MPC",
     notion: "Notion: mastery=1, evidence=Page C010, next=one controller comparison",
+    practiceQuestions: [
+      {
+        prompt: "LQR 主要在权衡什么？",
+        answer: "答案：它权衡状态误差和控制力度，也就是 Q 与 R 的取舍。"
+      },
+      {
+        prompt: "Kalman Filter 解决什么冲突？",
+        answer: "答案：它解决模型预测和传感器观测不一致时该信谁的问题。"
+      },
+      {
+        prompt: "MPC 为什么适合工程约束？",
+        answer: "答案：它能把速度、转角、加速度等限制直接放进未来窗口优化。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个公式最像状态反馈控制律？",
+      choices: [
+        {
+          label: "A",
+          value: "u=-Kx",
+          isCorrect: true,
+          feedback: "正确：u=-Kx 表示根据当前状态直接生成控制输入。"
+        },
+        {
+          label: "B",
+          value: "y=Cx",
+          isCorrect: false,
+          feedback: "还不对：y=Cx 是输出方程，重点是观测。"
+        },
+        {
+          label: "C",
+          value: "e^{At}",
+          isCorrect: false,
+          feedback: "还不对：e^{At} 是状态传播器，不是控制律。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page C010 写完了吗？",
+      expected: "已记录：Page C010 应包含 LQR 的 Q/R、Kalman 的预测更新、MPC 的约束窗口。"
+    },
     sources: [
       {
         title: "MIT 2.14 Feedback Control",
@@ -169,6 +358,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page G001",
     obsidian: "Obsidian: Graduate Control -> Robust Nonlinear Stochastic",
     notion: "Notion: mastery=1, evidence=Page G001, next=choose one graduate branch",
+    practiceQuestions: [
+      {
+        prompt: "鲁棒控制为什么要看最坏情况？",
+        answer: "答案：因为真实模型会有误差，控制器必须在扰动和不确定性下仍然可用。"
+      },
+      {
+        prompt: "非线性控制为什么常从线性化开始？",
+        answer: "答案：线性化把复杂系统在工作点附近变成可分析的局部近似。"
+      },
+      {
+        prompt: "随机控制比确定性控制多考虑什么？",
+        answer: "答案：它把噪声、风险和未来不确定性放进决策过程。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达式最能代表真实非线性系统？",
+      choices: [
+        {
+          label: "A",
+          value: "x_dot=f(x,u)",
+          isCorrect: true,
+          feedback: "正确：x_dot=f(x,u) 是非线性系统的通用入口。"
+        },
+        {
+          label: "B",
+          value: "rank(C)=n",
+          isCorrect: false,
+          feedback: "还不对：这是可控性 rank test，不是非线性系统表达。"
+        },
+        {
+          label: "C",
+          value: "s u = K[R|t]X",
+          isCorrect: false,
+          feedback: "还不对：这是相机投影表达。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page G001 写完了吗？",
+      expected: "已记录：Page G001 应包含鲁棒扰动、非线性工作点、随机不确定性三类 failure mode。"
+    },
     sources: [
       {
         title: "MIT 6.245 Multivariable Control Systems",
@@ -201,6 +431,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page W001",
     obsidian: "Obsidian: World Models -> Latent Dynamics",
     notion: "Notion: mastery=1, evidence=Page W001, next=PlaNet or Dreamer paper card",
+    practiceQuestions: [
+      {
+        prompt: "世界模型的最小直觉是什么？",
+        answer: "答案：它是在模型内部预演动作之后世界可能怎么变化。"
+      },
+      {
+        prompt: "z_t 和真实世界状态有什么关系？",
+        answer: "答案：z_t 是压缩后的隐藏表示，不等于完整现实，但保留预测需要的信息。"
+      },
+      {
+        prompt: "自动驾驶世界模型最怕什么？",
+        answer: "答案：最怕遮挡、长尾行为和分布外场景导致 imagined rollout 偏掉。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达式是 latent dynamics 的核心？",
+      choices: [
+        {
+          label: "A",
+          value: "p(z_{t+1}|z_t,a_t)",
+          isCorrect: true,
+          feedback: "正确：它描述当前 latent state 和动作如何预测下一步 latent state。"
+        },
+        {
+          label: "B",
+          value: "u=-Kx",
+          isCorrect: false,
+          feedback: "还不对：这是状态反馈控制律。"
+        },
+        {
+          label: "C",
+          value: "rank(C)=n",
+          isCorrect: false,
+          feedback: "还不对：这是可控性条件。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page W001 写完了吗？",
+      expected: "已记录：Page W001 应包含 z_t、a_t、z_{t+1}、imagined rollout 和三个失败模式。"
+    },
     sources: [
       {
         title: "World Models",
@@ -233,6 +504,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page S001",
     obsidian: "Obsidian: Spatial Models -> Geometry BEV Occupancy",
     notion: "Notion: mastery=1, evidence=Page S001, next=BEVFormer or occupancy card",
+    practiceQuestions: [
+      {
+        prompt: "空间模型先回答什么问题？",
+        answer: "答案：先回答东西在哪里，以及这个表示能不能被 planner 使用。"
+      },
+      {
+        prompt: "BEV 为什么常用于自动驾驶？",
+        answer: "答案：BEV 把多视角信息整理成鸟瞰平面，更接近规划控制需要的坐标。"
+      },
+      {
+        prompt: "occupancy 比检测框多关心什么？",
+        answer: "答案：occupancy 关心空间是否被占用，更接近可通行性和碰撞风险。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达式是相机投影入口？",
+      choices: [
+        {
+          label: "A",
+          value: "s u = K[R|t]X",
+          isCorrect: true,
+          feedback: "正确：它把三维点通过内参和外参投到图像或相关空间表示。"
+        },
+        {
+          label: "B",
+          value: "x_dot = ax",
+          isCorrect: false,
+          feedback: "还不对：这是一维动态系统。"
+        },
+        {
+          label: "C",
+          value: "u=-Kx",
+          isCorrect: false,
+          feedback: "还不对：这是控制律，不是相机几何。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page S001 写完了吗？",
+      expected: "已记录：Page S001 应包含相机投影、BEV grid、occupancy value 三张图。"
+    },
     sources: [
       {
         title: "Stanford CS231A",
@@ -265,6 +577,47 @@ export const deepStudyCards: DeepStudyCard[] = [
     goodNotes: "GoodNotes: Page P001",
     obsidian: "Obsidian: Paper Queue -> Reproduction Cards",
     notion: "Notion: mastery=1, evidence=Page P001, next=one paper card with validation hook",
+    practiceQuestions: [
+      {
+        prompt: "读论文第一步抓什么？",
+        answer: "答案：先抓作者定义的问题，不要从摘要一路抄到结论。"
+      },
+      {
+        prompt: "为什么要写 assumption？",
+        answer: "答案：假设决定论文方法在哪些场景成立，也决定复现失败时该查哪里。"
+      },
+      {
+        prompt: "什么叫 reproduction hook？",
+        answer: "答案：就是能用最小场景、指标或可视化复现论文关键结论的入口。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "论文卡最小顺序应该是什么？",
+      choices: [
+        {
+          label: "A",
+          value: "problem -> assumption -> formula -> reproduction",
+          isCorrect: true,
+          feedback: "正确：先定问题和假设，再看核心公式，最后落到最小复现。"
+        },
+        {
+          label: "B",
+          value: "formula -> abstract -> title -> conclusion",
+          isCorrect: false,
+          feedback: "还不对：这种顺序容易只抄公式，丢掉问题和假设。"
+        },
+        {
+          label: "C",
+          value: "source -> citation -> bookmark -> archive",
+          isCorrect: false,
+          feedback: "还不对：这只是资料管理，不是论文理解。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page P001 写完了吗？",
+      expected: "已记录：Page P001 应包含 problem、assumption、one formula、minimal reproduction hook。"
+    },
     sources: [
       {
         title: "Kalman 1960 DOI",
