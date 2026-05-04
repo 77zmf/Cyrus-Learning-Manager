@@ -38,6 +38,22 @@ export interface LearningLaunchItem {
   notion: string;
 }
 
+export interface BeginnerFoundation {
+  title: string;
+  plain: string;
+  example: string;
+  exercise: string;
+  goodNotes: string;
+}
+
+export interface BeginnerLessonBridge {
+  question: string;
+  intuition: string;
+  example: string;
+  exercise: string;
+  goodNotes: string;
+}
+
 export interface GuidedLessonStep {
   label: string;
   instruction: string;
@@ -144,6 +160,152 @@ export const goodNotesSections = [
   "GoodNotes Summary",
   "下一题"
 ];
+
+export const beginnerFoundations: BeginnerFoundation[] = [
+  {
+    title: "先不用背公式",
+    plain: "先把每个公式当成一句话：它在说什么会影响什么。",
+    example: "车辆速度变大，下一秒的位置也会变大，这就是状态之间的关系。",
+    exercise: "用一句话解释“速度影响位置”。",
+    goodNotes: "GoodNotes Page 000：学习规则，只写直觉、例子、公式三行。"
+  },
+  {
+    title: "函数和变量",
+    plain: "变量是会变的量，函数是输入一个量以后输出另一个量的规则。",
+    example: "油门 u 变大，车的加速度 a 可能变大，可以先想成 a=f(u)。",
+    exercise: "写 3 个变量：位置、速度、油门，并写出谁影响谁。",
+    goodNotes: "画一条箭头：油门 -> 加速度 -> 速度 -> 位置。"
+  },
+  {
+    title: "向量和矩阵",
+    plain: "向量是一组状态，矩阵是一组规则，用来把一组数变成另一组数。",
+    example: "x=[位置, 速度]，A 告诉你位置和速度之间如何互相影响。",
+    exercise: "把车辆状态写成两行：第一行位置，第二行速度。",
+    goodNotes: "只要能写出 x 是一列数，就能继续学状态空间。"
+  },
+  {
+    title: "导数和变化率",
+    plain: "导数不是玄学，它就是“现在变化得有多快”。",
+    example: "位置的变化率是速度，速度的变化率是加速度。",
+    exercise: "写出：p_dot 是速度，v_dot 是加速度。",
+    goodNotes: "画一条链：位置 p -> 速度 v -> 加速度 a。"
+  },
+  {
+    title: "秩 rank",
+    plain: "rank 可以先理解成“真正有用的独立方向有几个”。",
+    example: "两个箭头如果指向同一个方向，就只算一个独立方向。",
+    exercise: "画两个方向不同的箭头，再画两个方向相同的箭头。",
+    goodNotes: "把 rank(C)=n 写成：方向够了；rank(C)<n 写成：方向不够。"
+  },
+  {
+    title: "特征值 eigenvalue",
+    plain: "特征值先理解成系统自己的放大或衰减倾向。",
+    example: "如果每一步都乘 0.8，会越来越小；如果每一步都乘 1.2，会越来越大。",
+    exercise: "写两个序列：1, 0.8, 0.64 和 1, 1.2, 1.44。",
+    goodNotes: "把“实部小于 0 收敛，实部大于 0 发散”写成直觉句。"
+  }
+];
+
+export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
+  "lesson-state-space": {
+    question: "这节课先问：车现在是什么状态，下一秒会怎么变？",
+    intuition: "先把状态想成一张仪表盘。",
+    example: "仪表盘上有位置、速度、航向、误差；状态空间只是把它们放进一个向量。",
+    exercise: "写一个最小状态 x=[位置, 速度]，再写位置由速度改变。",
+    goodNotes: "先画仪表盘，再写 x_dot = Ax + Bu。"
+  },
+  "lesson-controllability": {
+    question: "这节课先问：我踩油门或打方向，能不能影响所有重要状态？",
+    intuition: "可控性不是控制算法，它先检查车有没有“控制得到”的方向。",
+    example: "如果油门只能改变速度，完全影响不了横向位置，那某些状态方向就不可控。",
+    exercise: "画两个状态圆圈：一个被输入直接影响，一个要靠 A 传播影响。",
+    goodNotes: "把 B 写成直接影响，把 AB 写成传播后的影响。"
+  },
+  "lesson-stability": {
+    question: "这节课先问：系统被推开以后，会自己回来，还是越跑越远？",
+    intuition: "稳定性就是看误差会收敛还是发散。",
+    example: "方向盘回正像收敛；越修越偏像发散。",
+    exercise: "比较 1, 0.5, 0.25 和 1, 2, 4 两个序列。",
+    goodNotes: "先写一维直觉，再写 e^{At} 和特征值。"
+  },
+  "lesson-observability": {
+    question: "这节课先问：传感器看到的东西够不够反推出车的内部状态？",
+    intuition: "可观性就是“看不看得出来”。",
+    example: "只看位置，有时也能通过位置变化推速度；但如果输出和某个状态完全无关，就看不出来。",
+    exercise: "写 y=Cx，并圈出 C 直接测到哪些状态。",
+    goodNotes: "把可控性写成能不能控制，把可观性写成能不能看见。"
+  },
+  "lesson-lyapunov": {
+    question: "这节课先问：不用解方程，我能不能证明系统会回到安全区域？",
+    intuition: "Lyapunov 函数像一个能量表，能量一直下降就稳定。",
+    example: "球滚进碗底，势能越来越低；这就是稳定的直觉。",
+    exercise: "画一个碗，标出离碗底越远 V 越大。",
+    goodNotes: "先画能量下降，再写 V_dot < 0。"
+  },
+  "lesson-state-feedback": {
+    question: "这节课先问：如果我知道当前状态，能不能直接算一个控制输入？",
+    intuition: "状态反馈就是“看仪表盘后立刻调整控制”。",
+    example: "车偏右了，就向左修；速度太快了，就减小油门。",
+    exercise: "写 u=-Kx，并说明 K 大时控制更猛。",
+    goodNotes: "把开环 A 和闭环 A-BK 并排写。"
+  },
+  "lesson-lqr": {
+    question: "这节课先问：控制时我到底在权衡什么代价？",
+    intuition: "不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？",
+    example: "Q 大表示很怕偏离车道；R 大表示很怕方向盘打得太猛。",
+    exercise: "写两个调参句：Q 变大怎样，R 变大怎样。",
+    goodNotes: "先写 Q/R 工程直觉，再写 J 和 u=-R^{-1}B^TPx。"
+  },
+  "lesson-kalman": {
+    question: "这节课先问：模型预测和传感器观测冲突时，我信谁？",
+    intuition: "Kalman Filter 是一个加权融合器。",
+    example: "GPS 抖动时更信模型；模型漂移时更信传感器。",
+    exercise: "画 predict -> residual -> update 三个框。",
+    goodNotes: "先写 K 大更信观测，K 小更信模型。"
+  },
+  "lesson-lqg": {
+    question: "这节课先问：如果真实状态看不全，还能不能做 LQR？",
+    intuition: "LQG 就是先估计状态，再用估计状态控制。",
+    example: "先用传感器融合得到车的位置和速度估计，再把估计值交给控制器。",
+    exercise: "画两条箭头：sensor -> x_hat，x_hat -> control。",
+    goodNotes: "把 Kalman 和 LQR 两张图合成一张。"
+  },
+  "lesson-mpc": {
+    question: "这节课先问：我能不能每一步都往未来看几秒再决定现在怎么控制？",
+    intuition: "MPC 像开车时不断预判未来路线，但只执行眼前一步。",
+    example: "看到前方弯道，提前约束速度和转角，但下一秒会重新规划。",
+    exercise: "写三个约束：速度上限、加速度上限、转角上限。",
+    goodNotes: "先画滚动窗口，再写优化目标。"
+  },
+  "lesson-robust": {
+    question: "这节课先问：模型不准、路面变化、传感器误差来了以后系统还稳不稳？",
+    intuition: "鲁棒控制关注最坏情况下别崩。",
+    example: "同一个控制器在干地和湿滑路面都要尽量可用。",
+    exercise: "写一个扰动 w，并写它可能来自哪里。",
+    goodNotes: "把标称模型和真实系统画成两条不完全重合的线。"
+  },
+  "lesson-nonlinear": {
+    question: "这节课先问：真实车不是线性的，为什么我们还老写 A 和 B？",
+    intuition: "线性化是在一个工作点附近放大看局部规律。",
+    example: "小角度转向可以近似线性，大角度漂移就不行。",
+    exercise: "写工作点 x*, u*，并写“只在附近有效”。",
+    goodNotes: "先画局部放大镜，再写 Jacobian。"
+  },
+  "lesson-stochastic-control": {
+    question: "这节课先问：未来有噪声和不确定性时，怎么做决策？",
+    intuition: "随机控制不是追求一个确定未来，而是在不确定未来里最小化期望代价。",
+    example: "前车可能刹车，也可能不刹车；控制要考虑风险。",
+    exercise: "写状态、动作、扰动、代价四个词。",
+    goodNotes: "先写 Bellman 递推的中文解释，再写公式。"
+  },
+  "lesson-world-spatial-interface": {
+    question: "这节课先问：控制系统怎么使用世界模型和空间模型？",
+    intuition: "先把世界模型想成会在脑子里预演的模型。",
+    example: "空间模型告诉你哪里有路和障碍，世界模型预演动作之后会发生什么。",
+    exercise: "写 representation、prediction、failure mode 三行。",
+    goodNotes: "把 Control、World Model、Spatial Model 画成三角关系。"
+  }
+};
 
 export const guidedControlLessons: GuidedLesson[] = [
   {

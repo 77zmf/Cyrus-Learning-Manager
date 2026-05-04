@@ -585,6 +585,90 @@ textarea {
   margin: 0;
 }
 
+.beginner-bridge {
+  display: grid;
+  gap: 18px;
+}
+
+.foundation-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.foundation-card,
+.beginner-lesson {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.foundation-card {
+  border-top: 4px solid var(--ink);
+}
+
+.foundation-card > span,
+.beginner-lesson h4 {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.foundation-card h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.16rem;
+  margin: 0;
+}
+
+.foundation-card p,
+.beginner-lesson p {
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.beginner-lesson {
+  background: var(--paper);
+  border-left: 4px solid var(--line-strong);
+}
+
+.beginner-lesson > strong {
+  color: var(--ink);
+  line-height: 1.42;
+}
+
+.beginner-dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.beginner-dl div {
+  border-left: 3px solid var(--line);
+  padding-left: 10px;
+}
+
+.beginner-dl dt {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.beginner-dl dd {
+  color: var(--ink);
+  line-height: 1.45;
+  margin: 3px 0 0;
+  overflow-wrap: anywhere;
+}
+
 .notebook-layout,
 .map-layout {
   display: grid;

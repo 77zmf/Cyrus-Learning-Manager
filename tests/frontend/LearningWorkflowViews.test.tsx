@@ -12,6 +12,14 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Zero-Base Bridge" })).toBeInTheDocument();
+    expect(screen.getByText("先不用背公式")).toBeInTheDocument();
+    expect(screen.getByText("函数和变量")).toBeInTheDocument();
+    expect(screen.getByText("向量和矩阵")).toBeInTheDocument();
+    expect(screen.getByText("导数和变化率")).toBeInTheDocument();
+    expect(screen.getByText("秩 rank")).toBeInTheDocument();
+    expect(screen.getByText("特征值 eigenvalue")).toBeInTheDocument();
+    expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(6);
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
@@ -31,6 +39,10 @@ describe("learning workflow views", () => {
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
+    expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getByText("先把状态想成一张仪表盘。")).toBeInTheDocument();
+    expect(screen.getByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？")).toBeInTheDocument();
+    expect(screen.getByText("先把世界模型想成会在脑子里预演的模型。")).toBeInTheDocument();
     expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(14);
     expect(screen.getByText("状态向量 x")).toBeInTheDocument();
     expect(screen.getByText("系统矩阵 A")).toBeInTheDocument();

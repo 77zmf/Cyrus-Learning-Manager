@@ -52,8 +52,27 @@ const formulaMatchers: FormulaMatcher[] = [
     normalize: () => "\\dot{x}=f(x,u)"
   },
   {
+    pattern: /p_dot/,
+    normalize: () => "\\dot{p}"
+  },
+  {
+    pattern: /v_dot/,
+    normalize: () => "\\dot{v}"
+  },
+  {
+    pattern: /x_hat/,
+    normalize: () => "\\hat{x}"
+  },
+  {
     pattern: /V_dot/,
     normalize: () => "\\dot{V}"
+  },
+  {
+    pattern: /a=f\(u\)/
+  },
+  {
+    pattern: /x=\[位置, 速度\]/,
+    normalize: () => "x=[\\text{位置},\\text{速度}]"
   },
   {
     pattern: /C=\[B AB(?: \.\.\.)?\]/,
@@ -112,6 +131,10 @@ const formulaMatchers: FormulaMatcher[] = [
   },
   {
     pattern: /u=-Kx/
+  },
+  {
+    pattern: /u=-Lx_hat/,
+    normalize: () => "u=-L\\hat{x}"
   },
   {
     pattern: /A-BK/

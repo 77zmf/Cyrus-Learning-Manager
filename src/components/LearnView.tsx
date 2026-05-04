@@ -1,4 +1,10 @@
-import { guidedControlLessons, learningLaunchQueue, learningToolRoles } from "../domain/learning-workflow";
+import {
+  beginnerFoundations,
+  beginnerLessonBridges,
+  guidedControlLessons,
+  learningLaunchQueue,
+  learningToolRoles
+} from "../domain/learning-workflow";
 import { FormulaVisual } from "./FormulaVisual";
 import { InteractiveTutor } from "./InteractiveTutor";
 import { MathText } from "./MathText";
@@ -22,6 +28,44 @@ export function LearnView() {
         </div>
       </div>
 
+      <section className="panel beginner-bridge">
+        <div className="section-heading">
+          <h2>Zero-Base Bridge</h2>
+          <p>先补最小前置概念。这里不要求你会证明，只要求你能用自己的话说出概念在干什么。</p>
+        </div>
+        <div className="foundation-grid">
+          {beginnerFoundations.map((item) => (
+            <article className="foundation-card" key={item.title}>
+              <span>小白前置</span>
+              <h3>{item.title}</h3>
+              <p>
+                <MathText text={item.plain} />
+              </p>
+              <dl className="beginner-dl">
+                <div>
+                  <dt>例子</dt>
+                  <dd>
+                    <MathText text={item.example} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>最小练习</dt>
+                  <dd>
+                    <MathText text={item.exercise} />
+                  </dd>
+                </div>
+                <div>
+                  <dt>GoodNotes</dt>
+                  <dd>
+                    <MathText text={item.goodNotes} />
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="panel guided-path">
         <div className="section-heading">
           <h2>Cyrus Guided Path</h2>
@@ -38,52 +82,87 @@ export function LearnView() {
           </ol>
         </nav>
         <div className="guided-lesson-grid">
-          {guidedControlLessons.map((lesson) => (
-            <article className="guided-lesson-card" id={lesson.id} key={lesson.title}>
-              <span>
-                <MathText text={lesson.goal} />
-              </span>
-              <h3>{lesson.title}</h3>
-              <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
-              <strong>
-                <MathText text={lesson.now} />
-              </strong>
-              <dl className="compact-dl">
-                <div>
-                  <dt>GoodNotes</dt>
-                  <dd>{lesson.goodNotesPage}</dd>
-                </div>
-                <div>
-                  <dt>Obsidian</dt>
-                  <dd>{lesson.obsidianNode}</dd>
-                </div>
-                <div>
-                  <dt>Notion</dt>
-                  <dd>{lesson.notionRow}</dd>
-                </div>
-              </dl>
-              <ol className="guided-step-list">
-                {lesson.steps.map((step) => (
-                  <li key={step.label}>
-                    <span>{step.label}</span>
+          {guidedControlLessons.map((lesson) => {
+            const beginner = beginnerLessonBridges[lesson.id];
+
+            return (
+              <article className="guided-lesson-card" id={lesson.id} key={lesson.title}>
+                <span>
+                  <MathText text={lesson.goal} />
+                </span>
+                <h3>{lesson.title}</h3>
+                {beginner ? (
+                  <section className="beginner-lesson" aria-label={`${lesson.title} beginner entry`}>
+                    <h4>小白入口</h4>
                     <strong>
-                      <MathText text={step.instruction} />
+                      <MathText text={beginner.question} />
                     </strong>
                     <p>
-                      <MathText text={step.output} />
+                      <MathText text={beginner.intuition} />
                     </p>
-                  </li>
-                ))}
-              </ol>
-              <div className="self-check" aria-label={`${lesson.title} self check`}>
-                {lesson.selfCheck.map((item) => (
-                  <span key={item}>
-                    <MathText text={item} />
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
+                    <dl className="beginner-dl">
+                      <div>
+                        <dt>生活例子</dt>
+                        <dd>
+                          <MathText text={beginner.example} />
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>最小练习</dt>
+                        <dd>
+                          <MathText text={beginner.exercise} />
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>GoodNotes</dt>
+                        <dd>
+                          <MathText text={beginner.goodNotes} />
+                        </dd>
+                      </div>
+                    </dl>
+                  </section>
+                ) : null}
+                <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
+                <strong>
+                  <MathText text={lesson.now} />
+                </strong>
+                <dl className="compact-dl">
+                  <div>
+                    <dt>GoodNotes</dt>
+                    <dd>{lesson.goodNotesPage}</dd>
+                  </div>
+                  <div>
+                    <dt>Obsidian</dt>
+                    <dd>{lesson.obsidianNode}</dd>
+                  </div>
+                  <div>
+                    <dt>Notion</dt>
+                    <dd>{lesson.notionRow}</dd>
+                  </div>
+                </dl>
+                <ol className="guided-step-list">
+                  {lesson.steps.map((step) => (
+                    <li key={step.label}>
+                      <span>{step.label}</span>
+                      <strong>
+                        <MathText text={step.instruction} />
+                      </strong>
+                      <p>
+                        <MathText text={step.output} />
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+                <div className="self-check" aria-label={`${lesson.title} self check`}>
+                  {lesson.selfCheck.map((item) => (
+                    <span key={item}>
+                      <MathText text={item} />
+                    </span>
+                  ))}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
