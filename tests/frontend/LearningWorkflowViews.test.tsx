@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { LearnView } from "../../src/components/LearnView";
 import { MindMapView } from "../../src/components/MindMapView";
@@ -12,6 +12,12 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "Start Here for Beginners" })).toBeInTheDocument();
+    expect(screen.getByText("选一节课")).toBeInTheDocument();
+    expect(screen.getByText("补前置卡")).toBeInTheDocument();
+    expect(screen.getByText("做 Ready Check")).toBeInTheDocument();
+    expect(screen.getByText("写 GoodNotes")).toBeInTheDocument();
+    expect(screen.getByText("连 Obsidian 和 Notion")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Zero-Base Bridge" })).toBeInTheDocument();
     expect(screen.getByText("先不用背公式")).toBeInTheDocument();
     expect(screen.getByText("函数和变量")).toBeInTheDocument();
@@ -19,7 +25,13 @@ describe("learning workflow views", () => {
     expect(screen.getByText("导数和变化率")).toBeInTheDocument();
     expect(screen.getByText("秩 rank")).toBeInTheDocument();
     expect(screen.getByText("特征值 eigenvalue")).toBeInTheDocument();
-    expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(6);
+    expect(screen.getByText("坐标系和单位")).toBeInTheDocument();
+    expect(screen.getByText("矩阵乘法")).toBeInTheDocument();
+    expect(screen.getByText("方程组")).toBeInTheDocument();
+    expect(screen.getByText("状态、输入、输出")).toBeInTheDocument();
+    expect(screen.getByText("概率和期望")).toBeInTheDocument();
+    expect(screen.getByText("优化目标和约束")).toBeInTheDocument();
+    expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(14);
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
@@ -40,6 +52,9 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
     expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getAllByText("卡住就回到：状态、输入、输出").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("卡住就回到：优化目标和约束").length).toBeGreaterThan(0);
     expect(screen.getByText("先把状态想成一张仪表盘。")).toBeInTheDocument();
     expect(screen.getByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？")).toBeInTheDocument();
     expect(screen.getByText("先把世界模型想成会在脑子里预演的模型。")).toBeInTheDocument();
@@ -56,6 +71,19 @@ describe("learning workflow views", () => {
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Control -> Controllability")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Interactive Tutor" })).toBeInTheDocument();
+  });
+
+  it("lets a beginner use a lesson ready check before writing notes", () => {
+    render(<LearnView />);
+
+    fireEvent.click(screen.getByRole("button", { name: "显示 第 1 课：状态空间模型 Ready Check 概念答案" }));
+    expect(screen.getByText(/答案：状态就是系统当前的变量清单/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "第 1 课：状态空间模型 Ready Check 公式选项 B" }));
+    expect(screen.getByText(/正确：状态空间最小入口就是状态变化率/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "确认 第 1 课：状态空间模型 Ready Check GoodNotes 输出" }));
+    expect(screen.getByText(/已记录：Page 001 至少有状态向量、A\/B 含义、一个二状态小车例子/)).toBeInTheDocument();
   });
 
   it("renders GoodNotes as the handwritten derivation notebook", () => {

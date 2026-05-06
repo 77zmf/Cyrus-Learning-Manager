@@ -46,12 +46,35 @@ export interface BeginnerFoundation {
   goodNotes: string;
 }
 
+export interface BeginnerStartStep {
+  title: string;
+  action: string;
+  output: string;
+}
+
 export interface BeginnerLessonBridge {
   question: string;
   intuition: string;
   example: string;
   exercise: string;
   goodNotes: string;
+}
+
+export interface ReadyCheckFormulaChoice {
+  label: string;
+  value: string;
+  isCorrect: boolean;
+  feedback: string;
+}
+
+export interface LessonReadyCheck {
+  prerequisite: string;
+  conceptQuestion: string;
+  conceptAnswer: string;
+  formulaPrompt: string;
+  formulaChoices: ReadyCheckFormulaChoice[];
+  goodNotesPrompt: string;
+  goodNotesExpected: string;
 }
 
 export interface GuidedLessonStep {
@@ -72,7 +95,10 @@ export interface GuidedLesson {
   notionRow: string;
   steps: GuidedLessonStep[];
   selfCheck: string[];
+  readyCheck: LessonReadyCheck;
 }
+
+type GuidedLessonSeed = Omit<GuidedLesson, "readyCheck">;
 
 export interface GoodNotesDerivationCard {
   title: string;
@@ -161,6 +187,34 @@ export const goodNotesSections = [
   "下一题"
 ];
 
+export const beginnerStartSteps: BeginnerStartStep[] = [
+  {
+    title: "选一节课",
+    action: "只选当前最想学的一节，不从头收藏所有资源。",
+    output: "网页停在一张课程卡，不切换到别的任务。"
+  },
+  {
+    title: "补前置卡",
+    action: "先看课程卡写的“卡住就回到”基础卡。",
+    output: "能用一句话说出这个前置概念在干什么。"
+  },
+  {
+    title: "做 Ready Check",
+    action: "先答一个概念题，再选一个公式入口。",
+    output: "网页给出反馈后，再决定是否写 GoodNotes。"
+  },
+  {
+    title: "写 GoodNotes",
+    action: "只写直觉、公式、一个例子三块内容。",
+    output: "留下一页可以复盘的手写证据。"
+  },
+  {
+    title: "连 Obsidian 和 Notion",
+    action: "Obsidian 只连概念关系，Notion 只记证据和下次复习。",
+    output: "学习不是按日期推进，而是按证据推进。"
+  }
+];
+
 export const beginnerFoundations: BeginnerFoundation[] = [
   {
     title: "先不用背公式",
@@ -203,6 +257,62 @@ export const beginnerFoundations: BeginnerFoundation[] = [
     example: "如果每一步都乘 0.8，会越来越小；如果每一步都乘 1.2，会越来越大。",
     exercise: "写两个序列：1, 0.8, 0.64 和 1, 1.2, 1.44。",
     goodNotes: "把“实部小于 0 收敛，实部大于 0 发散”写成直觉句。"
+  },
+  {
+    title: "坐标系和单位",
+    plain: "坐标系说明一个量是从哪里开始量、朝哪个方向算正，单位说明这个数到底有多大。",
+    example: "同一个车的位置，用车身坐标系和地图坐标系写出来可能完全不同。",
+    exercise: "画 x 轴和 y 轴，标出车辆前方、左侧、世界坐标的原点。",
+    goodNotes: "写一句：没有坐标系，位置、速度、角度都不能比较。"
+  },
+  {
+    title: "矩阵乘法",
+    plain: "矩阵乘法先理解成“每一行规则”和“状态列向量”做加权相加。",
+    example: "A 的第一行决定新位置怎么由旧位置和旧速度组成。",
+    exercise: "用两行两列矩阵乘 [位置, 速度]，只写每一行在混合什么。",
+    goodNotes: "先画行乘列，不急着背所有计算技巧。"
+  },
+  {
+    title: "方程组",
+    plain: "方程组是在同时满足多条规则；控制和估计里常常要同时满足动态、观测和约束。",
+    example: "既要满足位置变化由速度决定，又要满足速度变化由控制输入决定。",
+    exercise: "写两条规则：p_dot 是 v，v_dot 是 a，然后说它们同时成立。",
+    goodNotes: "把方程组写成两行，不要压成一行公式。"
+  },
+  {
+    title: "状态、输入、输出",
+    plain: "状态 x 是系统内部清单，输入 u 是你能施加的动作，输出 y 是传感器能看到的结果。",
+    example: "车辆状态可以是位置和速度，输入可以是加速度命令，输出可以是 GPS 测到的位置。",
+    exercise: "给一个小车例子，各写 2 个状态、1 个输入、1 个输出。",
+    goodNotes: "画三栏：x 在系统里，u 从外面进来，y 从传感器出来。"
+  },
+  {
+    title: "误差和反馈",
+    plain: "误差是目标和当前状态的差，反馈是看见误差后反过来修正控制。",
+    example: "车偏离车道中心，控制器根据横向误差修方向盘。",
+    exercise: "写 current、target、error 三个词，并画 error -> control 的箭头。",
+    goodNotes: "把开环写成不看结果，反馈写成看误差后修正。"
+  },
+  {
+    title: "概率和期望",
+    plain: "概率描述不确定性，期望是把很多可能结果按概率加权后的平均效果。",
+    example: "前车可能刹车也可能不刹车，随机控制要考虑两种未来的风险。",
+    exercise: "写两个未来：安全通过、前车急刹，并给它们各写一个风险分数。",
+    goodNotes: "先用中文写“多种未来的加权平均”，再看期望符号。"
+  },
+  {
+    title: "优化目标和约束",
+    plain: "优化目标说明你想让什么变小，约束说明哪些行为绝对不能违反。",
+    example: "MPC 想让跟踪误差小，但速度、加速度和方向盘角度不能超过限制。",
+    exercise: "写一个目标：误差小；写三个约束：速度、加速度、转角。",
+    goodNotes: "把目标写在上面，把硬限制写在下面。"
+  },
+  {
+    title: "论文阅读四件套",
+    plain: "读论文先抓问题、假设、核心公式、最小复现，不要从摘要一路抄到结论。",
+    example: "看 BEVFormer 时先问它解决什么感知表示问题，再看 attention 公式和失败模式。",
+    exercise: "给任意一篇论文写四行：problem、assumption、formula、reproduction。",
+    goodNotes: "每篇论文只抄一个核心公式，并解释每个符号的工程含义。"
   }
 ];
 
@@ -307,7 +417,402 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
   }
 };
 
-export const guidedControlLessons: GuidedLesson[] = [
+const lessonReadyChecks: Record<string, LessonReadyCheck> = {
+  "lesson-state-space": {
+    prerequisite: "状态、输入、输出",
+    conceptQuestion: "状态空间里 x、u、y 分别是什么？",
+    conceptAnswer: "答案：状态就是系统当前的变量清单，输入是你能施加的动作，输出是传感器能看到的结果。",
+    formulaPrompt: "哪个公式是状态空间模型的最小入口？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：rank(C)=n 是可控性检查，不是状态空间入口。"
+      },
+      {
+        label: "B",
+        value: "x_dot = Ax + Bu",
+        isCorrect: true,
+        feedback: "正确：状态空间最小入口就是状态变化率由系统自己和控制输入共同决定。"
+      },
+      {
+        label: "C",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：u=-Kx 是状态反馈控制律。"
+      }
+    ],
+    goodNotesPrompt: "Page 001 写完了吗？",
+    goodNotesExpected: "已记录：Page 001 至少有状态向量、A/B 含义、一个二状态小车例子。"
+  },
+  "lesson-controllability": {
+    prerequisite: "秩 rank",
+    conceptQuestion: "可控性到底先问什么？",
+    conceptAnswer: "答案：先问输入能不能通过直接影响和 A 的传播影响到全部状态方向。",
+    formulaPrompt: "哪个判断表示可控方向够多？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "rank(C)<n",
+        isCorrect: false,
+        feedback: "还不对：rank(C)<n 表示方向不够，至少一个状态方向不可控。"
+      },
+      {
+        label: "B",
+        value: "x_dot = ax",
+        isCorrect: false,
+        feedback: "还不对：x_dot = ax 是一维稳定性入口。"
+      },
+      {
+        label: "C",
+        value: "rank(C)=n",
+        isCorrect: true,
+        feedback: "正确：rank(C)=n 表示输入影响覆盖了 n 个独立状态方向。"
+      }
+    ],
+    goodNotesPrompt: "Page 002 写完了吗？",
+    goodNotesExpected: "已记录：Page 002 至少有 B、AB、C=[B AB]、rank(C)<n 的失败解释。"
+  },
+  "lesson-stability": {
+    prerequisite: "特征值 eigenvalue",
+    conceptQuestion: "稳定性最朴素的问题是什么？",
+    conceptAnswer: "答案：系统被推开以后，误差是回到 0 附近，还是越变越大。",
+    formulaPrompt: "连续时间线性系统稳定时，特征值实部应该怎样？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "Re(\\lambda_i(A))<0",
+        isCorrect: true,
+        feedback: "正确：所有模态都衰减，状态才会回到平衡点附近。"
+      },
+      {
+        label: "B",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性，不是稳定性。"
+      },
+      {
+        label: "C",
+        value: "s u = K[R|t]X",
+        isCorrect: false,
+        feedback: "还不对：这是相机投影入口。"
+      }
+    ],
+    goodNotesPrompt: "Page 003 写完了吗？",
+    goodNotesExpected: "已记录：Page 003 至少有一维收敛/发散序列和 e^{At} 的直觉。"
+  },
+  "lesson-observability": {
+    prerequisite: "状态、输入、输出",
+    conceptQuestion: "可观性和可控性有什么反向关系？",
+    conceptAnswer: "答案：可控性问输入能不能影响状态，可观性问输出能不能反推出状态。",
+    formulaPrompt: "哪个表达式表示输出方程？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "y=Cx",
+        isCorrect: true,
+        feedback: "正确：y=Cx 表示内部状态经过输出矩阵变成可测输出。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是反馈控制，不是观测输出。"
+      },
+      {
+        label: "C",
+        value: "x_dot = ax",
+        isCorrect: false,
+        feedback: "还不对：这是一维动态系统。"
+      }
+    ],
+    goodNotesPrompt: "Page 004 写完了吗？",
+    goodNotesExpected: "已记录：Page 004 至少有 y=Cx、O=[C; CA; ...]、rank(O)<n 的含义。"
+  },
+  "lesson-lyapunov": {
+    prerequisite: "误差和反馈",
+    conceptQuestion: "Lyapunov 函数为什么像能量表？",
+    conceptAnswer: "答案：它衡量系统离平衡点有多远；如果能量一直下降，系统就往平衡点靠近。",
+    formulaPrompt: "哪个条件最像“能量一直下降”？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "V_dot<0",
+        isCorrect: true,
+        feedback: "正确：V_dot<0 表示沿着系统轨迹，能量函数持续变小。"
+      },
+      {
+        label: "B",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：rank(C)=n 是可控性条件。"
+      },
+      {
+        label: "C",
+        value: "z_t",
+        isCorrect: false,
+        feedback: "还不对：z_t 是世界模型里的潜变量。"
+      }
+    ],
+    goodNotesPrompt: "Page 005 写完了吗？",
+    goodNotesExpected: "已记录：Page 005 至少有碗底图、V 正定、V_dot<0 的中文解释。"
+  },
+  "lesson-state-feedback": {
+    prerequisite: "误差和反馈",
+    conceptQuestion: "状态反馈为什么叫反馈？",
+    conceptAnswer: "答案：它读取当前状态或误差，再根据这个状态反过来生成控制输入。",
+    formulaPrompt: "哪个公式表示状态反馈？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "y=Cx",
+        isCorrect: false,
+        feedback: "还不对：y=Cx 是输出方程。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: true,
+        feedback: "正确：u=-Kx 表示根据当前状态 x 直接生成控制输入 u。"
+      },
+      {
+        label: "C",
+        value: "e^{At}",
+        isCorrect: false,
+        feedback: "还不对：e^{At} 是状态转移。"
+      }
+    ],
+    goodNotesPrompt: "Page 006 写完了吗？",
+    goodNotesExpected: "已记录：Page 006 至少有 u=-Kx、闭环 A-BK、可控性前提。"
+  },
+  "lesson-lqr": {
+    prerequisite: "优化目标和约束",
+    conceptQuestion: "LQR 的 Q 和 R 分别惩罚什么？",
+    conceptAnswer: "答案：Q 惩罚状态误差，R 惩罚控制输入太大或太猛。",
+    formulaPrompt: "哪个公式表达状态反馈形式？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "u=-R^{-1}B^TPx",
+        isCorrect: true,
+        feedback: "正确：LQR 最终仍然给出状态反馈，只是增益来自优化。"
+      },
+      {
+        label: "B",
+        value: "rank(O)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可观性满秩条件。"
+      },
+      {
+        label: "C",
+        value: "p(z_{t+1}|z_t,a_t)",
+        isCorrect: false,
+        feedback: "还不对：这是世界模型的 latent dynamics。"
+      }
+    ],
+    goodNotesPrompt: "Page 007 写完了吗？",
+    goodNotesExpected: "已记录：Page 007 至少有 Q/R 调参直觉、J、u=-R^{-1}B^TPx。"
+  },
+  "lesson-kalman": {
+    prerequisite: "概率和期望",
+    conceptQuestion: "Kalman Filter 在融合哪两种信息？",
+    conceptAnswer: "答案：它融合模型预测和传感器观测，根据信任程度给它们不同权重。",
+    formulaPrompt: "哪个符号表示 Kalman 增益？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "K_k",
+        isCorrect: true,
+        feedback: "正确：K_k 决定这一步更信模型预测还是观测残差。"
+      },
+      {
+        label: "B",
+        value: "A-BK",
+        isCorrect: false,
+        feedback: "还不对：A-BK 是状态反馈后的闭环矩阵。"
+      },
+      {
+        label: "C",
+        value: "V_dot<0",
+        isCorrect: false,
+        feedback: "还不对：这是 Lyapunov 下降条件。"
+      }
+    ],
+    goodNotesPrompt: "Page 008 写完了吗？",
+    goodNotesExpected: "已记录：Page 008 至少有 predict、residual、update、K 大/小的含义。"
+  },
+  "lesson-lqg": {
+    prerequisite: "状态、输入、输出",
+    conceptQuestion: "LQG 为什么要用估计状态？",
+    conceptAnswer: "答案：真实状态不一定能全部直接测到，所以先用 Kalman 得到 x_hat，再交给 LQR 控制。",
+    formulaPrompt: "哪个控制律使用估计状态？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "u=-Lx_hat",
+        isCorrect: true,
+        feedback: "正确：LQG 控制器拿估计状态 x_hat 来做反馈。"
+      },
+      {
+        label: "B",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性条件。"
+      },
+      {
+        label: "C",
+        value: "s u = K[R|t]X",
+        isCorrect: false,
+        feedback: "还不对：这是相机投影。"
+      }
+    ],
+    goodNotesPrompt: "Page 009 写完了吗？",
+    goodNotesExpected: "已记录：Page 009 至少有 sensor -> x_hat、x_hat -> control 两条链。"
+  },
+  "lesson-mpc": {
+    prerequisite: "优化目标和约束",
+    conceptQuestion: "MPC 和 LQR 相比最工程化的优势是什么？",
+    conceptAnswer: "答案：MPC 可以把速度、加速度、转角等约束直接写进优化问题。",
+    formulaPrompt: "哪个表达式最像 MPC 的一步预测模型？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "x_{k+1}=Ax_k+Bu_k",
+        isCorrect: true,
+        feedback: "正确：MPC 用模型把每一步状态滚动预测到下一步。"
+      },
+      {
+        label: "B",
+        value: "rank(O)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可观性判断。"
+      },
+      {
+        label: "C",
+        value: "x_dot = ax",
+        isCorrect: false,
+        feedback: "还不对：这是一维连续系统入口。"
+      }
+    ],
+    goodNotesPrompt: "Page 010 写完了吗？",
+    goodNotesExpected: "已记录：Page 010 至少有预测时域 N、目标函数、速度/加速度/转角约束。"
+  },
+  "lesson-robust": {
+    prerequisite: "误差和反馈",
+    conceptQuestion: "鲁棒控制为什么要关心最坏情况？",
+    conceptAnswer: "答案：真实模型会有误差，控制器必须在扰动、延迟、湿滑路面下仍然别崩。",
+    formulaPrompt: "哪个表达式表示最坏扰动放大被限制？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "\\|T_{zw}\\|_\\infty<\\gamma",
+        isCorrect: true,
+        feedback: "正确：H infinity 条件限制扰动 w 到性能输出 z 的最坏放大。"
+      },
+      {
+        label: "B",
+        value: "y=Cx",
+        isCorrect: false,
+        feedback: "还不对：这是输出方程。"
+      },
+      {
+        label: "C",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是状态反馈控制律。"
+      }
+    ],
+    goodNotesPrompt: "Page 011 写完了吗？",
+    goodNotesExpected: "已记录：Page 011 至少有扰动 w、性能输出 z、最坏情况放大。"
+  },
+  "lesson-nonlinear": {
+    prerequisite: "方程组",
+    conceptQuestion: "线性化为什么只在工作点附近可靠？",
+    conceptAnswer: "答案：它用局部斜率近似真实非线性系统，离工作点太远时斜率关系会变。",
+    formulaPrompt: "哪个表达式是非线性系统入口？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "x_dot=f(x,u)",
+        isCorrect: true,
+        feedback: "正确：真实系统通常先写成 x_dot=f(x,u)，再在工作点线性化。"
+      },
+      {
+        label: "B",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性条件。"
+      },
+      {
+        label: "C",
+        value: "K_k",
+        isCorrect: false,
+        feedback: "还不对：这是 Kalman 增益。"
+      }
+    ],
+    goodNotesPrompt: "Page 012 写完了吗？",
+    goodNotesExpected: "已记录：Page 012 至少有 x_dot=f(x,u)、工作点、Jacobian A/B。"
+  },
+  "lesson-stochastic-control": {
+    prerequisite: "概率和期望",
+    conceptQuestion: "随机控制比普通最优控制多考虑什么？",
+    conceptAnswer: "答案：它把噪声、风险和多种可能未来放进期望代价里。",
+    formulaPrompt: "哪个对象表示从当前状态开始的未来最优代价？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "V_t(x)",
+        isCorrect: true,
+        feedback: "正确：V_t(x) 是值函数，用来表示从当前状态开始的未来最优期望代价。"
+      },
+      {
+        label: "B",
+        value: "A-BK",
+        isCorrect: false,
+        feedback: "还不对：这是闭环矩阵。"
+      },
+      {
+        label: "C",
+        value: "rank(O)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可观性条件。"
+      }
+    ],
+    goodNotesPrompt: "Page 013 写完了吗？",
+    goodNotesExpected: "已记录：Page 013 至少有状态、动作、扰动、代价、Bellman 直觉。"
+  },
+  "lesson-world-spatial-interface": {
+    prerequisite: "论文阅读四件套",
+    conceptQuestion: "世界模型和空间模型分别给控制提供什么？",
+    conceptAnswer: "答案：空间模型告诉哪里有什么，世界模型预演动作后未来可能怎么变。",
+    formulaPrompt: "哪个表达式表示世界模型的 latent dynamics？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "p(z_{t+1}|z_t,a_t)",
+        isCorrect: true,
+        feedback: "正确：它描述当前 latent state 和动作如何预测下一步 latent state。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是控制律。"
+      },
+      {
+        label: "C",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性判断。"
+      }
+    ],
+    goodNotesPrompt: "Page 014 写完了吗？",
+    goodNotesExpected: "已记录：Page 014 至少有 latent dynamics、camera projection、failure mode。"
+  }
+};
+
+const guidedControlLessonSeeds: GuidedLessonSeed[] = [
   {
     id: "lesson-state-space",
     title: "第 1 课：状态空间模型",
@@ -855,6 +1360,11 @@ export const guidedControlLessons: GuidedLesson[] = [
     selfCheck: ["latent dynamics", "camera projection", "occupancy/3D representation"]
   }
 ];
+
+export const guidedControlLessons: GuidedLesson[] = guidedControlLessonSeeds.map((lesson) => ({
+  ...lesson,
+  readyCheck: lessonReadyChecks[lesson.id]
+}));
 
 export const learningLaunchQueue: LearningLaunchItem[] = [
   {
