@@ -99,6 +99,39 @@ export const studyPlans: StudyPlan[] = [
     priority: "medium"
   },
   {
+    id: "3blue1brown-video-note",
+    track: "3blue1brown",
+    mode: "course",
+    title: "3Blue1Brown video note",
+    question: "Which visual math idea can unlock one autonomous-driving engineering concept today?",
+    prompt:
+      "Pick one 3Blue1Brown video. Write the visual intuition, connect it to SLAM, control, perception, E2E, simulation, or reconstruction, then define one minimal experiment.",
+    checklist: [
+      "Name the course or topic and video.",
+      "Summarize the visual intuition in your own words.",
+      "Connect it to one Autoware/CARLA/simctl object.",
+      "Write one minimal Python, diagram, log, or formula experiment."
+    ],
+    template:
+      "Video:\nCore intuition:\nAutonomous-driving connection:\nMinimal experiment:\nReusable sentence:\nOpen question:\nNext video:",
+    sources: [
+      {
+        title: "3Blue1Brown official site",
+        url: "https://www.3blue1brown.com/"
+      },
+      {
+        title: "3Blue1Brown YouTube playlists",
+        url: "https://www.youtube.com/c/3blue1brown/playlists"
+      },
+      {
+        title: "3Blue1Brown Bilibili official space",
+        url: "https://space.bilibili.com/88461692"
+      }
+    ],
+    taskTitle: "3Blue1Brown video note: math intuition to engineering intuition",
+    priority: "high"
+  },
+  {
     id: "world-spatial-paper",
     track: "world-spatial-models",
     mode: "paper",

@@ -72,6 +72,8 @@ const validPriorities = new Set<TaskPriority>(["low", "medium", "high", "urgent"
 const validTracks = new Set<TrackId>([
   "tsinghua-automation",
   "mit-eecs",
+  "3blue1brown",
+  "world-spatial-models",
   "ielts",
   "philosophy",
   "work-validation"

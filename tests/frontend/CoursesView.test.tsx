@@ -13,6 +13,9 @@ describe("CoursesView", () => {
     expect(screen.getByText("World models and latent dynamics")).toBeInTheDocument();
     expect(screen.getByText("Spatial models, 3D geometry, BEV, and occupancy")).toBeInTheDocument();
     expect(screen.getByText("World and spatial paper reproduction ladder")).toBeInTheDocument();
+    expect(screen.getByText("3Blue1Brown autonomous-driving math intuition")).toBeInTheDocument();
+    expect(screen.getByText("3Blue1Brown first week: linear algebra")).toBeInTheDocument();
+    expect(screen.getByText("3Blue1Brown math-intuition route")).toBeInTheDocument();
     expect(screen.getByText("IELTS scoring and rubric loop")).toBeInTheDocument();
     expect(screen.getByText("IELTS output and error-attribution loop")).toBeInTheDocument();
     expect(screen.getByText("Philosophy reading ladder")).toBeInTheDocument();
@@ -21,6 +24,7 @@ describe("CoursesView", () => {
     expect(screen.getByText("Control spine route")).toBeInTheDocument();
     expect(screen.getByText("World and spatial route")).toBeInTheDocument();
     expect(screen.getByText("Output-first IELTS route")).toBeInTheDocument();
+    expect(screen.getByText("3Blue1Brown math-intuition route")).toBeInTheDocument();
     expect(screen.getByText("Deep Study Cards")).toBeInTheDocument();
     expect(screen.getByText("线性代数到状态空间")).toBeInTheDocument();
     expect(screen.getByText("微分方程到稳定性")).toBeInTheDocument();
@@ -30,12 +34,14 @@ describe("CoursesView", () => {
     expect(screen.getByText("世界模型 latent dynamics")).toBeInTheDocument();
     expect(screen.getByText("空间模型：相机几何、BEV、occupancy")).toBeInTheDocument();
     expect(screen.getByText("论文阅读模板：问题、假设、公式、复现")).toBeInTheDocument();
+    expect(screen.getByText("3Blue1Brown 线性代数到坐标变换")).toBeInTheDocument();
     expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(8);
     expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(8);
     expect(screen.getAllByText("交互练习").length).toBeGreaterThanOrEqual(8);
     expect(screen.getAllByText("小白题").length).toBeGreaterThanOrEqual(24);
     expect(screen.getAllByText("公式选择").length).toBeGreaterThanOrEqual(8);
     expect(screen.getAllByText("GoodNotes 输出检查").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getByText("GoodNotes: Page 3B1B-M001")).toBeInTheDocument();
     expect(screen.getByText(/先学标量，再学向量，再学矩阵/)).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page M001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Concept Graph -> Linear Algebra")).toBeInTheDocument();

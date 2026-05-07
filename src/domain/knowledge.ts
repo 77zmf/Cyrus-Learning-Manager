@@ -272,6 +272,80 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-3blue1brown-linear-algebra-frames",
+    track: "3blue1brown",
+    title: "3Blue1Brown 线性代数到坐标变换",
+    layer: "数学直觉 -> 自动驾驶坐标系",
+    beginnerBridge:
+      "先把矩阵看成空间变换，再把 Autoware 里的 map、base_link、lidar、camera 看成不同坐标语言。",
+    coreIdeas: [
+      "向量可以表示位置、速度和误差，不只是数字列表。",
+      "基向量决定坐标语言；换基就是换一种方式描述同一个空间对象。",
+      "矩阵乘法可以理解为连续执行多个坐标变换，顺序不能随便交换。"
+    ],
+    derivationEntry: "从一个 2D 点开始，写旋转矩阵、平移向量和两次变换的组合顺序。",
+    practice: "用 3Blue1Brown 的线性代数直觉解释一条 lidar 点从 sensor frame 到 base_link 的路径。",
+    goodNotes: "GoodNotes: Page 3B1B-M001",
+    obsidian: "Obsidian: 3Blue1Brown -> Week 1 - Linear Algebra",
+    notion: "Notion: Track=3Blue1Brown, evidence=Page 3B1B-M001, next=matrix as transform",
+    practiceQuestions: [
+      {
+        prompt: "为什么矩阵不只是数字表格？",
+        answer: "答案：矩阵可以表示空间如何被旋转、缩放、投影或组合变换。"
+      },
+      {
+        prompt: "自动驾驶里基变换对应什么？",
+        answer: "答案：它对应 map、base_link、lidar、camera 等坐标系之间的表达切换。"
+      },
+      {
+        prompt: "为什么变换顺序重要？",
+        answer: "答案：先旋转再平移和先平移再旋转得到的空间位置通常不同。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达最接近连续坐标变换？",
+      choices: [
+        {
+          label: "A",
+          value: "T_map_base T_base_lidar p_lidar",
+          isCorrect: true,
+          feedback: "正确：点先从 lidar 到 base，再从 base 到 map，顺序表达了变换链。"
+        },
+        {
+          label: "B",
+          value: "x_dot = ax",
+          isCorrect: false,
+          feedback: "还不对：这是动态系统的一阶变化率入口。"
+        },
+        {
+          label: "C",
+          value: "p(z_{t+1}|z_t,a_t)",
+          isCorrect: false,
+          feedback: "还不对：这是世界模型的 latent dynamics。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page 3B1B-M001 写完了吗？",
+      expected:
+        "已记录：Page 3B1B-M001 应包含向量、基、矩阵变换、TF frame 链和一个 2D 旋转例子。"
+    },
+    sources: [
+      {
+        title: "3Blue1Brown official site",
+        url: "https://www.3blue1brown.com/"
+      },
+      {
+        title: "Essence of Linear Algebra playlist",
+        url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"
+      },
+      {
+        title: "3Blue1Brown Bilibili official space",
+        url: "https://space.bilibili.com/88461692"
+      }
+    ]
+  },
+  {
     id: "deep-lqr-kalman-mpc",
     track: "mit-eecs",
     title: "LQR / Kalman / MPC 三件套",
@@ -891,6 +965,56 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "3blue1brown-autonomous-driving-math-intuition",
+    track: "3blue1brown",
+    title: "3Blue1Brown autonomous-driving math intuition",
+    stage: "Visual math bridge",
+    focus:
+      "Use 3Blue1Brown to convert linear algebra, calculus, differential equations, neural networks, probability, and geometry into autonomous-driving engineering intuition.",
+    outputs: [
+      "one video note with plain-language intuition",
+      "one Autoware/CARLA/simctl engineering connection",
+      "one minimal Python, diagram, log, or formula experiment"
+    ],
+    sources: [
+      {
+        title: "3Blue1Brown official site",
+        url: "https://www.3blue1brown.com/"
+      },
+      {
+        title: "3Blue1Brown YouTube playlists",
+        url: "https://www.youtube.com/c/3blue1brown/playlists"
+      },
+      {
+        title: "3Blue1Brown Bilibili official space",
+        url: "https://space.bilibili.com/88461692"
+      }
+    ]
+  },
+  {
+    id: "3blue1brown-linear-algebra-week",
+    track: "3blue1brown",
+    title: "3Blue1Brown first week: linear algebra",
+    stage: "P0 math foundation",
+    focus:
+      "Start with vectors, basis, matrices as transformations, composition, determinants, inverse matrices, and solvability, then map each concept to coordinate frames and point-cloud transforms.",
+    outputs: [
+      "one vector intuition note tied to position, velocity, and error",
+      "one coordinate-frame note for map/base_link/lidar/camera",
+      "one 2D transform mini experiment"
+    ],
+    sources: [
+      {
+        title: "Essence of Linear Algebra playlist",
+        url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"
+      },
+      {
+        title: "3Blue1Brown Linear Algebra topic",
+        url: "https://www.3blue1brown.com/?topic=linear-algebra"
+      }
+    ]
+  },
+  {
     id: "world-latent-dynamics",
     track: "world-spatial-models",
     title: "World models and latent dynamics",
@@ -1252,6 +1376,30 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://arxiv.org/abs/1811.04551",
     notes:
       "Pick PlaNet, DreamerV3, Lift-Splat-Shoot, BEVFormer, NeRF, or 3DGS and capture representation, objective, failure mode, and a minimal reproduction."
+  },
+  {
+    id: "seed_3blue1brown_linear_algebra_week",
+    title: "Start 3Blue1Brown Week 1: linear algebra intuition",
+    track: "3blue1brown",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+    notes:
+      "Write the first video note: explain vector, basis, and matrix-as-transform intuition, then connect it to map/base_link/lidar/camera frames."
+  },
+  {
+    id: "seed_3blue1brown_autonomous_math_route",
+    title: "Use 3Blue1Brown as the autonomous-driving math bridge",
+    track: "3blue1brown",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.3blue1brown.com/",
+    notes:
+      "Pick one topic from linear algebra, calculus, differential equations, neural networks, probability, or geometry and leave a reusable engineering connection."
   },
   {
     id: "seed_mit_6003_signals_companion",

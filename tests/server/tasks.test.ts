@@ -140,6 +140,20 @@ describe("task repository", () => {
     ).toEqual([planning.id]);
   });
 
+  it("creates and filters 3Blue1Brown learning tasks", () => {
+    const task = createTask(database(), {
+      title: "3Blue1Brown vector intuition",
+      track: "3blue1brown" as never,
+      status: "active",
+      priority: "high",
+      source: "https://www.3blue1brown.com/",
+      notes: "connect vectors to position, velocity, and error state"
+    });
+
+    expect(task.track).toBe("3blue1brown");
+    expect(listTasks(database(), { track: "3blue1brown" as never })).toEqual([task]);
+  });
+
   it("filters tasks by status and priority", () => {
     const blockedUrgent = createTask(database(), {
       title: "Resolve blocker",

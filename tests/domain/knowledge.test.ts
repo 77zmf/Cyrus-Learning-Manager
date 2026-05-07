@@ -8,6 +8,24 @@ import {
 import { tracks } from "../../src/domain/tracks";
 
 describe("knowledge seeds", () => {
+  it("exposes the 3Blue1Brown math-intuition track", () => {
+    expect(tracks.some((track) => track.id === "3blue1brown")).toBe(true);
+    expect(
+      knowledgeModules.some(
+        (module) =>
+          module.track === "3blue1brown" &&
+          module.title === "3Blue1Brown autonomous-driving math intuition"
+      )
+    ).toBe(true);
+    expect(
+      knowledgeSeedTasks.some(
+        (task) =>
+          task.track === "3blue1brown" &&
+          task.id === "seed_3blue1brown_linear_algebra_week"
+      )
+    ).toBe(true);
+  });
+
   it("provides at least one sourced module for every track", () => {
     for (const track of tracks) {
       const modules = modulesForTrack(track.id);

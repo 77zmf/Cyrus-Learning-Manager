@@ -1529,6 +1529,11 @@ export const libraryTrackRoutes: LibraryTrackRoute[] = [
     output: "state-space derivation, controllability example, LQR/Kalman/MPC card"
   },
   {
+    title: "3Blue1Brown math-intuition route",
+    tracks: "3Blue1Brown",
+    output: "video note, autonomous-driving connection, minimal transform or dynamics experiment"
+  },
+  {
     title: "World and spatial route",
     tracks: "World & Spatial Models",
     output: "latent dynamics note, BEV/occupancy comparison, paper reproduction hook"

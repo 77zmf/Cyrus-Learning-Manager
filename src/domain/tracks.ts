@@ -16,6 +16,13 @@ export const tracks: Track[] = [
     canvasEntry: "80_Canvas/Learning System.canvas"
   },
   {
+    id: "3blue1brown",
+    name: "3Blue1Brown",
+    description: "Visual math intuition for autonomous-driving engineering concepts.",
+    obsidianEntry: "20_Courses/3Blue1Brown/00-3Blue1Brown-Study-Map.md",
+    canvasEntry: "80_Canvas/Learning System.canvas"
+  },
+  {
     id: "world-spatial-models",
     name: "World & Spatial Models",
     description: "World models, spatial intelligence, BEV, occupancy, NeRF, 3DGS, and validation.",

@@ -1,6 +1,7 @@
 export type TrackId =
   | "tsinghua-automation"
   | "mit-eecs"
+  | "3blue1brown"
   | "world-spatial-models"
   | "ielts"
   | "philosophy"
