@@ -33,7 +33,9 @@ export function LearnView() {
         </div>
       </div>
 
-      <section className="panel start-here-panel">
+      <LearningDirectory />
+
+      <section className="panel start-here-panel" id="section-start">
         <div className="section-heading">
           <h2>Start Here for Beginners</h2>
           <p>每次只走一条最小学习链：选课、补前置、做检查、写 GoodNotes、留证据。</p>
@@ -54,7 +56,7 @@ export function LearnView() {
         </ol>
       </section>
 
-      <section className="panel beginner-bridge">
+      <section className="panel beginner-bridge" id="section-foundations">
         <div className="section-heading">
           <h2>Zero-Base Bridge</h2>
           <p>先补最小前置概念。这里不要求你会证明，只要求你能用自己的话说出概念在干什么。</p>
@@ -94,7 +96,7 @@ export function LearnView() {
 
       <ThreeBlueOneBrownBridge />
 
-      <section className="panel guided-path">
+      <section className="panel guided-path" id="section-guided-path">
         <div className="section-heading">
           <h2>Cyrus Guided Path</h2>
           <p>不用每日计划。每次想学时，打开这一节，从第一张卡开始：网页读、GoodNotes 写、Obsidian 连、Notion 留证据。</p>
@@ -114,88 +116,97 @@ export function LearnView() {
             const beginner = beginnerLessonBridges[lesson.id];
 
             return (
-              <article className="guided-lesson-card" id={lesson.id} key={lesson.title}>
-                <span>
-                  <MathText text={lesson.goal} />
-                </span>
-                <h3>{lesson.title}</h3>
-                {beginner ? (
-                  <section className="beginner-lesson" aria-label={`${lesson.title} beginner entry`}>
-                    <h4>小白入口</h4>
-                    <strong>
-                      <MathText text={beginner.question} />
-                    </strong>
+              <details className="guided-lesson-card" id={lesson.id} key={lesson.title} open={lesson.id === "lesson-state-space"}>
+                <summary className="lesson-summary">
+                  <span>
+                    <MathText text={lesson.goal} />
+                  </span>
+                  <h3>{lesson.title}</h3>
+                  {beginner ? (
                     <p>
-                      <MathText text={beginner.intuition} />
+                      <MathText text={beginner.question} />
                     </p>
-                    <dl className="beginner-dl">
-                      <div>
-                        <dt>生活例子</dt>
-                        <dd>
-                          <MathText text={beginner.example} />
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>最小练习</dt>
-                        <dd>
-                          <MathText text={beginner.exercise} />
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>GoodNotes</dt>
-                        <dd>
-                          <MathText text={beginner.goodNotes} />
-                        </dd>
-                      </div>
-                    </dl>
-                  </section>
-                ) : null}
-                <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
-                <LessonReadyCheck lesson={lesson} />
-                <strong>
-                  <MathText text={lesson.now} />
-                </strong>
-                <dl className="compact-dl">
-                  <div>
-                    <dt>GoodNotes</dt>
-                    <dd>{lesson.goodNotesPage}</dd>
-                  </div>
-                  <div>
-                    <dt>Obsidian</dt>
-                    <dd>{lesson.obsidianNode}</dd>
-                  </div>
-                  <div>
-                    <dt>Notion</dt>
-                    <dd>{lesson.notionRow}</dd>
-                  </div>
-                </dl>
-                <ol className="guided-step-list">
-                  {lesson.steps.map((step) => (
-                    <li key={step.label}>
-                      <span>{step.label}</span>
+                  ) : null}
+                </summary>
+                <div className="lesson-detail-body">
+                  {beginner ? (
+                    <section className="beginner-lesson" aria-label={`${lesson.title} beginner entry`}>
+                      <h4>小白入口</h4>
                       <strong>
-                        <MathText text={step.instruction} />
+                        <MathText text={beginner.question} />
                       </strong>
                       <p>
-                        <MathText text={step.output} />
+                        <MathText text={beginner.intuition} />
                       </p>
-                    </li>
-                  ))}
-                </ol>
-                <div className="self-check" aria-label={`${lesson.title} self check`}>
-                  {lesson.selfCheck.map((item) => (
-                    <span key={item}>
-                      <MathText text={item} />
-                    </span>
-                  ))}
+                      <dl className="beginner-dl">
+                        <div>
+                          <dt>生活例子</dt>
+                          <dd>
+                            <MathText text={beginner.example} />
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>最小练习</dt>
+                          <dd>
+                            <MathText text={beginner.exercise} />
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>GoodNotes</dt>
+                          <dd>
+                            <MathText text={beginner.goodNotes} />
+                          </dd>
+                        </div>
+                      </dl>
+                    </section>
+                  ) : null}
+                  <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
+                  <LessonReadyCheck lesson={lesson} />
+                  <strong>
+                    <MathText text={lesson.now} />
+                  </strong>
+                  <dl className="compact-dl">
+                    <div>
+                      <dt>GoodNotes</dt>
+                      <dd>{lesson.goodNotesPage}</dd>
+                    </div>
+                    <div>
+                      <dt>Obsidian</dt>
+                      <dd>{lesson.obsidianNode}</dd>
+                    </div>
+                    <div>
+                      <dt>Notion</dt>
+                      <dd>{lesson.notionRow}</dd>
+                    </div>
+                  </dl>
+                  <ol className="guided-step-list">
+                    {lesson.steps.map((step) => (
+                      <li key={step.label}>
+                        <span>{step.label}</span>
+                        <strong>
+                          <MathText text={step.instruction} />
+                        </strong>
+                        <p>
+                          <MathText text={step.output} />
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="self-check" aria-label={`${lesson.title} self check`}>
+                    {lesson.selfCheck.map((item) => (
+                      <span key={item}>
+                        <MathText text={item} />
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </article>
+              </details>
             );
           })}
         </div>
       </section>
 
-      <section className="panel action-surface">
+      <section className="panel action-surface" id="section-launch-queue">
         <div className="section-heading">
           <h2>Learning Launch Queue</h2>
           <p>Pick one item only when you want to study. Each item already names the web prompt and where the output should land.</p>
@@ -227,14 +238,48 @@ export function LearnView() {
         </div>
       </section>
 
-      <InteractiveTutor />
+      <div className="tutor-anchor" id="section-tutor">
+        <InteractiveTutor />
+      </div>
     </section>
+  );
+}
+
+function LearningDirectory() {
+  const items = [
+    { label: "小白入口", href: "#section-start", meta: "5 步开始" },
+    { label: "前置概念", href: "#section-foundations", meta: `${beginnerFoundations.length} 张基础卡` },
+    {
+      label: "3Blue1Brown 数学桥",
+      href: "#section-3blue1brown",
+      meta: `${threeBlueOneBrownLearningPath.length} 条路线`
+    },
+    { label: "控制课程目录", href: "#section-guided-path", meta: `${guidedControlLessons.length} 节课` },
+    { label: "启动队列", href: "#section-launch-queue", meta: "想学时点一个" },
+    { label: "互动题", href: "#section-tutor", meta: "即时反馈" }
+  ];
+
+  return (
+    <nav aria-label="Learning directory" className="panel learning-directory">
+      <div className="section-heading">
+        <h2>Learning Directory</h2>
+        <p>先用目录跳到你要学的部分；课程卡默认收起，展开当前要学的一张就够了。</p>
+      </div>
+      <div className="directory-grid">
+        {items.map((item) => (
+          <a aria-label={item.label} href={item.href} key={item.href}>
+            <span>{item.label}</span>
+            <em>{item.meta}</em>
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 }
 
 function ThreeBlueOneBrownBridge() {
   return (
-    <section className="panel threeblue-bridge">
+    <section className="panel threeblue-bridge" id="section-3blue1brown">
       <div className="section-heading">
         <h2>3Blue1Brown Math Bridge</h2>
         <p>
@@ -262,6 +307,17 @@ function ThreeBlueOneBrownBridge() {
         </div>
       </div>
 
+      <nav aria-label="3Blue1Brown route directory" className="course-toc compact-toc">
+        <h3>3Blue1Brown 目录</h3>
+        <ol>
+          {threeBlueOneBrownLearningPath.map((route) => (
+            <li key={route.id}>
+              <a href={`#${route.id}`}>{route.title}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       <div className="threeblue-route-grid">
         {threeBlueOneBrownLearningPath.map((route) => (
           <ThreeBlueOneBrownRouteCard key={route.id} route={route} />
@@ -273,59 +329,64 @@ function ThreeBlueOneBrownBridge() {
 
 function ThreeBlueOneBrownRouteCard({ route }: { route: ThreeBlueOneBrownRoute }) {
   return (
-    <article className="threeblue-route-card" id={route.id}>
-      <div className="route-card-topline">
-        <span>{route.priority}</span>
-        <a href={route.officialUrl} rel="noreferrer" target="_blank">
-          {route.officialLabel}
+    <details className="threeblue-route-card" id={route.id} open={route.id === "3b1b-linear-algebra"}>
+      <summary className="route-summary">
+        <div className="route-card-topline">
+          <span>{route.priority}</span>
+          <em>{route.officialLabel}</em>
+        </div>
+        <h3>{route.title}</h3>
+        <p className="route-topic">导入专题：{route.importedTopic}</p>
+        <strong>
+          <MathText text={route.visualQuestion} />
+        </strong>
+      </summary>
+      <div className="route-detail-body">
+        <a className="route-source-link" href={route.officialUrl} rel="noreferrer" target="_blank">
+          打开视频路线：{route.officialLabel}
         </a>
+        <FormulaVisual label={route.title} latex={route.formula} terms={route.formulaTerms} />
+        <dl className="beginner-dl">
+          <div>
+            <dt>直觉</dt>
+            <dd>
+              <MathText text={route.intuition} />
+            </dd>
+          </div>
+          <div>
+            <dt>工程连接</dt>
+            <dd>
+              <MathText text={route.engineeringBridge} />
+            </dd>
+          </div>
+          <div>
+            <dt>最小实验</dt>
+            <dd>
+              <MathText text={route.minimalExperiment} />
+            </dd>
+          </div>
+        </dl>
+        <dl className="compact-dl">
+          <div>
+            <dt>GoodNotes</dt>
+            <dd>{route.goodNotes}</dd>
+          </div>
+          <div>
+            <dt>Obsidian</dt>
+            <dd>{route.obsidian}</dd>
+          </div>
+          <div>
+            <dt>Notion</dt>
+            <dd>{route.notion}</dd>
+          </div>
+        </dl>
+        <ul className="route-output-list">
+          {route.outputs.map((output) => (
+            <li key={output}>{output}</li>
+          ))}
+        </ul>
       </div>
-      <h3>{route.title}</h3>
-      <p className="route-topic">导入专题：{route.importedTopic}</p>
-      <strong>
-        <MathText text={route.visualQuestion} />
-      </strong>
-      <FormulaVisual label={route.title} latex={route.formula} terms={route.formulaTerms} />
-      <dl className="beginner-dl">
-        <div>
-          <dt>直觉</dt>
-          <dd>
-            <MathText text={route.intuition} />
-          </dd>
-        </div>
-        <div>
-          <dt>工程连接</dt>
-          <dd>
-            <MathText text={route.engineeringBridge} />
-          </dd>
-        </div>
-        <div>
-          <dt>最小实验</dt>
-          <dd>
-            <MathText text={route.minimalExperiment} />
-          </dd>
-        </div>
-      </dl>
-      <dl className="compact-dl">
-        <div>
-          <dt>GoodNotes</dt>
-          <dd>{route.goodNotes}</dd>
-        </div>
-        <div>
-          <dt>Obsidian</dt>
-          <dd>{route.obsidian}</dd>
-        </div>
-        <div>
-          <dt>Notion</dt>
-          <dd>{route.notion}</dd>
-        </div>
-      </dl>
-      <ul className="route-output-list">
-        {route.outputs.map((output) => (
-          <li key={output}>{output}</li>
-        ))}
-      </ul>
-    </article>
+    </details>
   );
 }
 

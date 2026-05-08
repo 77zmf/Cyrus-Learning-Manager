@@ -12,6 +12,13 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Learn" })).toBeInTheDocument();
     expect(screen.getAllByText(/网页是主学习入口/).length).toBeGreaterThan(0);
+    expect(screen.getByRole("navigation", { name: "Learning directory" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "小白入口" })).toHaveAttribute("href", "#section-start");
+    expect(screen.getByRole("link", { name: "3Blue1Brown 数学桥" })).toHaveAttribute(
+      "href",
+      "#section-3blue1brown"
+    );
+    expect(screen.getByRole("link", { name: "控制课程目录" })).toHaveAttribute("href", "#section-guided-path");
     expect(screen.getByRole("heading", { name: "Start Here for Beginners" })).toBeInTheDocument();
     expect(screen.getByText("选一节课")).toBeInTheDocument();
     expect(screen.getByText("补前置卡")).toBeInTheDocument();
@@ -34,6 +41,7 @@ describe("learning workflow views", () => {
     expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(14);
     expect(screen.getByRole("heading", { name: "3Blue1Brown Math Bridge" })).toBeInTheDocument();
     expect(screen.getByText("导入来源")).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "3Blue1Brown route directory" })).toBeInTheDocument();
     expect(screen.getByText("50_Assets/Imports/3Blue1Brown_Notion_学习库.md")).toBeInTheDocument();
     expect(screen.getByText("20_Courses/3Blue1Brown/00-3Blue1Brown-Study-Map.md")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "3Blue1Brown official site" })).toHaveAttribute(
@@ -51,6 +59,8 @@ describe("learning workflow views", () => {
     expect(screen.getAllByText("Obsidian: 3Blue1Brown -> Autonomous-Driving Math Route").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Notion: Track=3Blue1Brown, Evidence=video note + minimal experiment").length).toBeGreaterThan(0);
     expect(screen.getByText("用 2D 点和两次坐标变换画出 lidar 到 map 的路径。")).toBeInTheDocument();
+    expect(container.querySelectorAll("details.threeblue-route-card").length).toBeGreaterThanOrEqual(7);
+    expect(container.querySelectorAll("details.threeblue-route-card[open]").length).toBe(1);
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
@@ -66,6 +76,8 @@ describe("learning workflow views", () => {
       "href",
       "#lesson-mpc"
     );
+    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(14);
+    expect(container.querySelectorAll("details.guided-lesson-card[open]").length).toBe(1);
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();

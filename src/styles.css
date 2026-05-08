@@ -593,9 +593,60 @@ textarea {
   margin: 0;
 }
 
+.learning-directory {
+  display: grid;
+  gap: 16px;
+}
+
+.directory-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.directory-grid a {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink);
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 6px;
+  min-height: 78px;
+  padding: 13px;
+  text-decoration: none;
+}
+
+.directory-grid a:hover {
+  background: #f5f5f5;
+}
+
+.directory-grid span {
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.directory-grid em {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .start-here-panel {
   display: grid;
   gap: 18px;
+}
+
+#section-start,
+#section-foundations,
+#section-3blue1brown,
+#section-guided-path,
+#section-launch-queue,
+#section-tutor {
+  scroll-margin-top: 18px;
 }
 
 .beginner-start-list {
@@ -828,6 +879,47 @@ textarea {
   scroll-margin-top: 18px;
 }
 
+.threeblue-route-card summary,
+.guided-lesson-card summary {
+  cursor: pointer;
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+
+.threeblue-route-card summary::-webkit-details-marker,
+.guided-lesson-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.threeblue-route-card summary::after,
+.guided-lesson-card summary::after {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink);
+  content: "展开";
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  justify-self: start;
+  line-height: 1;
+  padding: 7px 9px;
+  text-transform: uppercase;
+}
+
+.threeblue-route-card[open] summary::after,
+.guided-lesson-card[open] summary::after {
+  content: "收起";
+}
+
+.route-detail-body,
+.lesson-detail-body {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 14px;
+  padding-top: 14px;
+}
+
 .route-card-topline {
   align-items: center;
   display: flex;
@@ -836,15 +928,25 @@ textarea {
   justify-content: space-between;
 }
 
-.route-card-topline a {
+.route-card-topline em,
+.route-source-link {
   color: var(--ink);
   font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.72rem;
+  font-style: normal;
   font-weight: 700;
   overflow-wrap: anywhere;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   text-transform: uppercase;
+}
+
+.route-source-link {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  justify-self: start;
+  padding: 8px 10px;
 }
 
 .threeblue-route-card h3 {
@@ -866,7 +968,7 @@ textarea {
   padding: 9px 10px;
 }
 
-.threeblue-route-card > strong {
+.route-summary > strong {
   color: var(--ink);
   line-height: 1.45;
 }
@@ -970,6 +1072,10 @@ textarea {
   text-underline-offset: 3px;
 }
 
+.compact-toc {
+  border-left-color: var(--line-strong);
+}
+
 .guided-lesson-grid {
   display: grid;
   gap: 14px;
@@ -988,7 +1094,7 @@ textarea {
   scroll-margin-top: 18px;
 }
 
-.guided-lesson-card > span,
+.lesson-summary > span,
 .guided-step-list li > span,
 .self-check > span {
   color: var(--muted);
@@ -1005,7 +1111,13 @@ textarea {
   margin: 0;
 }
 
-.guided-lesson-card > strong {
+.lesson-summary p {
+  color: var(--ink-soft);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.lesson-detail-body > strong {
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 6px;
