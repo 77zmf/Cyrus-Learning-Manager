@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   beginnerFoundations,
   beginnerStartSteps,
-  guidedControlLessons
+  guidedControlLessons,
+  threeBlueOneBrownLearningPath,
+  threeBlueOneBrownSources
 } from "../../src/domain/learning-workflow";
 
 describe("beginner learning workflow", () => {
@@ -49,5 +51,47 @@ describe("beginner learning workflow", () => {
       )
     ).toBe(true);
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck.goodNotesExpected.length > 0)).toBe(true);
+  });
+
+  it("organizes the imported 3Blue1Brown library as a self-paced math bridge", () => {
+    const routeTitles = threeBlueOneBrownLearningPath.map((route) => route.title);
+
+    expect(threeBlueOneBrownSources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: "Imported Notion library",
+          path: "50_Assets/Imports/3Blue1Brown_Notion_学习库.md"
+        }),
+        expect.objectContaining({
+          label: "Obsidian course map",
+          path: "20_Courses/3Blue1Brown/00-3Blue1Brown-Study-Map.md"
+        })
+      ])
+    );
+    expect(threeBlueOneBrownLearningPath.length).toBeGreaterThanOrEqual(7);
+    expect(routeTitles).toEqual(
+      expect.arrayContaining([
+        "Linear Algebra: matrix as transform",
+        "Calculus: derivative as motion",
+        "Differential Equations: state evolution",
+        "Euler, Fourier, Laplace: signals as modes",
+        "Neural Networks: representation and loss",
+        "Probability: uncertainty and belief",
+        "Geometry and Groups: spatial transforms"
+      ])
+    );
+    expect(
+      threeBlueOneBrownLearningPath.every(
+        (route) =>
+          route.priority &&
+          route.officialUrl &&
+          route.formula &&
+          route.formulaTerms.length >= 3 &&
+          route.goodNotes &&
+          route.obsidian &&
+          route.notion &&
+          route.minimalExperiment
+      )
+    ).toBe(true);
   });
 });

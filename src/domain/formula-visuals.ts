@@ -274,6 +274,132 @@ export const worldSpatialFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const threeBlueOneBrownLinearAlgebraTerms: FormulaTerm[] = [
+  {
+    label: "点向量",
+    symbol: "\\mathbf{p}",
+    meaning: "把一个空间点写成可被坐标变换处理的向量。"
+  },
+  {
+    label: "坐标变换",
+    symbol: "T_{a\\leftarrow b}",
+    meaning: "把同一个对象从 b 坐标语言翻译到 a 坐标语言。"
+  },
+  {
+    label: "变换链",
+    symbol: "T_{map\\leftarrow base}T_{base\\leftarrow lidar}",
+    meaning: "矩阵相乘表示连续执行多个空间变换，顺序不能随便换。"
+  }
+];
+
+export const threeBlueOneBrownCalculusTerms: FormulaTerm[] = [
+  {
+    label: "变化率",
+    symbol: "\\frac{d}{dt}f(x(t))",
+    meaning: "沿着运动轨迹看一个量此刻变化得有多快。"
+  },
+  {
+    label: "梯度",
+    symbol: "\\nabla f(x)",
+    meaning: "多维空间里最敏感的变化方向。"
+  },
+  {
+    label: "累计代价",
+    symbol: "\\int_0^T L(x(t),u(t))dt",
+    meaning: "把每个时刻的误差、控制和风险累加成一个目标。"
+  }
+];
+
+export const threeBlueOneBrownDifferentialEquationTerms: FormulaTerm[] = [
+  {
+    label: "状态演化",
+    symbol: "\\dot{x}=f(x,u)",
+    meaning: "当前状态和输入决定下一瞬间怎么变化。"
+  },
+  {
+    label: "小步预测",
+    symbol: "x(t+\\Delta t)",
+    meaning: "用很小的时间步把连续变化近似成下一步状态。"
+  },
+  {
+    label: "局部斜率",
+    symbol: "f(x,u)",
+    meaning: "系统在当前点的变化方向，也就是相图里的箭头。"
+  }
+];
+
+export const threeBlueOneBrownSignalsTerms: FormulaTerm[] = [
+  {
+    label: "欧拉公式",
+    symbol: "e^{i\\theta}",
+    meaning: "把旋转、振荡和正弦余弦统一成一个对象。"
+  },
+  {
+    label: "模态",
+    symbol: "e^{i\\omega_k t}",
+    meaning: "把复杂信号拆成不同频率的基本振动。"
+  },
+  {
+    label: "系数",
+    symbol: "a_k",
+    meaning: "每个频率成分在原始信号里占多少。"
+  }
+];
+
+export const threeBlueOneBrownNeuralNetworkTerms: FormulaTerm[] = [
+  {
+    label: "模型参数",
+    symbol: "\\theta",
+    meaning: "网络内部可学习的权重和偏置。"
+  },
+  {
+    label: "损失函数",
+    symbol: "L(\\theta)",
+    meaning: "把预测错得有多离谱压成一个可优化的数。"
+  },
+  {
+    label: "梯度下降",
+    symbol: "\\theta_{k+1}=\\theta_k-\\eta\\nabla_\\theta L",
+    meaning: "沿着让损失下降的方向更新参数。"
+  }
+];
+
+export const threeBlueOneBrownProbabilityTerms: FormulaTerm[] = [
+  {
+    label: "先验",
+    symbol: "p(x)",
+    meaning: "看到新证据之前，对状态或场景的相信程度。"
+  },
+  {
+    label: "似然",
+    symbol: "p(z\\mid x)",
+    meaning: "如果状态是真的，传感器观测出现的可能性。"
+  },
+  {
+    label: "后验",
+    symbol: "p(x\\mid z)",
+    meaning: "看到观测之后更新出来的相信程度。"
+  }
+];
+
+export const threeBlueOneBrownGeometryTerms: FormulaTerm[] = [
+  {
+    label: "旋转矩阵",
+    symbol: "R",
+    meaning: "保持长度和角度的空间变换。"
+  },
+  {
+    label: "正交约束",
+    symbol: "R^TR=I",
+    meaning: "旋转不会把空间拉伸或压扁。"
+  },
+  {
+    label: "位姿",
+    symbol: "RX+t",
+    meaning: "先旋转再平移，是机器人和场景几何里的基本动作。"
+  }
+];
+
 export const tutorControllabilityTerms: FormulaTerm[] = [
   {
     label: "矩阵 A",

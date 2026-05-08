@@ -13,6 +13,13 @@ import {
   stateSpaceFormulaTerms,
   stateTransitionFormulaTerms,
   stochasticFormulaTerms,
+  threeBlueOneBrownCalculusTerms,
+  threeBlueOneBrownDifferentialEquationTerms,
+  threeBlueOneBrownGeometryTerms,
+  threeBlueOneBrownLinearAlgebraTerms,
+  threeBlueOneBrownNeuralNetworkTerms,
+  threeBlueOneBrownProbabilityTerms,
+  threeBlueOneBrownSignalsTerms,
   worldSpatialFormulaTerms
 } from "./formula-visuals";
 import type { FormulaTerm } from "./formula-visuals";
@@ -131,6 +138,32 @@ export interface LibraryTrackRoute {
   title: string;
   tracks: string;
   output: string;
+}
+
+export interface ThreeBlueOneBrownSource {
+  label: string;
+  path?: string;
+  url?: string;
+  note: string;
+}
+
+export interface ThreeBlueOneBrownRoute {
+  id: string;
+  priority: string;
+  title: string;
+  importedTopic: string;
+  officialLabel: string;
+  officialUrl: string;
+  visualQuestion: string;
+  formula: string;
+  formulaTerms: FormulaTerm[];
+  intuition: string;
+  engineeringBridge: string;
+  goodNotes: string;
+  obsidian: string;
+  notion: string;
+  minimalExperiment: string;
+  outputs: string[];
 }
 
 export interface SyncReadinessCheck {
@@ -416,6 +449,196 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
     goodNotes: "把 Control、World Model、Spatial Model 画成三角关系。"
   }
 };
+
+export const threeBlueOneBrownSources: ThreeBlueOneBrownSource[] = [
+  {
+    label: "Imported Notion library",
+    path: "50_Assets/Imports/3Blue1Brown_Notion_学习库.md",
+    note: "原始导入表，保留课程总表、优先级、自动驾驶关联和每集学习模板。"
+  },
+  {
+    label: "Obsidian course map",
+    path: "20_Courses/3Blue1Brown/00-3Blue1Brown-Study-Map.md",
+    note: "主入口，连接原始导入、自动驾驶数学路线、线性代数第一周和视频笔记模板。"
+  },
+  {
+    label: "Video note template",
+    path: "90_Templates/3Blue1Brown Video Note.md",
+    note: "每看一集都按直觉、公式、工程连接、最小实验和下一步记录。"
+  },
+  {
+    label: "3Blue1Brown official site",
+    url: "https://www.3blue1brown.com/",
+    note: "官方课程和专题入口。"
+  },
+  {
+    label: "YouTube playlists",
+    url: "https://www.youtube.com/c/3blue1brown/playlists",
+    note: "官方合集入口。"
+  },
+  {
+    label: "Bilibili official space",
+    url: "https://space.bilibili.com/88461692",
+    note: "中文观看入口。"
+  }
+];
+
+export const threeBlueOneBrownLearningPath: ThreeBlueOneBrownRoute[] = [
+  {
+    id: "3b1b-linear-algebra",
+    priority: "P0",
+    title: "Linear Algebra: matrix as transform",
+    importedTopic: "线性代数的本质",
+    officialLabel: "Essence of Linear Algebra playlist",
+    officialUrl: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+    visualQuestion: "矩阵到底是在移动空间，还是只是在摆一张数字表？",
+    formula: "\\mathbf{p}_{map}=T_{map\\leftarrow base}T_{base\\leftarrow lidar}\\mathbf{p}_{lidar}",
+    formulaTerms: threeBlueOneBrownLinearAlgebraTerms,
+    intuition: "先把向量当成空间中的箭头，把矩阵当成对整片空间的旋转、缩放、投影或换坐标。",
+    engineeringBridge: "SLAM、TF tree、点云投影、BEV 坐标对齐都依赖这条直觉。",
+    goodNotes: "GoodNotes Page 3B1B-M001：向量、基、矩阵变换、TF frame 链。",
+    obsidian: "Obsidian: 3Blue1Brown -> Autonomous-Driving Math Route",
+    notion: "Notion: Track=3Blue1Brown, Evidence=video note + minimal experiment",
+    minimalExperiment: "用 2D 点和两次坐标变换画出 lidar 到 map 的路径。",
+    outputs: [
+      "一页矩阵变换手写图",
+      "一个 TF frame 链路说明",
+      "一个坐标顺序不能互换的反例"
+    ]
+  },
+  {
+    id: "3b1b-calculus",
+    priority: "P0",
+    title: "Calculus: derivative as motion",
+    importedTopic: "微积分的本质",
+    officialLabel: "Essence of Calculus playlist",
+    officialUrl: "https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr",
+    visualQuestion: "变化率和累计量怎样变成控制、优化和神经网络训练的语言？",
+    formula: "\\frac{d}{dt}f(x(t))=\\nabla f(x)^T\\dot{x},\\quad J=\\int_0^T L(x(t),u(t))dt",
+    formulaTerms: threeBlueOneBrownCalculusTerms,
+    intuition: "导数先理解成现在变化多快，积分先理解成把一小段一小段影响累加起来。",
+    engineeringBridge: "轨迹优化、MPC 代价、反向传播和 EKF 线性化都在使用变化率。",
+    goodNotes: "GoodNotes Page 3B1B-M002：导数、积分、梯度、代价累计。",
+    obsidian: "Obsidian: 3Blue1Brown -> Calculus -> Optimization",
+    notion: "Notion: Track=3Blue1Brown, Resource=Calculus, Evidence=Page 3B1B-M002",
+    minimalExperiment: "画一条位置曲线，手写速度、加速度和累计误差的关系。",
+    outputs: [
+      "一页变化率直觉图",
+      "一个控制误差累计例子",
+      "一个梯度方向解释"
+    ]
+  },
+  {
+    id: "3b1b-differential-equations",
+    priority: "P0",
+    title: "Differential Equations: state evolution",
+    importedTopic: "微分方程",
+    officialLabel: "Differential Equations playlist",
+    officialUrl: "https://www.youtube.com/playlist?list=PLZHQObOWTQDNPOjrT6KVlfJuKtYTftqH6",
+    visualQuestion: "如果每个状态都给出下一瞬间的变化方向，整条轨迹会长什么样？",
+    formula: "\\dot{x}=f(x,u),\\quad x(t+\\Delta t)\\approx x(t)+\\Delta t\\,f(x,u)",
+    formulaTerms: threeBlueOneBrownDifferentialEquationTerms,
+    intuition: "把微分方程看成状态空间里每个点的一支箭头，轨迹就是沿着箭头走出来的线。",
+    engineeringBridge: "车辆动力学、横向控制震荡、收敛速度和稳定性都从这里进入。",
+    goodNotes: "GoodNotes Page 3B1B-M003：相图、状态箭头、收敛和发散。",
+    obsidian: "Obsidian: 3Blue1Brown -> Differential Equations -> Control",
+    notion: "Notion: Track=3Blue1Brown, Resource=Differential equations, Evidence=Page 3B1B-M003",
+    minimalExperiment: "画一个一维收敛系统和一个一维发散系统的箭头场。",
+    outputs: [
+      "一张相图草图",
+      "一个稳定和不稳定序列对比",
+      "一个车辆误差响应解释"
+    ]
+  },
+  {
+    id: "3b1b-signals",
+    priority: "P1",
+    title: "Euler, Fourier, Laplace: signals as modes",
+    importedTopic: "欧拉公式 / 傅里叶 / 拉普拉斯",
+    officialLabel: "Explainers playlist",
+    officialUrl: "https://www.youtube.com/playlist?list=PLZHQObOWTQDN52m7Y21ePrTbvXkPaWVSg",
+    visualQuestion: "为什么振荡、频率和系统响应可以用同一种旋转直觉理解？",
+    formula: "e^{i\\theta}=\\cos\\theta+i\\sin\\theta,\\quad x(t)=\\sum_k a_ke^{i\\omega_kt}",
+    formulaTerms: threeBlueOneBrownSignalsTerms,
+    intuition: "复杂信号可以拆成很多基本振动；系统响应也可以拆成不同模态的衰减或放大。",
+    engineeringBridge: "控制频域、滤波、振动、传感器噪声和闭环响应都需要这条线。",
+    goodNotes: "GoodNotes Page 3B1B-M004：旋转、频率、模态、系统响应。",
+    obsidian: "Obsidian: 3Blue1Brown -> Signals -> Control Frequency View",
+    notion: "Notion: Track=3Blue1Brown, Resource=Explainers, Evidence=Page 3B1B-M004",
+    minimalExperiment: "把一个抖动信号画成低频趋势和高频噪声两部分。",
+    outputs: [
+      "一页单位圆和振荡图",
+      "一个噪声分解例子",
+      "一个控制响应频率解释"
+    ]
+  },
+  {
+    id: "3b1b-neural-networks",
+    priority: "P1",
+    title: "Neural Networks: representation and loss",
+    importedTopic: "神经网络",
+    officialLabel: "Neural Networks playlist",
+    officialUrl: "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+    visualQuestion: "网络到底在学什么，loss 又怎样推动参数改变？",
+    formula: "L(\\theta)=\\frac{1}{N}\\sum_i\\ell(f_\\theta(x_i),y_i),\\quad \\theta_{k+1}=\\theta_k-\\eta\\nabla_\\theta L",
+    formulaTerms: threeBlueOneBrownNeuralNetworkTerms,
+    intuition: "先把网络当成一串可调变换，loss 是告诉它现在错在哪里的反馈信号。",
+    engineeringBridge: "BEV 感知、E2E、预测网络和世界模型训练都离不开表示、目标和梯度。",
+    goodNotes: "GoodNotes Page 3B1B-M005：参数、loss、梯度下降、反向传播直觉。",
+    obsidian: "Obsidian: 3Blue1Brown -> Neural Networks -> Perception",
+    notion: "Notion: Track=3Blue1Brown, Resource=Neural networks, Evidence=Page 3B1B-M005",
+    minimalExperiment: "画一个输入、隐藏表示、loss、参数更新的四步链。",
+    outputs: [
+      "一个 loss feedback 图",
+      "一个 BEV 表示连接",
+      "一个过拟合风险记录"
+    ]
+  },
+  {
+    id: "3b1b-probability",
+    priority: "P1",
+    title: "Probability: uncertainty and belief",
+    importedTopic: "概率 / 贝叶斯 / 信息论",
+    officialLabel: "Probability topic",
+    officialUrl: "https://www.3blue1brown.com/?topic=probability",
+    visualQuestion: "传感器有噪声、未来不确定时，系统如何更新相信程度？",
+    formula: "p(x\\mid z)=\\frac{p(z\\mid x)p(x)}{p(z)},\\quad \\mathbb{E}[c]=\\sum_i p_i c_i",
+    formulaTerms: threeBlueOneBrownProbabilityTerms,
+    intuition: "概率不是玄学，它是在证据不完整时给每个可能状态分配相信程度。",
+    engineeringBridge: "Kalman Filter、感知置信度、多未来预测和风险代价都来自这条线。",
+    goodNotes: "GoodNotes Page 3B1B-M006：先验、似然、后验、期望代价。",
+    obsidian: "Obsidian: 3Blue1Brown -> Probability -> Sensor Fusion",
+    notion: "Notion: Track=3Blue1Brown, Resource=Probability, Evidence=Page 3B1B-M006",
+    minimalExperiment: "写一个 GPS 抖动时模型预测和观测互相修正的例子。",
+    outputs: [
+      "一页贝叶斯更新图",
+      "一个传感器融合例子",
+      "一个风险期望解释"
+    ]
+  },
+  {
+    id: "3b1b-geometry-groups",
+    priority: "P1",
+    title: "Geometry and Groups: spatial transforms",
+    importedTopic: "几何 / 群论 / 拓扑",
+    officialLabel: "Geometry topic",
+    officialUrl: "https://www.3blue1brown.com/?topic=geometry",
+    visualQuestion: "位姿、旋转和对称性为什么是空间智能的基础对象？",
+    formula: "R^TR=I,\\quad \\det(R)=1,\\quad X_{world}=RX_{body}+t",
+    formulaTerms: threeBlueOneBrownGeometryTerms,
+    intuition: "先把旋转看成保持形状的空间动作，再把位姿看成旋转加平移。",
+    engineeringBridge: "机器人位姿、相机投影、3D 重建、占据场和空间模型都需要几何直觉。",
+    goodNotes: "GoodNotes Page 3B1B-M007：旋转、位姿、对称性、空间场。",
+    obsidian: "Obsidian: 3Blue1Brown -> Geometry -> Spatial Models",
+    notion: "Notion: Track=3Blue1Brown, Resource=Geometry, Evidence=Page 3B1B-M007",
+    minimalExperiment: "画一个车身点经过旋转和平移进入世界坐标的过程。",
+    outputs: [
+      "一页旋转和平移图",
+      "一个相机或 BEV 投影连接",
+      "一个空间模型失败模式"
+    ]
+  }
+];
 
 const lessonReadyChecks: Record<string, LessonReadyCheck> = {
   "lesson-state-space": {
@@ -1382,6 +1605,14 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     goodNotes: "GoodNotes: 021 World Models",
     obsidian: "Obsidian: World Model -> Latent Dynamics",
     notion: "Notion: Resource Type = Paper, Status = Active"
+  },
+  {
+    title: "3Blue1Brown visual math sprint",
+    focus: "Pick one visual route and produce one reusable math-to-engineering note.",
+    prompt: "Explain the visual intuition, draw one GoodNotes diagram, and connect it to SLAM, control, perception, or spatial models.",
+    goodNotes: "GoodNotes: 3B1B-M00x",
+    obsidian: "Obsidian: 3Blue1Brown -> Autonomous-Driving Math Route",
+    notion: "Notion: Track = 3Blue1Brown, Evidence = video note + minimal experiment"
   },
   {
     title: "IELTS output correction sprint",

@@ -32,6 +32,25 @@ describe("learning workflow views", () => {
     expect(screen.getByText("概率和期望")).toBeInTheDocument();
     expect(screen.getByText("优化目标和约束")).toBeInTheDocument();
     expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getByRole("heading", { name: "3Blue1Brown Math Bridge" })).toBeInTheDocument();
+    expect(screen.getByText("导入来源")).toBeInTheDocument();
+    expect(screen.getByText("50_Assets/Imports/3Blue1Brown_Notion_学习库.md")).toBeInTheDocument();
+    expect(screen.getByText("20_Courses/3Blue1Brown/00-3Blue1Brown-Study-Map.md")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "3Blue1Brown official site" })).toHaveAttribute(
+      "href",
+      "https://www.3blue1brown.com/"
+    );
+    expect(screen.getByRole("heading", { name: "Linear Algebra: matrix as transform" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Calculus: derivative as motion" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Differential Equations: state evolution" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Euler, Fourier, Laplace: signals as modes" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Neural Networks: representation and loss" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Probability: uncertainty and belief" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Geometry and Groups: spatial transforms" })).toBeInTheDocument();
+    expect(screen.getByText("GoodNotes Page 3B1B-M001：向量、基、矩阵变换、TF frame 链。")).toBeInTheDocument();
+    expect(screen.getAllByText("Obsidian: 3Blue1Brown -> Autonomous-Driving Math Route").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Notion: Track=3Blue1Brown, Evidence=video note + minimal experiment").length).toBeGreaterThan(0);
+    expect(screen.getByText("用 2D 点和两次坐标变换画出 lidar 到 map 的路径。")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
