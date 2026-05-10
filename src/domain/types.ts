@@ -52,4 +52,10 @@ export interface HealthResponse {
   service: "cyrus-local-sync";
   notionConfigured: boolean;
   obsidianConfigured: boolean;
+  hermesConfigured?: boolean;
+  hermesModel?: string;
+  hermesProfilePath?: string;
+  hermesProvider?: string;
+  notionTarget?: string;
+  obsidianVaultPath?: string;
 }

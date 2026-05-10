@@ -7,7 +7,13 @@ const healthResponse = {
   ok: true,
   service: "cyrus-local-sync",
   notionConfigured: true,
-  obsidianConfigured: false
+  obsidianConfigured: false,
+  hermesConfigured: true,
+  hermesModel: "kimi-k2.6",
+  hermesProvider: "Kimi / Moonshot China",
+  hermesProfilePath: "/Users/cyber/.hermes/profiles/cyrus",
+  notionTarget: "tasks-db",
+  obsidianVaultPath: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge"
 };
 
 describe("App", () => {

@@ -2202,6 +2202,15 @@ progress::-moz-progress-bar {
   margin-top: 8px;
 }
 
+.status-card p {
+  color: var(--ink-soft);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  margin: 10px 0 0;
+  overflow-wrap: anywhere;
+}
+
 .is-ready {
   color: var(--green);
 }

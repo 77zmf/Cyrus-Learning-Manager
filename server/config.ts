@@ -9,11 +9,17 @@ export interface AppConfig {
   notionParentPageId: string;
   notionTasksDatabaseId: string | null;
   obsidianVaultPath: string;
+  hermesProfilePath: string;
+  hermesModel: string;
+  hermesProvider: string;
   localAppKey: string | null;
 }
 
 const defaultParentPageId = "350ef7e6aaa980629326e56e121a39cb";
 const defaultObsidianVaultPath = "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge";
+const defaultHermesProfilePath = "/Users/cyber/.hermes/profiles/cyrus";
+const defaultHermesModel = "kimi-k2.6";
+const defaultHermesProvider = "Kimi / Moonshot China";
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const portValue = env.LOCAL_SYNC_PORT?.trim() || "8787";
@@ -25,6 +31,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     notionParentPageId: env.NOTION_PARENT_PAGE_ID?.trim() || defaultParentPageId,
     notionTasksDatabaseId: env.NOTION_TASKS_DATABASE_ID?.trim() || null,
     obsidianVaultPath: env.OBSIDIAN_VAULT_PATH?.trim() || defaultObsidianVaultPath,
+    hermesProfilePath: env.HERMES_PROFILE_PATH?.trim() || defaultHermesProfilePath,
+    hermesModel: env.HERMES_MODEL?.trim() || defaultHermesModel,
+    hermesProvider: env.HERMES_PROVIDER?.trim() || defaultHermesProvider,
     localAppKey: env.LOCAL_APP_KEY?.trim() || null
   };
 }

@@ -1928,6 +1928,11 @@ export const syncReadinessChecks: SyncReadinessCheck[] = [
     command: "curl -fsS http://127.0.0.1:8787/health"
   },
   {
+    label: "Hermes profile",
+    target: "/Users/cyber/.hermes/profiles/cyrus",
+    command: "cyrus status"
+  },
+  {
     label: "Obsidian vault",
     target: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge",
     command: "set OBSIDIAN_VAULT_PATH in .env.local when overriding the default"
@@ -1936,6 +1941,11 @@ export const syncReadinessChecks: SyncReadinessCheck[] = [
     label: "Notion database",
     target: "Notion Learning Database",
     command: "set NOTION_TOKEN and NOTION_TASKS_DATABASE_ID in .env.local"
+  },
+  {
+    label: "GitHub Pages",
+    target: "https://77zmf.github.io/Cyrus-Learning-Manager/",
+    command: "gh run list --repo 77zmf/Cyrus-Learning-Manager --limit 5"
   }
 ];
 

@@ -11,6 +11,9 @@ describe("loadConfig", () => {
       notionParentPageId: "350ef7e6aaa980629326e56e121a39cb",
       notionTasksDatabaseId: null,
       obsidianVaultPath: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge",
+      hermesProfilePath: "/Users/cyber/.hermes/profiles/cyrus",
+      hermesModel: "kimi-k2.6",
+      hermesProvider: "Kimi / Moonshot China",
       localAppKey: null
     });
   });
@@ -22,6 +25,9 @@ describe("loadConfig", () => {
       NOTION_PARENT_PAGE_ID: " parent-id ",
       NOTION_TASKS_DATABASE_ID: " tasks-db ",
       OBSIDIAN_VAULT_PATH: " /tmp/vault ",
+      HERMES_PROFILE_PATH: " /tmp/hermes-cyrus ",
+      HERMES_MODEL: " kimi-test ",
+      HERMES_PROVIDER: " Kimi Test ",
       LOCAL_APP_KEY: " local-key "
     });
 
@@ -31,6 +37,9 @@ describe("loadConfig", () => {
       notionParentPageId: "parent-id",
       notionTasksDatabaseId: "tasks-db",
       obsidianVaultPath: "/tmp/vault",
+      hermesProfilePath: "/tmp/hermes-cyrus",
+      hermesModel: "kimi-test",
+      hermesProvider: "Kimi Test",
       localAppKey: "local-key"
     });
   });

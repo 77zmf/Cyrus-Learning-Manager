@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import type Database from "better-sqlite3";
+import { existsSync } from "node:fs";
 import type { AppConfig } from "./config";
 import { isWriteAllowed } from "./auth";
 import { recordSyncFailure, syncTask } from "./sync/queue";
@@ -12,7 +13,13 @@ export function registerRoutes(app: Express, config: AppConfig, db: Database.Dat
       ok: true,
       service: "cyrus-local-sync",
       notionConfigured: Boolean(config.notionToken),
-      obsidianConfigured: Boolean(config.obsidianVaultPath)
+      obsidianConfigured: Boolean(config.obsidianVaultPath),
+      hermesConfigured: Boolean(config.hermesProfilePath) && existsSync(config.hermesProfilePath),
+      hermesModel: config.hermesModel,
+      hermesProfilePath: config.hermesProfilePath,
+      hermesProvider: config.hermesProvider,
+      notionTarget: config.notionTasksDatabaseId ?? config.notionParentPageId,
+      obsidianVaultPath: config.obsidianVaultPath
     });
   });
 

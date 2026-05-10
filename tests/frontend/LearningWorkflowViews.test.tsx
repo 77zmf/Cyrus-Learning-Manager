@@ -200,7 +200,18 @@ describe("learning workflow views", () => {
   it("renders sync readiness checks for local integrations", () => {
     render(
       <SyncCenter
-        health={{ ok: true, service: "cyrus-local-sync", notionConfigured: false, obsidianConfigured: true }}
+        health={{
+          ok: true,
+          service: "cyrus-local-sync",
+          notionConfigured: false,
+          obsidianConfigured: true,
+          hermesConfigured: true,
+          hermesModel: "kimi-k2.6",
+          hermesProvider: "Kimi / Moonshot China",
+          hermesProfilePath: "/Users/cyber/.hermes/profiles/cyrus",
+          notionTarget: "350ef7e6aaa980629326e56e121a39cb",
+          obsidianVaultPath: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge"
+        }}
         error={null}
       />
     );
@@ -210,7 +221,11 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Local sync service")).toBeInTheDocument();
     expect(screen.getByText("Obsidian vault")).toBeInTheDocument();
     expect(screen.getByText("Notion database")).toBeInTheDocument();
+    expect(screen.getByText("Hermes")).toBeInTheDocument();
+    expect(screen.getByText("Kimi / Moonshot China / kimi-k2.6")).toBeInTheDocument();
+    expect(screen.getByText("GitHub Pages")).toBeInTheDocument();
     expect(screen.getByText("http://127.0.0.1:5173/Cyrus-Learning-Manager/")).toBeInTheDocument();
     expect(screen.getByText("curl -fsS http://127.0.0.1:8787/health")).toBeInTheDocument();
+    expect(screen.getByText("cyrus status")).toBeInTheDocument();
   });
 });
