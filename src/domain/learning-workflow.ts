@@ -1657,6 +1657,86 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
       "连接到轨迹跟踪或横向控制"
     ],
     output: "one formula card and one control-parameter intuition note"
+  },
+  {
+    title: "Kalman prediction-update",
+    formula:
+      "\\hat{x}_{k|k-1}=A\\hat{x}_{k-1|k-1}+Bu_k,\\quad K_k=P_{k|k-1}C^T(CP_{k|k-1}C^T+R)^{-1}",
+    formulaTerms: kalmanFormulaTerms,
+    steps: [
+      "先写模型预测，只用 A, B 和上一时刻估计。",
+      "写观测残差 y_k-C\\hat{x}_{k|k-1}，说明传感器看到什么偏差。",
+      "用 Kalman 增益 K_k 决定更信模型还是更信观测。",
+      "把修正后的 \\hat{x}_{k|k} 连接到定位或目标状态估计。"
+    ],
+    output: "one estimator page showing prediction, residual, gain, and correction"
+  },
+  {
+    title: "MPC constrained rollout",
+    formula:
+      "\\min_{u_{0:N-1}}\\sum_{k=0}^{N-1}(x_k^TQx_k+u_k^TRu_k),\\quad x_{k+1}=Ax_k+Bu_k,\\quad x_k\\in\\mathcal{X},u_k\\in\\mathcal{U}",
+    formulaTerms: mpcFormulaTerms,
+    steps: [
+      "先定义预测时域 N，说明每次只看有限未来。",
+      "把状态误差和控制幅度写成 cost。",
+      "把速度、转角、加速度或安全边界写成约束。",
+      "解释为什么 MPC 每次重算但只执行第一步。"
+    ],
+    output: "one constrained-planning card tied to vehicle control or trajectory tracking"
+  },
+  {
+    title: "World model imagined rollout",
+    formula: "p(z_{t+1}\\mid z_t,a_t),\\quad \\hat{r}_t=r_\\theta(z_t,a_t),\\quad \\hat{v}_t=v_\\theta(z_t)",
+    formulaTerms: worldSpatialFormulaTerms,
+    steps: [
+      "把真实观测压成 latent state z_t。",
+      "用动作 a_t 在模型里想象下一步 z_{t+1}。",
+      "分别写 reward prediction 和 value prediction。",
+      "标出 imagined rollout 可能偏离真实世界的地方。"
+    ],
+    output: "one world-model page separating representation, transition, reward, and value"
+  },
+  {
+    title: "Camera projection to BEV",
+    formula:
+      "s\\begin{bmatrix}u\\\\v\\\\1\\end{bmatrix}=K[R\\mid t]X,\\quad X_{bev}=T_{ego\\leftarrow camera}X",
+    formulaTerms: worldSpatialFormulaTerms,
+    steps: [
+      "先写三维点 X 和图像像素 (u,v)。",
+      "用内参 K 和外参 [R|t] 解释相机投影。",
+      "再把点转到 ego 或 BEV 坐标。",
+      "说明 BEV 表示为什么适合规划和占据理解。"
+    ],
+    output: "one spatial-model sketch linking camera geometry, BEV grid, and driving decisions"
+  },
+  {
+    title: "Reconstruction SLAM pose-prior handoff",
+    formula:
+      "\\mathcal{H}_{slam}=\\{T_{map\\leftarrow base}(t),\\ \\mathrm{GlobalMap},\\ \\mathrm{alignment\\ diagnostics}\\}",
+    formulaTerms: [
+      {
+        label: "Pose prior",
+        symbol: "T_{map\\leftarrow base}(t)",
+        meaning: "SLAM 输出的时间序列位姿，用来给重建、地图刷新或资产对齐提供先验。"
+      },
+      {
+        label: "GlobalMap",
+        symbol: "\\mathrm{GlobalMap.pcdrgb}",
+        meaning: "重建线产出的带颜色点云地图，是后续资产检查和可视化的核心证据。"
+      },
+      {
+        label: "Alignment diagnostics",
+        symbol: "\\mathrm{RMSE},\\ \\mathrm{coverage}",
+        meaning: "用对齐误差、覆盖率和连续性判断 SLAM 结果能否进入验证资产链。"
+      }
+    ],
+    steps: [
+      "把 SLAM 定位成离线生产者，不放进稳定实时控制闭环。",
+      "检查轨迹、GlobalMap 和 alignment diagnostics 是否齐全。",
+      "把 pose prior 交给重建、CARLA 资产或地图刷新流程。",
+      "在 Notion 记录 stable / shadow / reconstruction 三条线的边界。"
+    ],
+    output: "one reconstruction handoff card with producer, artifact, metric, and validation consumer"
   }
 ];
 
@@ -1698,6 +1778,21 @@ export const canvasGraphNodes: CanvasGraphNode[] = [
     kind: "Engineering Application",
     title: "Autoware, CARLA, KPI gates, failcase closure",
     detail: "where the idea changes a validation decision"
+  },
+  {
+    kind: "Reconstruction / SLAM Producer",
+    title: "LIO-RF, FAST-LIO, pose prior, GlobalMap.pcdrgb",
+    detail: "offline producer for map refresh, CARLA asset prep, and alignment evidence"
+  },
+  {
+    kind: "IELTS Output",
+    title: "Raw answer -> rubric -> error cause",
+    detail: "output-first language practice that records the exact weak descriptor and correction"
+  },
+  {
+    kind: "Philosophy Argument",
+    title: "Thesis, premises, objection, response",
+    detail: "argument maps that improve evidence-quality and engineering judgment"
   }
 ];
 
@@ -1719,6 +1814,24 @@ export const canvasGraphEdges: CanvasGraphEdge[] = [
     from: "Course",
     to: "Notion",
     action: "Every finished lecture creates one review row with mastery and evidence."
+  },
+  {
+    title: "Reconstruction stack -> validation asset",
+    from: "Reconstruction / SLAM Producer",
+    to: "Engineering Application",
+    action: "Every SLAM or reconstruction artifact must name its manifest, metric, and validation consumer."
+  },
+  {
+    title: "IELTS error -> review queue",
+    from: "IELTS Output",
+    to: "Notion",
+    action: "Every weak answer creates one error-cause row instead of a vague daily-plan task."
+  },
+  {
+    title: "Argument map -> evidence-quality decision",
+    from: "Philosophy Argument",
+    to: "Engineering Application",
+    action: "Every argument map ends with one better decision about evidence, responsibility, or model limits."
   }
 ];
 
@@ -1732,7 +1845,9 @@ export const notionLearningFields = [
   "Obsidian Link",
   "GoodNotes Page",
   "Paper or Video URL",
-  "Evidence"
+  "Evidence",
+  "Validation Line",
+  "Confidence"
 ];
 
 export const notionReviewViews: NotionReviewView[] = [
@@ -1750,6 +1865,21 @@ export const notionReviewViews: NotionReviewView[] = [
     name: "Evidence Ledger",
     filter: "Evidence is not empty",
     purpose: "Show which topics have GoodNotes pages, Obsidian nodes, code, tests, or KPI evidence."
+  },
+  {
+    name: "Reconstruction Evidence Queue",
+    filter: "Validation Line = reconstruction and Evidence is not empty",
+    purpose: "Keep SLAM, pose-prior, GlobalMap, alignment, and CARLA-import evidence visible before it is reused."
+  },
+  {
+    name: "IELTS Error Queue",
+    filter: "Track = IELTS and Resource Type = Error Log",
+    purpose: "Review weak descriptors and corrected answers when you want language practice."
+  },
+  {
+    name: "Philosophy Argument Queue",
+    filter: "Track = Philosophy and Resource Type = Argument",
+    purpose: "Review thesis, premise, objection, and response cards that sharpen engineering judgment."
   }
 ];
 
@@ -1791,6 +1921,11 @@ export const syncReadinessChecks: SyncReadinessCheck[] = [
     label: "Local sync service",
     target: "http://127.0.0.1:8787/health",
     command: "npm run dev:sync"
+  },
+  {
+    label: "Local sync health",
+    target: "http://127.0.0.1:8787/health",
+    command: "curl -fsS http://127.0.0.1:8787/health"
   },
   {
     label: "Obsidian vault",

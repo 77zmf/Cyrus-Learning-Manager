@@ -35,16 +35,26 @@ describe("CoursesView", () => {
     expect(screen.getByText("空间模型：相机几何、BEV、occupancy")).toBeInTheDocument();
     expect(screen.getByText("论文阅读模板：问题、假设、公式、复现")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown 线性代数到坐标变换")).toBeInTheDocument();
-    expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(8);
-    expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(8);
-    expect(screen.getAllByText("交互练习").length).toBeGreaterThanOrEqual(8);
-    expect(screen.getAllByText("小白题").length).toBeGreaterThanOrEqual(24);
-    expect(screen.getAllByText("公式选择").length).toBeGreaterThanOrEqual(8);
-    expect(screen.getAllByText("GoodNotes 输出检查").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getByText("IELTS 输出到错误归因")).toBeInTheDocument();
+    expect(screen.getByText("哲学论证到工程判断")).toBeInTheDocument();
+    expect(screen.getByText("重建 SLAM 技术栈到验证资产")).toBeInTheDocument();
+    expect(screen.getByText("MIT 6.006 到 simctl 数据结构")).toBeInTheDocument();
+    expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(12);
+    expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(12);
+    expect(screen.getAllByText("交互练习").length).toBeGreaterThanOrEqual(12);
+    expect(screen.getAllByText("小白题").length).toBeGreaterThanOrEqual(36);
+    expect(screen.getAllByText("公式选择").length).toBeGreaterThanOrEqual(12);
+    expect(screen.getAllByText("GoodNotes 输出检查").length).toBeGreaterThanOrEqual(12);
     expect(screen.getByText("GoodNotes: Page 3B1B-M001")).toBeInTheDocument();
+    expect(screen.getByText("GoodNotes: Page R001")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian: PIX Simulation Validation -> Reconstruction SLAM")).toBeInTheDocument();
     expect(screen.getByText(/先学标量，再学向量，再学矩阵/)).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page M001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Concept Graph -> Linear Algebra")).toBeInTheDocument();
+    expect(screen.getByText("Detailed stack and reconstruction SLAM line")).toHaveAttribute(
+      "href",
+      "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
+    );
     expect(screen.getAllByText("MIT 6.241J Dynamic Systems and Control")[0]).toHaveAttribute(
       "href",
       "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"

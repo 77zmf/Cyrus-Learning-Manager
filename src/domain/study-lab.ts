@@ -1,6 +1,13 @@
 import type { TaskPriority, TrackId } from "./types";
 
-export type StudyMode = "formula" | "paper" | "course" | "ielts-output" | "argument" | "closure";
+export type StudyMode =
+  | "formula"
+  | "paper"
+  | "course"
+  | "ielts-output"
+  | "argument"
+  | "closure"
+  | "reconstruction";
 
 export interface StudySource {
   title: string;
@@ -27,7 +34,8 @@ export const studyModeLabels: Record<StudyMode, string> = {
   course: "Course",
   "ielts-output": "IELTS Output",
   argument: "Argument",
-  closure: "Closure"
+  closure: "Closure",
+  reconstruction: "Reconstruction"
 };
 
 export const hermesCloseoutFields = [
@@ -249,6 +257,37 @@ export const studyPlans: StudyPlan[] = [
       }
     ],
     taskTitle: "Work validation closure: capture one evidence-backed loop",
+    priority: "high"
+  },
+  {
+    id: "reconstruction-slam-handoff",
+    track: "work-validation",
+    mode: "reconstruction",
+    title: "Reconstruction SLAM handoff session",
+    question:
+      "Which SLAM or reconstruction artifact can become validation evidence, and which line should consume it?",
+    prompt:
+      "Use the imported Notion page. Treat SLAM as an offline producer: trajectory, GlobalMap.pcdrgb, pose prior, alignment diagnostics, then decide whether the consumer is map refresh, CARLA import, or stable validation. For CARLA, check mesh + OpenDRIVE + collision proxy instead of assuming Gaussian/NeRF output is directly runnable.",
+    checklist: [
+      "Name the producer: LIO-RF, FAST-LIO, pycolmap, Open3D, or another reconstruction tool.",
+      "Name the artifact: trajectory, GlobalMap.pcdrgb, pose_prior_manifest, mesh, OpenDRIVE, or collision proxy.",
+      "Name the metric: continuity, RMSE, coverage, drift, or KPI gate.",
+      "Name the consumer: map refresh, CARLA asset import, report/replay, or research visualization.",
+      "Mark the line as stable, shadow, or reconstruction before creating a task."
+    ],
+    template:
+      "Producer:\nArtifact:\nMetric:\nConsumer:\nValidation Line: stable | shadow | reconstruction\nCan enter stable validation now?:\nMissing evidence:\nNext action:\nRollback or risk:",
+    sources: [
+      {
+        title: "Detailed stack and reconstruction SLAM line",
+        url: "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
+      },
+      {
+        title: "PIX Simulation Validation Platform",
+        url: "https://github.com/77zmf/PIX-Simulation-Validation-Platform"
+      }
+    ],
+    taskTitle: "Reconstruction SLAM handoff: classify one artifact",
     priority: "high"
   }
 ];

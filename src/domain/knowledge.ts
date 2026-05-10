@@ -706,6 +706,289 @@ export const deepStudyCards: DeepStudyCard[] = [
         url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
       }
     ]
+  },
+  {
+    id: "deep-ielts-output-error-attribution",
+    track: "ielts",
+    title: "IELTS 输出到错误归因",
+    layer: "语言输出 -> 评分证据",
+    beginnerBridge:
+      "不要先背一堆模板。先产出一段真实答案，再用评分标准找出一个最具体的弱点：词汇、语法、连贯、任务回应或发音。",
+    coreIdeas: [
+      "Raw output 是原始证据，不能只写“今天练了口语”。",
+      "Band descriptor 是评分语言，帮你把感觉差变成可修正的问题。",
+      "Error cause 要写成下一次能修的动作，例如 tense drift、topic support weak、linking overuse。"
+    ],
+    derivationEntry: "raw answer -> rubric check -> error cause -> better version -> next drill",
+    practice: "写一段 Task 2 body paragraph 或录一段 Part 2 answer，只改一个最高价值错误。",
+    goodNotes: "GoodNotes: Page I001",
+    obsidian: "Obsidian: IELTS -> Error Attribution",
+    notion: "Notion: Track=IELTS, Resource Type=Error Log, Evidence=raw answer + correction",
+    practiceQuestions: [
+      {
+        prompt: "为什么先产出再纠错？",
+        answer: "答案：真实输出暴露的是你当前会犯的错误，比空背模板更能形成可复盘证据。"
+      },
+      {
+        prompt: "错误归因要具体到什么程度？",
+        answer: "答案：要具体到下一次能练的动作，例如 topic sentence 太弱，而不是笼统写“写作不好”。"
+      },
+      {
+        prompt: "Notion 应该记录什么？",
+        answer: "答案：记录模块、原始答案、估分、错误类型、原因、修正版和下一次 drill。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "IELTS 输出复盘的最小链路是什么？",
+      choices: [
+        {
+          label: "A",
+          value: "raw output -> rubric -> error cause -> correction",
+          isCorrect: true,
+          feedback: "正确：这条链路把语言练习变成可复盘证据。"
+        },
+        {
+          label: "B",
+          value: "template -> memorization -> next template",
+          isCorrect: false,
+          feedback: "还不对：只背模板很容易绕开真实输出问题。"
+        },
+        {
+          label: "C",
+          value: "video -> bookmark -> done",
+          isCorrect: false,
+          feedback: "还不对：收藏材料不等于形成输出证据。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page I001 写完了吗？",
+      expected: "已记录：Page I001 应包含 raw output、rubric phrase、error cause、better version。"
+    },
+    sources: [
+      {
+        title: "IELTS scoring in detail",
+        url: "https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail"
+      },
+      {
+        title: "IELTS Speaking band descriptors",
+        url: "https://ielts.org/cdn/ielts-guides/ielts-speaking-band-descriptors.pdf"
+      }
+    ]
+  },
+  {
+    id: "deep-philosophy-argument-engineering-judgment",
+    track: "philosophy",
+    title: "哲学论证到工程判断",
+    layer: "论证结构 -> 证据质量",
+    beginnerBridge:
+      "哲学不是背名词。你先练四件事：一句 thesis，两条 premises，一个 objection，一个 response。这个结构能反过来帮助你判断工程证据够不够。",
+    coreIdeas: [
+      "Thesis 是你要主张的结论，premise 是支持它的理由。",
+      "Objection 不是反对自己，而是提前找出论证最脆弱的地方。",
+      "工程判断里也有论证：为什么这个证据能支持 close issue、release 或继续测试。"
+    ],
+    derivationEntry: "thesis -> premise 1 -> premise 2 -> objection -> response -> engineering decision",
+    practice: "选一篇 SEP 条目或 AI ethics 片段，写一张 argument map，再连接到一个验证决策。",
+    goodNotes: "GoodNotes: Page PH001",
+    obsidian: "Obsidian: Philosophy -> Argument Map",
+    notion: "Notion: Philosophy Reading Tracker, purpose=argument clarity and technology judgment",
+    practiceQuestions: [
+      {
+        prompt: "为什么 objection 很重要？",
+        answer: "答案：它帮你提前看到论证最弱处，避免只收集支持自己观点的证据。"
+      },
+      {
+        prompt: "哲学和工程验证怎么连接？",
+        answer: "答案：工程验证也需要判断证据是否足够支持一个结论，例如问题是否真的关闭。"
+      },
+      {
+        prompt: "一张 argument map 最少要有什么？",
+        answer: "答案：至少要有 thesis、premises、objection、response 和一个实际判断。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "最小论证地图的结构是什么？",
+      choices: [
+        {
+          label: "A",
+          value: "thesis -> premises -> objection -> response",
+          isCorrect: true,
+          feedback: "正确：这能把抽象阅读变成可检查的推理结构。"
+        },
+        {
+          label: "B",
+          value: "quote -> quote -> quote",
+          isCorrect: false,
+          feedback: "还不对：只摘抄没有暴露推理关系。"
+        },
+        {
+          label: "C",
+          value: "author -> year -> archive",
+          isCorrect: false,
+          feedback: "还不对：这是文献管理，不是论证理解。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page PH001 写完了吗？",
+      expected: "已记录：Page PH001 应包含 thesis、premises、objection、response、engineering decision。"
+    },
+    sources: [
+      {
+        title: "Stanford Encyclopedia of Philosophy",
+        url: "https://plato.stanford.edu/"
+      },
+      {
+        title: "SEP Ethics of Artificial Intelligence and Robotics",
+        url: "https://plato.stanford.edu/entries/ethics-ai/"
+      },
+      {
+        title: "Philosophy Reading Tracker",
+        url: "https://www.notion.so/350ef7e6aaa98185a4f6fe93fe6b8b32"
+      }
+    ]
+  },
+  {
+    id: "deep-reconstruction-slam-handoff",
+    track: "work-validation",
+    title: "重建 SLAM 技术栈到验证资产",
+    layer: "Reconstruction -> stable validation asset",
+    beginnerBridge:
+      "把重建线先看成“资产生产线”，不是直接控制车辆的实时系统。它产出轨迹、点云、pose prior、对齐诊断，稳定验证线再决定能不能拿来跑 CARLA 或地图刷新。",
+    coreIdeas: [
+      "SLAM producer 输出 trajectory、GlobalMap.pcdrgb、pose_prior_manifest 和 alignment diagnostics。",
+      "CARLA import 需要 mesh + OpenDRIVE + collision proxy，Gaussian/NeRF/3DGS 主要是视觉研究层。",
+      "稳定线、shadow 线和 reconstruction 线要分开记录，避免研究资产误写成已验证主线能力。"
+    ],
+    derivationEntry:
+      "H_slam = {T_map<-base(t), GlobalMap.pcdrgb, pose_prior_manifest, alignment_diagnostics}",
+    practice:
+      "从 Notion 新页面抽一条 SLAM 产物，写清 producer、artifact、metric、consumer 和是否能进入 stable validation。",
+    goodNotes: "GoodNotes: Page R001",
+    obsidian: "Obsidian: PIX Simulation Validation -> Reconstruction SLAM",
+    notion: "Notion: Detailed stack and reconstruction SLAM line",
+    practiceQuestions: [
+      {
+        prompt: "为什么 SLAM 线不是稳定实时控制线？",
+        answer: "答案：它当前是离线资产生产者，给地图刷新、重建或 CARLA 资产提供证据，不直接接管生产控制。"
+      },
+      {
+        prompt: "CARLA 导入最少要看哪三类对象？",
+        answer: "答案：mesh / FBX / OBJ，OpenDRIVE / XODR，以及 collision proxy。"
+      },
+      {
+        prompt: "pose prior 最常见的消费者是谁？",
+        answer: "答案：重建、地图对齐、CARLA 资产检查或后续定位验证流程。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "重建 SLAM handoff 最关键的证据包是什么？",
+      choices: [
+        {
+          label: "A",
+          value: "trajectory + GlobalMap + alignment diagnostics",
+          isCorrect: true,
+          feedback: "正确：这些对象能说明 SLAM 是否产出可复用的验证资产。"
+        },
+        {
+          label: "B",
+          value: "only a nice screenshot",
+          isCorrect: false,
+          feedback: "还不对：截图不能替代 trajectory、map 和对齐指标。"
+        },
+        {
+          label: "C",
+          value: "daily study plan",
+          isCorrect: false,
+          feedback: "还不对：你要的是可验证资产链，不是日历式计划。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "GoodNotes: Page R001 写完了吗？",
+      expected:
+        "已记录：GoodNotes: Page R001 应包含 producer、artifact、metric、consumer、stable/shadow/reconstruction 边界。"
+    },
+    sources: [
+      {
+        title: "Detailed stack and reconstruction SLAM line",
+        url: "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
+      },
+      {
+        title: "PIX Simulation Validation Platform",
+        url: "https://github.com/77zmf/PIX-Simulation-Validation-Platform"
+      }
+    ]
+  },
+  {
+    id: "deep-mit-6006-simctl-data-structures",
+    track: "mit-eecs",
+    title: "MIT 6.006 到 simctl 数据结构",
+    layer: "Algorithms -> validation control plane",
+    beginnerBridge:
+      "算法课不要只做题。把数组、哈希表、堆、图、BFS/DFS、最短路都连接到 simctl 的 manifest、scenario index、run_result 和 digest 生成。",
+    coreIdeas: [
+      "哈希表适合从 scenario id、run id、asset hash 快速找到证据。",
+      "图适合表示 scenario -> asset -> run -> KPI -> report 的依赖链。",
+      "优先队列适合把高风险 failcase、blocked owner 或 next review 排到前面。"
+    ],
+    derivationEntry: "scenario graph G=(V,E), V={asset, scenario, run_result, kpi_gate, report}",
+    practice: "用一个小字典和一张依赖图解释 simctl 为什么要标准化 manifest 和 run_result。",
+    goodNotes: "GoodNotes: Page MIT-A001",
+    obsidian: "Obsidian: MIT EECS -> 6.006 -> simctl data structures",
+    notion: "Notion: Track=MIT EECS, Evidence=Page MIT-A001, next=one executable data-structure exercise",
+    practiceQuestions: [
+      {
+        prompt: "为什么 run id 适合放进哈希表？",
+        answer: "答案：因为你经常需要用一个 id 快速找到对应 run_result、report 或 evidence。"
+      },
+      {
+        prompt: "为什么 scenario 到 report 像图？",
+        answer: "答案：它由多个对象和依赖边组成，能追踪资产、运行、KPI 和报告之间的关系。"
+      },
+      {
+        prompt: "MIT 6.006 学完要落到什么产物？",
+        answer: "答案：至少落到一个可执行的小数据结构例子，并连接到 Cyrus 或 simctl 对象。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个结构最适合表达 scenario -> run_result -> KPI gate？",
+      choices: [
+        {
+          label: "A",
+          value: "directed graph",
+          isCorrect: true,
+          feedback: "正确：依赖关系天然是有方向的图。"
+        },
+        {
+          label: "B",
+          value: "single string",
+          isCorrect: false,
+          feedback: "还不对：单个字符串无法表达对象之间的依赖边。"
+        },
+        {
+          label: "C",
+          value: "random checklist only",
+          isCorrect: false,
+          feedback: "还不对：清单可以辅助，但核心依赖关系需要结构化。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page MIT-A001 写完了吗？",
+      expected: "已记录：Page MIT-A001 应包含 hash map、graph、priority queue 和 simctl evidence chain。"
+    },
+    sources: [
+      {
+        title: "MIT 6.006 Introduction to Algorithms",
+        url: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/"
+      },
+      {
+        title: "PIX Simulation Validation Platform",
+        url: "https://github.com/77zmf/PIX-Simulation-Validation-Platform"
+      }
+    ]
   }
 ];
 

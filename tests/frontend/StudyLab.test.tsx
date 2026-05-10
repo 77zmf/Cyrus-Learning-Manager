@@ -63,4 +63,20 @@ describe("StudyLab", () => {
     expect(screen.getByText("Work validation closure loop")).toBeInTheDocument();
     expect(screen.getByText(/evidence, status, blocker, owner, next action/i)).toBeInTheDocument();
   });
+
+  it("supports a reconstruction handoff mode sourced from the newly added stack page", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "work-validation" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Reconstruction" }));
+
+    expect(screen.getByText("Reconstruction SLAM handoff session")).toBeInTheDocument();
+    expect(screen.getByText(/mesh \+ OpenDRIVE \+ collision proxy/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Detailed stack and reconstruction SLAM line" })).toHaveAttribute(
+      "href",
+      "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
+    );
+  });
 });

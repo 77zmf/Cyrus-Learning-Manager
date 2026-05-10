@@ -186,7 +186,7 @@ export const lqgFormulaTerms: FormulaTerm[] = [
 
 export const mpcFormulaTerms: FormulaTerm[] = [
   {
-    label: "预测时域 N",
+    label: "预测时域",
     symbol: "N",
     meaning: "每次优化往前看多少步。"
   },

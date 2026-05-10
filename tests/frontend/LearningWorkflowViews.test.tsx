@@ -126,10 +126,18 @@ describe("learning workflow views", () => {
     expect(screen.getByText("错题重写")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Derivation Cards" })).toBeInTheDocument();
     expect(screen.getByText("State transition solution")).toBeInTheDocument();
-    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText("Kalman prediction-update")).toBeInTheDocument();
+    expect(screen.getByText("MPC constrained rollout")).toBeInTheDocument();
+    expect(screen.getByText("World model imagined rollout")).toBeInTheDocument();
+    expect(screen.getByText("Camera projection to BEV")).toBeInTheDocument();
+    expect(screen.getByText("Reconstruction SLAM pose-prior handoff")).toBeInTheDocument();
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(8);
     expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
     expect(screen.getByText("Riccati 方程")).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(6);
+    expect(screen.getByText("Kalman 增益")).toBeInTheDocument();
+    expect(screen.getByText("预测时域")).toBeInTheDocument();
+    expect(screen.getByText("Pose prior")).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(12);
     expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getAllByText(/GoodNotes Summary/).length).toBeGreaterThan(0);
   });
@@ -146,7 +154,13 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Formula")).toBeInTheDocument();
     expect(screen.getByText("Paper")).toBeInTheDocument();
     expect(screen.getByText("Engineering Application")).toBeInTheDocument();
+    expect(screen.getByText("Reconstruction / SLAM Producer")).toBeInTheDocument();
+    expect(screen.getByText("IELTS Output")).toBeInTheDocument();
+    expect(screen.getByText("Philosophy Argument")).toBeInTheDocument();
     expect(screen.getByText("Control formula -> GoodNotes derivation")).toBeInTheDocument();
+    expect(screen.getByText("Reconstruction stack -> validation asset")).toBeInTheDocument();
+    expect(screen.getByText("IELTS error -> review queue")).toBeInTheDocument();
+    expect(screen.getByText("Argument map -> evidence-quality decision")).toBeInTheDocument();
   });
 
   it("renders Notion as the structured review and index database", () => {
@@ -172,10 +186,15 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Next Review")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page")).toBeInTheDocument();
     expect(screen.getByText("Evidence")).toBeInTheDocument();
+    expect(screen.getByText("Validation Line")).toBeInTheDocument();
+    expect(screen.getByText("Confidence")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Notion Review Views" })).toBeInTheDocument();
     expect(screen.getByText("Next Review Queue")).toBeInTheDocument();
     expect(screen.getByText("Paper Queue")).toBeInTheDocument();
     expect(screen.getByText("Evidence Ledger")).toBeInTheDocument();
+    expect(screen.getByText("Reconstruction Evidence Queue")).toBeInTheDocument();
+    expect(screen.getByText("IELTS Error Queue")).toBeInTheDocument();
+    expect(screen.getByText("Philosophy Argument Queue")).toBeInTheDocument();
   });
 
   it("renders sync readiness checks for local integrations", () => {
@@ -188,8 +207,10 @@ describe("learning workflow views", () => {
 
     expect(screen.getByRole("heading", { name: "Sync Readiness" })).toBeInTheDocument();
     expect(screen.getByText("Vite page")).toBeInTheDocument();
+    expect(screen.getByText("Local sync service")).toBeInTheDocument();
     expect(screen.getByText("Obsidian vault")).toBeInTheDocument();
     expect(screen.getByText("Notion database")).toBeInTheDocument();
     expect(screen.getByText("http://127.0.0.1:5173/Cyrus-Learning-Manager/")).toBeInTheDocument();
+    expect(screen.getByText("curl -fsS http://127.0.0.1:8787/health")).toBeInTheDocument();
   });
 });

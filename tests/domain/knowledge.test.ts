@@ -55,7 +55,10 @@ describe("knowledge seeds", () => {
   });
 
   it("keeps deep study cards actionable and sourced", () => {
-    expect(deepStudyCards.length).toBeGreaterThanOrEqual(8);
+    expect(deepStudyCards.length).toBeGreaterThanOrEqual(12);
+    expect(deepStudyCards.some((card) => card.id === "deep-reconstruction-slam-handoff")).toBe(true);
+    expect(deepStudyCards.some((card) => card.title === "IELTS 输出到错误归因")).toBe(true);
+    expect(deepStudyCards.some((card) => card.title === "哲学论证到工程判断")).toBe(true);
     expect(deepStudyCards.every((card) => card.coreIdeas.length >= 3)).toBe(true);
     expect(deepStudyCards.every((card) => card.sources.length > 0)).toBe(true);
     expect(deepStudyCards.every((card) => card.goodNotes && card.obsidian && card.notion)).toBe(true);
