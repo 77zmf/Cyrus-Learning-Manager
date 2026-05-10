@@ -53,6 +53,39 @@ export const spatialIntelligenceFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const quaternionFormulaTerms: FormulaTerm[] = [
+  {
+    label: "单位四元数",
+    symbol: "q=w+xi+yj+zk,\\quad \\lVert q\\rVert=1",
+    meaning: "只用长度为 1 的四元数表示旋转；它可以理解成 4D 单位球面上的一个点。"
+  },
+  {
+    label: "轴角到四元数",
+    symbol: "q=\\cos\\frac{\\theta}{2}+\\sin\\frac{\\theta}{2}(u_xi+u_yj+u_zk)",
+    meaning: "旋转轴给方向，半角给标量和向量部分；半角也是双覆盖出现的原因。"
+  },
+  {
+    label: "双覆盖 q 和 -q",
+    symbol: "q\\sim -q",
+    meaning: "单位四元数球面上相反的两个点，对应同一个三维旋转。"
+  },
+  {
+    label: "立体投影",
+    symbol: "S^3\\rightarrow \\mathbb{R}^3",
+    meaning: "把 4D 单位球面投到 3D 空间里看，帮助你把抽象旋转变成可拖动的形状。"
+  },
+  {
+    label: "旋转夹心 qvq^{-1}",
+    symbol: "v'=qvq^{-1}",
+    meaning: "把三维向量当成纯虚四元数，左右各乘一次，得到旋转后的向量。"
+  },
+  {
+    label: "乘法规则",
+    symbol: "i^2=j^2=k^2=ijk=-1",
+    meaning: "四元数乘法不满足交换律，所以组合旋转时顺序不能随便换。"
+  }
+];
+
 export const manimStudioPanels: ManimStudioPanel[] = [
   {
     id: "slam",
@@ -113,6 +146,85 @@ export const manimStudioPanels: ManimStudioPanel[] = [
         label: "MIT 6.8300",
         url: "https://ocw.mit.edu/courses/6-8300-advances-in-computer-vision-fall-2023/",
         note: "把视觉几何、表示学习和 3D 视觉放回课程体系里。"
+      }
+    ]
+  },
+  {
+    id: "quaternion",
+    title: "Quaternion Explorable",
+    kicker: "Unit quaternion -> double cover -> rotation",
+    summary:
+      "把 Ben Eater / 3Blue1Brown 的四元数可探索思路接到 SLAM 姿态学习：先看单位四元数，理解 q 和 -q 的双覆盖，再把 v'=qvq^{-1} 接到相机、IMU 和位姿图。",
+    formula:
+      "q=\\cos\\frac{\\theta}{2}+\\sin\\frac{\\theta}{2}(u_xi+u_yj+u_zk),\\quad v'=qvq^{-1},\\quad q\\sim -q",
+    formulaTerms: quaternionFormulaTerms,
+    stages: [
+      {
+        id: "quat-unit",
+        label: "单位四元数",
+        beginnerQuestion: "为什么只有长度为 1 的四元数才拿来表示旋转？",
+        explanation:
+          "单位四元数像 4D 单位球面上的点。长度固定以后，它只保留旋转信息，不把向量额外放大或缩小。",
+        goodNotes: "GoodNotes Page Q-001：写 q=w+xi+yj+zk 和 ||q||=1，画一个单位圆类比单位球。",
+        obsidian: "Obsidian: SLAM -> Orientation -> Unit quaternion",
+        notion: "Notion: Topic=Quaternion unit norm, Evidence=GoodNotes Q-001"
+      },
+      {
+        id: "quat-double-cover",
+        label: "双覆盖",
+        beginnerQuestion: "为什么 q 和 -q 会代表同一个 3D 旋转？",
+        explanation:
+          "四元数用半角表达旋转；在单位球面上走到对面的点，会让左右夹乘的符号抵消，所以方向结果相同。",
+        goodNotes: "GoodNotes Page Q-002：写 q ~ -q，并画一对对跖点指向同一个旋转。",
+        obsidian: "Obsidian: Quaternion -> Double cover",
+        notion: "Notion: Topic=Quaternion double cover, Evidence=GoodNotes Q-002"
+      },
+      {
+        id: "quat-stereo",
+        label: "立体投影",
+        beginnerQuestion: "四维单位球看不见，为什么还可以学习？",
+        explanation:
+          "立体投影把 S^3 投到我们能看的三维空间里。你不是在背 4D，而是在观察旋转状态如何连续移动。",
+        goodNotes: "GoodNotes Page Q-003：画 S^2 到平面的投影类比，再写 S^3 -> R^3。",
+        obsidian: "Obsidian: Quaternion -> Stereographic projection",
+        notion: "Notion: Topic=Stereographic projection, Evidence=GoodNotes Q-003"
+      },
+      {
+        id: "quat-multiply",
+        label: "四元数乘法",
+        beginnerQuestion: "为什么四元数乘法顺序不能换？",
+        explanation:
+          "i、j、k 的乘法方向带有旋转顺序。先绕 x 再绕 y，和先绕 y 再绕 x，一般不是同一个姿态。",
+        goodNotes: "GoodNotes Page Q-004：写 i^2=j^2=k^2=ijk=-1，并做一次 ij=k、ji=-k。",
+        obsidian: "Obsidian: Quaternion -> Non-commutative multiplication",
+        notion: "Notion: Topic=Quaternion multiplication, Evidence=GoodNotes Q-004"
+      },
+      {
+        id: "quat-sandwich",
+        label: "旋转夹心",
+        beginnerQuestion: "v'=qvq^{-1} 这串式子到底在干什么？",
+        explanation:
+          "把 3D 向量写成纯虚四元数 v，再用 q 从左边推、用 q^{-1} 从右边拉，结果仍是纯虚部分，也就是旋转后的 3D 向量。",
+        goodNotes: "GoodNotes Page Q-005：写 v'=qvq^{-1}，标出 q、v、q^{-1} 各自角色。",
+        obsidian: "Obsidian: Quaternion -> Rotation sandwich",
+        notion: "Notion: Topic=Quaternion rotation sandwich, Evidence=GoodNotes Q-005"
+      }
+    ],
+    sourceLinks: [
+      {
+        label: "Visualizing quaternions",
+        url: "https://eater.net/quaternions",
+        note: "Ben Eater and 3Blue1Brown's explorable video sequence, adapted here as a SLAM orientation module."
+      },
+      {
+        label: "3Blue1Brown quaternion video",
+        url: "https://www.youtube.com/watch?v=d4EgbgTm0Bg",
+        note: "Four-dimensional visualization route for understanding quaternion rotation."
+      },
+      {
+        label: "Quaternion rotation follow-up",
+        url: "https://www.youtube.com/watch?v=zjMuIxRvygQ",
+        note: "Short companion video on why quaternions describe 3D orientation."
       }
     ]
   },

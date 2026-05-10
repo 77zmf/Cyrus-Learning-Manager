@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readdirSync, copyFileSync } from "node:fs";
+import { chmodSync, copyFileSync, existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -6,10 +6,12 @@ const root = resolve(new URL("../..", import.meta.url).pathname);
 const sceneFile = join(root, "scripts", "manim", "spatial_scenes.py");
 const mediaDir = join(root, "output", "manim");
 const publicDir = join(root, "public", "manim");
+const toolBinDir = join(mediaDir, ".bin");
 
 const sceneMap = new Map([
   ["SlamProjectionScene", "slam_projection.mp4"],
   ["PoseGraphLoopClosureScene", "pose_graph_loop.mp4"],
+  ["QuaternionRotationScene", "quaternion_rotation.mp4"],
   ["ReconstructionPipelineScene", "reconstruction_pipeline.mp4"],
   ["SpatialIntelligenceScene", "spatial_intelligence.mp4"]
 ]);
@@ -17,13 +19,42 @@ const sceneMap = new Map([
 const requestedScenes = process.argv.slice(2);
 const scenes = requestedScenes.length > 0 ? requestedScenes : [...sceneMap.keys()];
 const manimBin = process.env.MANIM_BIN ?? "manim";
+const originalPath = process.env.PATH ?? "";
 
 function run(command, args) {
   return spawnSync(command, args, {
     cwd: root,
     encoding: "utf8",
+    env: process.env,
     stdio: "pipe"
   });
+}
+
+function resolveExecutable(command) {
+  const result = spawnSync("/bin/sh", ["-lc", `command -v ${command}`], {
+    cwd: root,
+    encoding: "utf8",
+    env: { ...process.env, PATH: originalPath },
+    stdio: "pipe"
+  });
+
+  return result.status === 0 ? result.stdout.trim() : "";
+}
+
+function prepareTexEnvironment() {
+  const dvisvgmBin = process.env.DVISVGM_BIN ?? resolveExecutable("dvisvgm");
+
+  if (!dvisvgmBin) {
+    return;
+  }
+
+  mkdirSync(toolBinDir, { recursive: true });
+  const wrapperPath = join(toolBinDir, "dvisvgm");
+  writeFileSync(wrapperPath, `#!/bin/sh\nexec "${dvisvgmBin}" --no-specials "$@"\n`);
+  chmodSync(wrapperPath, 0o755);
+
+  process.env.PATH = `${toolBinDir}:${originalPath}`;
+  process.env.TEXMFCNF ??= "/opt/homebrew/share/texmf-dist/web2c";
 }
 
 function assertManimAvailable() {
@@ -73,8 +104,9 @@ function findRenderedVideo(sceneName) {
   return candidates[0];
 }
 
-assertManimAvailable();
 mkdirSync(publicDir, { recursive: true });
+prepareTexEnvironment();
+assertManimAvailable();
 
 for (const sceneName of scenes) {
   const outputName = sceneMap.get(sceneName);

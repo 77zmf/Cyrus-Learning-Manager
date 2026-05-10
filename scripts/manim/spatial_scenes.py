@@ -11,7 +11,10 @@ class CyrusScene(Scene):
         return group
 
     def formula_tag(self, tex, corner=DOWN):
-        formula = Text(tex, font_size=24, font="Menlo")
+        formula = MathTex(tex, font_size=30)
+        max_width = config.frame_width - 1.0
+        if formula.width > max_width:
+            formula.scale_to_fit_width(max_width)
         box = RoundedRectangle(
             corner_radius=0.16,
             width=formula.width + 0.8,
@@ -20,7 +23,8 @@ class CyrusScene(Scene):
             fill_color=BLACK,
             fill_opacity=0.04,
         )
-        group = VGroup(box, formula).move_to(formula)
+        box.move_to(formula)
+        group = VGroup(box, formula)
         group.to_edge(corner)
         self.play(FadeIn(group, shift=UP * 0.1))
         return group
@@ -59,7 +63,7 @@ class SlamProjectionScene(CyrusScene):
         self.play(Create(ray))
         self.play(Create(ray_to_plane), FadeIn(projected, scale=0.6), Write(pixel))
         self.play(Create(norm_plane), FadeIn(norm_point), Write(norm_label))
-        self.formula_tag("u = fx X/Z + cx,   v = fy Y/Z + cy")
+        self.formula_tag(r"u=f_x\frac{X}{Z}+c_x,\quad v=f_y\frac{Y}{Z}+c_y")
         self.wait(1.2)
 
 
@@ -104,7 +108,48 @@ class PoseGraphLoopClosureScene(CyrusScene):
             loop_label.animate.set_color(BLACK),
             run_time=1.2,
         )
-        self.formula_tag("min sum ||z_ij - h(T_i, X_j)||^2 + sum ||e_kl||^2")
+        self.formula_tag(r"\min_{T,X}\sum_{ij}\lVert z_{ij}-h(T_i,X_j)\rVert^2+\sum_{kl}\lVert e_{kl}\rVert^2")
+        self.wait(1.2)
+
+
+class QuaternionRotationScene(CyrusScene):
+    def construct(self):
+        self.title_bar("Quaternion rotation", "Unit quaternions encode 3D orientation without gimbal lock")
+
+        sphere = Circle(radius=1.35, color=WHITE)
+        sphere.shift(LEFT * 3.25 + DOWN * 0.2)
+        equator = Ellipse(width=2.7, height=0.78, color=GRAY_B).move_to(sphere)
+        axis = Line(sphere.get_center() + LEFT * 1.55 + DOWN * 0.34, sphere.get_center() + RIGHT * 1.55 + UP * 0.34)
+        axis.set_stroke(GRAY_A, width=4)
+        axis_label = MathTex(r"\hat{u}", font_size=28).next_to(axis, UP, buff=0.12)
+
+        q_point = Dot(sphere.get_center() + RIGHT * 0.72 + UP * 0.78, radius=0.1, color=WHITE)
+        minus_q_point = Dot(sphere.get_center() + LEFT * 0.72 + DOWN * 0.78, radius=0.1, color=GRAY_B)
+        q_label = MathTex(r"q", font_size=30).next_to(q_point, RIGHT, buff=0.14)
+        minus_q_label = MathTex(r"-q", font_size=30).next_to(minus_q_point, LEFT, buff=0.14)
+        cover_label = Text("same 3D rotation", font_size=18, color=GRAY_C).next_to(sphere, DOWN, buff=0.26)
+
+        vector_origin = RIGHT * 1.2 + DOWN * 0.75
+        v = Arrow(vector_origin, vector_origin + RIGHT * 1.35 + UP * 0.22, buff=0, color=GRAY_C)
+        v_rot = Arrow(vector_origin, vector_origin + RIGHT * 0.5 + UP * 1.35, buff=0, color=WHITE)
+        arc = Arc(radius=0.9, start_angle=0.15, angle=1.05, color=WHITE).move_arc_center_to(vector_origin)
+        v_label = MathTex(r"v", font_size=28).next_to(v.get_end(), RIGHT, buff=0.12)
+        v_rot_label = MathTex(r"v'", font_size=28).next_to(v_rot.get_end(), UP, buff=0.12)
+
+        rules = VGroup(
+            MathTex(r"i^2=j^2=k^2=ijk=-1", font_size=30),
+            MathTex(r"q=\cos\frac{\theta}{2}+\sin\frac{\theta}{2}(u_xi+u_yj+u_zk)", font_size=30),
+            MathTex(r"v'=qvq^{-1}", font_size=34),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.28)
+        rules.move_to(RIGHT * 2.3 + UP * 1.0)
+
+        self.play(Create(sphere), Create(equator), Create(axis), Write(axis_label))
+        self.play(FadeIn(q_point, scale=0.7), Write(q_label), FadeIn(minus_q_point, scale=0.7), Write(minus_q_label))
+        self.play(Write(cover_label))
+        self.play(GrowArrow(v), Write(v_label))
+        self.play(Create(arc), TransformFromCopy(v, v_rot), Write(v_rot_label))
+        self.play(LaggedStart(*[Write(rule) for rule in rules], lag_ratio=0.18))
+        self.formula_tag(r"q\sim -q,\quad v'=qvq^{-1}")
         self.wait(1.2)
 
 
@@ -145,7 +190,7 @@ class ReconstructionPipelineScene(CyrusScene):
         self.play(TransformFromCopy(sparse, dense), run_time=1.2)
         self.play(TransformFromCopy(dense, gaussians), run_time=1.2)
         self.play(FadeIn(sensor_grid, shift=LEFT * 0.2))
-        self.formula_tag("baseline -> disparity -> depth -> renderable asset")
+        self.formula_tag(r"\mathrm{baseline}\rightarrow\mathrm{disparity}\rightarrow\mathrm{depth}\rightarrow\mathrm{asset}")
         self.wait(1.2)
 
 
@@ -179,12 +224,12 @@ class SpatialIntelligenceScene(CyrusScene):
             Line(LEFT * 1.15 + DOWN * 0.58, LEFT * 0.72 + DOWN * 1.1, color=GRAY_C),
         ).move_to(LEFT * 1.4 + DOWN * 1.0)
         planner = VGroup(
-            Text("a_t = pi(o_t, W_3D)", font_size=26, font="Menlo"),
+            MathTex(r"a_t=\pi(o_t,\hat{W}_{3D})", font_size=30),
             Text("planner reads the world", font_size=18, color=GRAY_C),
         ).arrange(DOWN, buff=0.18).move_to(RIGHT * 1.65 + DOWN * 1.0)
 
         self.play(LaggedStart(*[FadeIn(card, shift=UP * 0.08) for card in cards], lag_ratio=0.1))
         self.play(LaggedStart(*[GrowArrow(arrow) for arrow in arrows], lag_ratio=0.12))
         self.play(Create(world), Write(planner))
-        self.formula_tag("p(W_3D | I_1:n),   W_3D = G_theta(c)")
+        self.formula_tag(r"p(W_{3D}\mid I_{1:n}),\quad \hat{W}_{3D}=G_\theta(c)")
         self.wait(1.2)

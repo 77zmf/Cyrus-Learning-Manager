@@ -153,13 +153,17 @@ function ManimExplorablePreview({
       ? "点从世界坐标穿过相机，落到 image plane。拖动下方时间轴，看投影线如何移动。"
       : panelId === "reconstruction"
         ? "相机基线越清楚，稀疏点越能长成稠密点，再进入 3DGS 渲染资产。"
-        : "空间智能把观测变成三维世界，再让策略基于世界状态行动。";
+        : panelId === "quaternion"
+          ? "把单位四元数看成 4D 球面上的点。滑动时间轴时，q 和 -q 同步变化，但代表同一个姿态。"
+          : "空间智能把观测变成三维世界，再让策略基于世界状态行动。";
   const formula =
     panelId === "slam"
       ? "u=f_xX/Z+c_x"
       : panelId === "reconstruction"
         ? "depth\\propto baseline/disparity"
-        : "a_t=\\pi(o_t,\\hat W_{3D})";
+        : panelId === "quaternion"
+          ? "q=\\cos(\\theta/2)+\\mathbf{u}\\sin(\\theta/2)"
+          : "a_t=\\pi(o_t,\\hat W_{3D})";
 
   return (
     <div
@@ -181,6 +185,12 @@ function ManimExplorablePreview({
         <span className="manim-cloud c1" />
         <span className="manim-cloud c2" />
         <span className="manim-cloud c3" />
+        <span className="manim-quat-sphere" />
+        <span className="manim-quat-equator" />
+        <span className="manim-quat-point">q</span>
+        <span className="manim-quat-point antipode">-q</span>
+        <span className="manim-quat-vector">v</span>
+        <span className="manim-quat-arc" />
       </div>
       <div className="manim-preview-copy">
         <span>{stageLabel}</span>

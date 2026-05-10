@@ -77,6 +77,31 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("button", { name: "打开 SLAM Interface" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开 Quaternion Explorable" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "打开 Quaternion Explorable" }));
+    expect(screen.getByRole("button", { name: "打开 Quaternion Explorable" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+    expect(screen.getAllByText("单位四元数").length).toBeGreaterThan(0);
+    expect(screen.getByText("双覆盖 q 和 -q")).toBeInTheDocument();
+    expect(screen.getAllByText("立体投影").length).toBeGreaterThan(0);
+    expect(screen.getByText("旋转夹心 qvq^{-1}")).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: "Drag quaternion rotation lab" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Quaternion rotation angle")).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Quaternion rotation angle"), { target: { value: "120" } });
+    expect(screen.getByText("Quaternion angle: 120°")).toBeInTheDocument();
+    expect(screen.getByText("Quaternion rotation Manim scene")).toBeInTheDocument();
+    expect(screen.getByText("npm run manim:render -- QuaternionRotationScene")).toBeInTheDocument();
+    expect(screen.getByLabelText("Quaternion rotation Manim scene video")).toHaveAttribute(
+      "src",
+      "/Cyrus-Learning-Manager/manim/quaternion_rotation.mp4"
+    );
+    expect(screen.getByText("Visualizing quaternions").closest("a")).toHaveAttribute(
+      "href",
+      "https://eater.net/quaternions"
+    );
+    fireEvent.click(screen.getByRole("button", { name: "打开 SLAM Interface" }));
     expect(screen.getAllByText("位姿链").length).toBeGreaterThan(0);
     expect(container.querySelector(".spatial-stage-strip")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "拖动三维点，看它如何投影到像素" })).toBeInTheDocument();

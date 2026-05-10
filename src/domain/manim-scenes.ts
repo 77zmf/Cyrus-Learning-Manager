@@ -1,4 +1,4 @@
-export type ManimSceneTopic = "slam" | "reconstruction" | "spatial-intelligence";
+export type ManimSceneTopic = "slam" | "quaternion" | "reconstruction" | "spatial-intelligence";
 
 export interface ManimSceneCard {
   id: string;
@@ -36,6 +36,17 @@ export const manimSceneCards: ManimSceneCard[] = [
     purpose: "把漂移轨迹、回环边、残差收紧做成位姿图动画。",
     dragCue: "拖动 SLAM 地标后，看回环边如何让长期漂移从局部误差变成全局约束。",
     goodNotes: "GoodNotes SLAM-M002：画 pose node、landmark、loop edge、residual 四件事。"
+  },
+  {
+    id: "quaternion-rotation",
+    title: "Quaternion rotation Manim scene",
+    sceneName: "QuaternionRotationScene",
+    topic: "quaternion",
+    assetPath: "manim/quaternion_rotation.mp4",
+    command: "npm run manim:render -- QuaternionRotationScene",
+    purpose: "把单位四元数、双覆盖和 v'=qvq^{-1} 做成一段姿态旋转动画。",
+    dragCue: "网页里拖动四元数角度后，再看这段动画巩固半角、对跖点和旋转夹心。",
+    goodNotes: "GoodNotes Q-M001：暂停在 q 和 -q，对照写 q=cos(theta/2)+u sin(theta/2)。"
   },
   {
     id: "reconstruction-pipeline",
