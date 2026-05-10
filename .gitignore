@@ -10,3 +10,5 @@ coverage/
 server-data/
 .playwright-cli/
 output/
+__pycache__/
+*.pyc

@@ -8,13 +8,13 @@ import {
 } from "./formula-visuals";
 import type { FormulaTerm } from "./formula-visuals";
 
-export interface SpatialGlassSource {
+export interface ManimStudioSource {
   label: string;
   url: string;
   note: string;
 }
 
-export interface SpatialGlassStage {
+export interface ManimStudioStage {
   id: string;
   label: string;
   beginnerQuestion: string;
@@ -24,15 +24,15 @@ export interface SpatialGlassStage {
   notion: string;
 }
 
-export interface SpatialGlassPanel {
+export interface ManimStudioPanel {
   id: string;
   title: string;
   kicker: string;
   summary: string;
   formula: string;
   formulaTerms: FormulaTerm[];
-  stages: SpatialGlassStage[];
-  sourceLinks: SpatialGlassSource[];
+  stages: ManimStudioStage[];
+  sourceLinks: ManimStudioSource[];
 }
 
 export const spatialIntelligenceFormulaTerms: FormulaTerm[] = [
@@ -53,7 +53,7 @@ export const spatialIntelligenceFormulaTerms: FormulaTerm[] = [
   }
 ];
 
-export const spatialGlassPanels: SpatialGlassPanel[] = [
+export const manimStudioPanels: ManimStudioPanel[] = [
   {
     id: "slam",
     title: "SLAM Interface",

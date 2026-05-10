@@ -9,6 +9,7 @@
     "seed:knowledge": "tsx server/seed-knowledge.ts",
     "learning:new-card": "node scripts/learning/new-card.mjs",
     "learning:new-session": "node scripts/learning/new-session.mjs",
+    "manim:render": "node scripts/manim/render.mjs",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "test:watch": "vitest",

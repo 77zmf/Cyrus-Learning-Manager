@@ -18,7 +18,7 @@ describe("learning workflow views", () => {
       "href",
       "#section-3blue1brown"
     );
-    expect(screen.getByText("空间玻璃学习舱").closest("a")).toHaveAttribute("href", "#section-spatial-glass");
+    expect(screen.getByRole("link", { name: "Manim Studio" })).toHaveAttribute("href", "#section-manim-studio");
     expect(screen.getByRole("link", { name: "控制+SLAM课程目录" })).toHaveAttribute("href", "#section-guided-path");
     expect(screen.getByRole("heading", { name: "Start Here for Beginners" })).toBeInTheDocument();
     expect(screen.getByText("选一节课")).toBeInTheDocument();
@@ -66,8 +66,14 @@ describe("learning workflow views", () => {
     expect(screen.getByText("用 2D 点和两次坐标变换画出 lidar 到 map 的路径。")).toBeInTheDocument();
     expect(container.querySelectorAll("details.threeblue-route-card").length).toBeGreaterThanOrEqual(7);
     expect(container.querySelectorAll("details.threeblue-route-card[open]").length).toBe(1);
-    expect(screen.getByRole("heading", { name: "Spatial Glass Lab" })).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "Spatial glass topics" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Manim Studio" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Manim studio topics" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quaternion explorable reference" })).toHaveAttribute(
+      "href",
+      "https://eater.net/quaternions"
+    );
+    expect(screen.getByRole("application", { name: "Manim explorable preview" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Manim animation scrubber")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开 SLAM Interface" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" })).toBeInTheDocument();
@@ -98,6 +104,19 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "Normalized plane" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "拖动 SLAM 地标，看位姿链如何收紧" })).toBeInTheDocument();
     expect(screen.getByRole("application", { name: "Drag SLAM landmark lab" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Scene Queue" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Manim Community" })).toHaveAttribute(
+      "href",
+      "https://www.manim.community/"
+    );
+    expect(screen.getByText("scripts/manim/spatial_scenes.py")).toBeInTheDocument();
+    expect(screen.getByText("SLAM projection Manim scene")).toBeInTheDocument();
+    expect(screen.getByLabelText("SLAM projection Manim scene video")).toHaveAttribute(
+      "src",
+      "/Cyrus-Learning-Manager/manim/slam_projection.mp4"
+    );
+    expect(screen.getByText("Pose graph loop closure Manim scene")).toBeInTheDocument();
+    expect(screen.getByText("npm run manim:render -- SlamProjectionScene")).toBeInTheDocument();
     fireEvent.pointerDown(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
       clientX: 220,
       clientY: 90,
@@ -125,6 +144,8 @@ describe("learning workflow views", () => {
     expect(screen.getAllByText("COLMAP SfM").length).toBeGreaterThan(0);
     expect(screen.getByRole("heading", { name: "拖动相机基线，看三维重建如何变密" })).toBeInTheDocument();
     expect(screen.getByRole("application", { name: "Drag reconstruction camera rig" })).toBeInTheDocument();
+    expect(screen.getByText("COLMAP to Gaussian reconstruction Manim scene")).toBeInTheDocument();
+    expect(screen.getByText("npm run manim:render -- ReconstructionPipelineScene")).toBeInTheDocument();
     fireEvent.pointerDown(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
       clientX: 260,
       clientY: 120,

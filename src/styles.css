@@ -679,7 +679,7 @@ textarea {
 #section-start,
 #section-foundations,
 #section-3blue1brown,
-#section-spatial-glass,
+#section-manim-studio,
 #section-guided-path,
 #section-launch-queue,
 #section-tutor {
@@ -1113,11 +1113,6 @@ textarea {
   border-left-color: var(--line-strong);
 }
 
-.spatial-glass-panel {
-  display: grid;
-  gap: 18px;
-}
-
 .spatial-topic-tabs {
   display: grid;
   gap: 12px;
@@ -1171,24 +1166,6 @@ textarea {
   line-height: 1.18;
 }
 
-.spatial-glass-shell {
-  display: grid;
-  gap: 14px;
-}
-
-.spatial-glass-focus {
-  -webkit-backdrop-filter: blur(26px) saturate(140%);
-  backdrop-filter: blur(26px) saturate(140%);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(244, 244, 244, 0.56));
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 18px 42px rgba(0, 0, 0, 0.08);
-  display: grid;
-  gap: 16px;
-  grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
-  padding: 16px;
-}
-
 .spatial-focus-copy {
   display: grid;
   gap: 10px;
@@ -1213,6 +1190,496 @@ textarea {
   color: var(--ink-soft);
   line-height: 1.55;
   margin: 0;
+}
+
+.manim-studio-panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(236, 240, 246, 0.34) 52%, rgba(255, 255, 255, 0.5)),
+    rgba(255, 255, 255, 0.32);
+  display: grid;
+  gap: 18px;
+}
+
+.manim-reference-strip {
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  align-items: center;
+  backdrop-filter: blur(18px) saturate(130%);
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.manim-reference-strip a {
+  color: var(--ink);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.manim-reference-strip span {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.manim-topic-tabs {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.manim-topic-tabs button {
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  align-items: start;
+  backdrop-filter: blur(30px) saturate(175%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(245, 248, 252, 0.32)),
+    rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  box-shadow:
+    0 18px 46px rgba(17, 22, 31, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  color: var(--ink);
+  display: grid;
+  gap: 8px;
+  min-height: 108px;
+  overflow: hidden;
+  padding: 14px;
+  position: relative;
+  text-align: left;
+}
+
+.manim-topic-tabs button::before {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.62;
+  pointer-events: none;
+  position: absolute;
+}
+
+.manim-topic-tabs button > * {
+  position: relative;
+  z-index: 1;
+}
+
+.manim-topic-tabs button:hover {
+  background: var(--glass-strong);
+}
+
+.manim-topic-tabs button.active {
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
+    rgba(9, 10, 12, 0.72);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 18px 42px rgba(8, 9, 11, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  color: var(--paper-soft);
+}
+
+.manim-topic-tabs span,
+.manim-preview-copy span,
+.manim-studio-heading span,
+.manim-source-row span,
+.manim-scene-copy span {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.manim-topic-tabs span {
+  color: inherit;
+  opacity: 0.72;
+}
+
+.manim-topic-tabs strong {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.18rem;
+  line-height: 1.18;
+}
+
+.manim-studio-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.manim-explorable-focus {
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(245, 248, 252, 0.32)),
+    rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  box-shadow:
+    0 18px 46px rgba(17, 22, 31, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(220px, 0.52fr) minmax(320px, 0.95fr) minmax(280px, 0.92fr);
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+}
+
+.manim-explorable-focus::before {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.62;
+  pointer-events: none;
+  position: absolute;
+}
+
+.manim-explorable-focus > * {
+  position: relative;
+  z-index: 1;
+}
+
+.manim-explorable-preview {
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.manim-preview-stage {
+  background:
+    linear-gradient(90deg, rgba(8, 9, 11, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.06) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.42);
+  background-size: 24px 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 230px;
+  overflow: hidden;
+  position: relative;
+}
+
+.manim-axis,
+.manim-ray,
+.manim-plane,
+.manim-pose,
+.manim-camera,
+.manim-world-point,
+.manim-pixel,
+.manim-cloud {
+  position: absolute;
+}
+
+.manim-axis.horizontal {
+  background: rgba(8, 9, 11, 0.28);
+  height: 1px;
+  left: 8%;
+  right: 8%;
+  top: 55%;
+}
+
+.manim-axis.vertical {
+  background: rgba(8, 9, 11, 0.2);
+  bottom: 12%;
+  left: 26%;
+  top: 12%;
+  width: 1px;
+}
+
+.manim-camera,
+.manim-world-point,
+.manim-pixel,
+.manim-pose {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  display: flex;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  font-weight: 800;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.manim-camera {
+  left: 12%;
+  top: 46%;
+}
+
+.manim-world-point {
+  left: calc(52% + var(--scrub) * 24%);
+  top: calc(18% + var(--scrub) * 22%);
+}
+
+.manim-plane {
+  background: rgba(8, 9, 11, 0.72);
+  height: 70%;
+  left: calc(38% + var(--scrub) * 8%);
+  top: 15%;
+  width: 4px;
+}
+
+.manim-pixel {
+  left: calc(36% + var(--scrub) * 9%);
+  top: calc(36% + var(--scrub) * 18%);
+}
+
+.manim-ray {
+  background: rgba(8, 9, 11, 0.48);
+  height: 2px;
+  left: 22%;
+  top: 52%;
+  transform-origin: left center;
+}
+
+.manim-ray.primary {
+  transform: rotate(calc(-18deg + var(--scrub) * 32deg));
+  width: calc(34% + var(--scrub) * 24%);
+}
+
+.manim-ray.secondary {
+  opacity: 0.42;
+  transform: rotate(calc(16deg - var(--scrub) * 20deg));
+  width: calc(22% + var(--scrub) * 18%);
+}
+
+.manim-pose {
+  opacity: 0;
+}
+
+.manim-pose.p0 {
+  left: 16%;
+  top: 72%;
+}
+
+.manim-pose.p1 {
+  left: calc(34% + var(--scrub) * 12%);
+  top: calc(64% - var(--scrub) * 18%);
+}
+
+.manim-pose.p2 {
+  left: calc(58% + var(--scrub) * 18%);
+  top: calc(70% - var(--scrub) * 14%);
+}
+
+.manim-cloud {
+  background: rgba(8, 9, 11, 0.48);
+  border-radius: 999px;
+  height: calc(18px + var(--scrub) * 20px);
+  opacity: 0;
+  width: calc(18px + var(--scrub) * 20px);
+}
+
+.manim-cloud.c1 {
+  left: 50%;
+  top: 48%;
+}
+
+.manim-cloud.c2 {
+  left: 61%;
+  top: 36%;
+}
+
+.manim-cloud.c3 {
+  left: 66%;
+  top: 58%;
+}
+
+.manim-explorable-preview.reconstruction .manim-pose,
+.manim-explorable-preview.spatial-intelligence .manim-pose,
+.manim-explorable-preview.reconstruction .manim-cloud,
+.manim-explorable-preview.spatial-intelligence .manim-cloud {
+  opacity: 1;
+}
+
+.manim-explorable-preview.reconstruction .manim-plane,
+.manim-explorable-preview.spatial-intelligence .manim-plane {
+  opacity: 0.3;
+}
+
+.manim-explorable-preview.spatial-intelligence .manim-world-point {
+  border-radius: 8px;
+  height: 44px;
+  left: calc(46% + var(--scrub) * 18%);
+  top: calc(18% + var(--scrub) * 16%);
+  width: 72px;
+}
+
+.manim-preview-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.manim-preview-copy span {
+  color: var(--muted);
+}
+
+.manim-preview-copy strong {
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.manim-preview-copy label {
+  color: var(--ink-soft);
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+
+.manim-preview-copy input {
+  accent-color: var(--ink);
+  width: 100%;
+}
+
+.manim-studio {
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  box-shadow:
+    0 18px 46px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.manim-studio-heading {
+  align-items: start;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.manim-studio-heading h3,
+.manim-scene-copy h4 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  line-height: 1.18;
+  margin: 0;
+}
+
+.manim-studio-heading p,
+.manim-scene-copy p {
+  color: var(--ink-soft);
+  line-height: 1.48;
+  margin: 0;
+}
+
+.manim-studio-heading a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  flex: 0 0 auto;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 8px 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.manim-source-row {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.manim-source-row code,
+.manim-scene-copy code {
+  background: rgba(8, 9, 11, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  padding: 4px 6px;
+}
+
+.manim-scene-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.manim-scene-card {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.manim-video-placeholder {
+  align-content: center;
+  background:
+    linear-gradient(90deg, rgba(8, 9, 11, 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.08) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.5);
+  background-size: 18px 18px;
+  border: 1px dashed rgba(8, 9, 11, 0.24);
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  min-height: 150px;
+  padding: 12px;
+  position: relative;
+}
+
+.manim-video-placeholder video {
+  aspect-ratio: 16 / 9;
+  background: rgba(8, 9, 11, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  display: block;
+  object-fit: contain;
+  width: 100%;
+}
+
+.manim-video-placeholder small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.manim-frame-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 5px 7px;
+  position: absolute;
+  right: 10px;
+  text-transform: uppercase;
+  top: 10px;
+}
+
+.manim-scene-copy {
+  display: grid;
+  gap: 8px;
 }
 
 .projection-drag-lab {
@@ -3402,16 +3869,9 @@ h1 {
   transform: translateY(-1px);
 }
 
-.spatial-glass-panel {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(236, 240, 246, 0.34) 52%, rgba(255, 255, 255, 0.5)),
-    rgba(255, 255, 255, 0.32);
-}
-
   .spatial-topic-tabs button,
   .spatial-stage-strip button,
   .spatial-drag-lab,
-  .spatial-glass-focus,
   .spatial-stage-detail {
   -webkit-backdrop-filter: blur(30px) saturate(175%);
   backdrop-filter: blur(30px) saturate(175%);
@@ -3432,7 +3892,6 @@ h1 {
 
   .spatial-topic-tabs button::before,
   .spatial-drag-lab::before,
-  .spatial-glass-focus::before,
   .spatial-stage-detail::before {
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
   content: "";
@@ -3444,7 +3903,6 @@ h1 {
 
   .spatial-topic-tabs button > *,
   .spatial-drag-lab > *,
-  .spatial-glass-focus > *,
   .spatial-stage-detail > * {
   position: relative;
   z-index: 1;
@@ -3537,7 +3995,8 @@ h1 {
   .study-workspace,
   .workflow-strip,
   .spatial-topic-tabs,
-  .spatial-glass-focus,
+  .manim-topic-tabs,
+  .manim-explorable-focus,
   .projection-lab-grid,
   .spatial-visual-grid,
   .projection-control-row,
@@ -3551,6 +4010,12 @@ h1 {
   .hermes-form,
   .tutor-layout {
     grid-template-columns: 1fr;
+  }
+
+  .manim-studio-heading,
+  .manim-reference-strip {
+    align-items: stretch;
+    display: grid;
   }
 
   .task-row,

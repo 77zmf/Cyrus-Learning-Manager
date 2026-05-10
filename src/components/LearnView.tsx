@@ -12,8 +12,8 @@ import type { GuidedLesson, ReadyCheckFormulaChoice, ThreeBlueOneBrownRoute } fr
 import { useState } from "react";
 import { FormulaVisual } from "./FormulaVisual";
 import { InteractiveTutor } from "./InteractiveTutor";
+import { ManimStudioLab } from "./ManimStudioLab";
 import { MathText } from "./MathText";
-import { SpatialGlassLab } from "./SpatialGlassLab";
 
 export function LearnView() {
   return (
@@ -97,7 +97,7 @@ export function LearnView() {
 
       <ThreeBlueOneBrownBridge />
 
-      <SpatialGlassLab />
+      <ManimStudioLab />
 
       <section className="panel guided-path" id="section-guided-path">
         <div className="section-heading">
@@ -257,7 +257,7 @@ function LearningDirectory() {
       href: "#section-3blue1brown",
       meta: `${threeBlueOneBrownLearningPath.length} 条路线`
     },
-    { label: "空间玻璃学习舱", href: "#section-spatial-glass", meta: "SLAM / 3D / SI" },
+    { label: "Manim Studio", href: "#section-manim-studio", meta: "SLAM / 3D / SI" },
     { label: "控制+SLAM课程目录", href: "#section-guided-path", meta: `${guidedControlLessons.length} 节课` },
     { label: "启动队列", href: "#section-launch-queue", meta: "想学时点一个" },
     { label: "互动题", href: "#section-tutor", meta: "即时反馈" }
