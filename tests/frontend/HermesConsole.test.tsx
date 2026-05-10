@@ -21,8 +21,9 @@ describe("HermesConsole", () => {
 
     expect(screen.getByText("Hermes Console")).toBeInTheDocument();
     expect(screen.getByText(/cyrus -s obsidian/)).toBeInTheDocument();
-    expect(screen.getByText(/model authentication is still missing/i)).toBeInTheDocument();
+    expect(screen.getByText(/Cyrus profile is available on Kimi \/ Moonshot China/i)).toBeInTheDocument();
     expect(screen.getByText(/## Hermes Handoff/)).toBeInTheDocument();
+    expect(screen.getByText(/Vault: \/Users\/cyber\/Documents\/Obsidian Vault\/Cyrus-Knowledge/)).toBeInTheDocument();
     expect(screen.getByText(/Topic: 120th KPI gate review/)).toBeInTheDocument();
     expect(screen.getByText(/Status: mixed/)).toBeInTheDocument();
     expect(screen.getByText(/Evidence: run_result\.json shows control gate failed/i)).toBeInTheDocument();

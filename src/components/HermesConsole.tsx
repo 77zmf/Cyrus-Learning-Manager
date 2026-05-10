@@ -104,11 +104,11 @@ export function HermesConsole({ onCreateTask }: HermesConsoleProps) {
       <div className="hermes-layout">
         <article className="hermes-command">
           <h3>Local Hermes entry</h3>
-          <code>cd /Users/cyber/Documents/zmf_terminal &amp;&amp; cyrus -s obsidian</code>
+          <code>cd "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge" &amp;&amp; cyrus -s obsidian</code>
           <p>
-            Model authentication is still missing. Run <code>cyrus model</code> or{" "}
-            <code>cyrus login --provider openai-codex</code> before asking Hermes to update the
-            vault directly.
+            Cyrus profile is available on Kimi / Moonshot China. Run <code>cyrus status</code>{" "}
+            before direct vault edits; OpenAI Codex auth is optional for this profile and can be
+            configured later with <code>cyrus model</code>.
           </p>
         </article>
 
@@ -244,7 +244,7 @@ function buildHermesHandoff(draft: HermesDraft) {
   return [
     "## Hermes Handoff",
     `- Profile: /Users/cyber/.hermes/profiles/cyrus`,
-    `- Vault: /Users/cyber/Documents/zmf_terminal/Cyrus-Knowledge`,
+    `- Vault: /Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge`,
     `- Scope: ${scope}`,
     `- Line: ${line}`,
     `- Topic: ${valueOrPlaceholder(draft.topic)}`,
