@@ -73,6 +73,29 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" })).toBeInTheDocument();
     expect(screen.getAllByText("位姿链").length).toBeGreaterThan(0);
     expect(container.querySelector(".spatial-stage-strip")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "拖动三维点，看它如何投影到像素" })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: "Drag 3D point projection lab" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Projected image plane")).toBeInTheDocument();
+    expect(screen.getByLabelText("Projection depth Z")).toBeInTheDocument();
+    fireEvent.pointerDown(screen.getByRole("application", { name: "Drag 3D point projection lab" }), {
+      clientX: 280,
+      clientY: 80,
+      pointerId: 1
+    });
+    fireEvent.pointerMove(screen.getByRole("application", { name: "Drag 3D point projection lab" }), {
+      clientX: 310,
+      clientY: 120,
+      pointerId: 1
+    });
+    fireEvent.pointerUp(screen.getByRole("application", { name: "Drag 3D point projection lab" }), {
+      clientX: 310,
+      clientY: 120,
+      pointerId: 1
+    });
+    expect(screen.getByText("Drag count: 1")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Camera frame" })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Projection depth Z"), { target: { value: "3.1" } });
+    expect(screen.getByRole("heading", { name: "Normalized plane" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" }));
     expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toHaveAttribute(
       "aria-pressed",
