@@ -1567,6 +1567,324 @@ textarea {
   font-size: 1rem;
 }
 
+.spatial-drag-lab {
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(245, 248, 252, 0.36)),
+    rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--glass-edge);
+  border-radius: 8px;
+  box-shadow:
+    0 20px 48px rgba(17, 22, 31, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+}
+
+.spatial-drag-lab::before {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.72), transparent 36%, rgba(255, 255, 255, 0.18) 66%, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.62;
+  pointer-events: none;
+  position: absolute;
+}
+
+.spatial-drag-lab > * {
+  position: relative;
+  z-index: 1;
+}
+
+.spatial-visual-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(280px, 1.25fr) repeat(2, minmax(160px, 0.65fr));
+}
+
+.slam-map-stage,
+.slam-observation-panel,
+.reconstruction-stage {
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(247, 249, 252, 0.3)),
+    rgba(255, 255, 255, 0.26);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  box-shadow:
+    0 16px 42px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.84);
+  min-height: 260px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slam-map-stage,
+.reconstruction-stage {
+  cursor: grab;
+  touch-action: none;
+}
+
+.slam-map-stage.is-dragging,
+.reconstruction-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.slam-map-stage::before,
+.reconstruction-stage::before {
+  background:
+    linear-gradient(90deg, rgba(8, 9, 11, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.mini-label {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  padding: 7px 9px;
+  position: absolute;
+  text-transform: uppercase;
+  z-index: 5;
+}
+
+.map-label {
+  left: 16px;
+  top: 16px;
+}
+
+.pose-node,
+.camera-pose {
+  align-items: center;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.26) 30%, rgba(8, 9, 11, 0.86) 72%),
+    #08090b;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+  box-shadow:
+    0 10px 24px rgba(8, 9, 11, 0.2),
+    0 0 0 8px rgba(255, 255, 255, 0.2);
+  color: var(--paper-soft);
+  display: flex;
+  font-size: 0.72rem;
+  font-weight: 800;
+  height: 34px;
+  justify-content: center;
+  position: absolute;
+  width: 34px;
+  z-index: 3;
+}
+
+.pose-start {
+  bottom: 42px;
+  left: 12%;
+}
+
+.pose-mid {
+  left: 42%;
+  top: 43%;
+}
+
+.pose-current {
+  right: 14%;
+  top: 22%;
+}
+
+.trajectory-line,
+.loop-constraint,
+.baseline-bar,
+.ray {
+  background: rgba(8, 9, 11, 0.36);
+  height: 2px;
+  position: absolute;
+  transform-origin: left center;
+  z-index: 2;
+}
+
+.line-a {
+  bottom: 70px;
+  left: 16%;
+  transform: rotate(-28deg);
+  width: 34%;
+}
+
+.line-b {
+  left: 45%;
+  top: 47%;
+  transform: rotate(-27deg);
+  width: 33%;
+}
+
+.loop-constraint {
+  background: linear-gradient(90deg, rgba(8, 9, 11, 0.5), rgba(8, 9, 11, 0.06));
+  border-top: 1px dashed rgba(8, 9, 11, 0.42);
+  bottom: 58px;
+  left: 16%;
+  width: var(--loop-tension);
+}
+
+.slam-landmark {
+  background:
+    radial-gradient(circle at 35% 28%, #fff, rgba(255, 255, 255, 0.3) 30%, #08090b 68%),
+    #08090b;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  box-shadow:
+    0 12px 28px rgba(8, 9, 11, 0.24),
+    0 0 0 12px rgba(255, 255, 255, 0.22);
+  height: 24px;
+  left: var(--landmark-x);
+  position: absolute;
+  top: var(--landmark-y);
+  transform: translate(-50%, -50%);
+  width: 24px;
+  z-index: 4;
+}
+
+.slam-observation {
+  background: rgba(8, 9, 11, 0.26);
+  height: 2px;
+  left: var(--landmark-x);
+  position: absolute;
+  top: var(--landmark-y);
+  transform-origin: left center;
+  width: 26%;
+  z-index: 1;
+}
+
+.obs-a {
+  transform: rotate(142deg);
+}
+
+.obs-b {
+  transform: rotate(28deg);
+}
+
+.slam-observation-panel::before {
+  background:
+    linear-gradient(90deg, rgba(8, 9, 11, 0.05) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  content: "";
+  inset: 18px;
+  position: absolute;
+}
+
+.image-feature {
+  background:
+    radial-gradient(circle at 35% 28%, #fff, rgba(255, 255, 255, 0.2) 30%, #08090b 68%),
+    #08090b;
+  border-radius: 999px;
+  height: 18px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  z-index: 3;
+}
+
+.epipolar-line {
+  background: rgba(8, 9, 11, 0.3);
+  height: 2px;
+  left: 14%;
+  position: absolute;
+  top: 58%;
+  transform: rotate(-14deg);
+  width: 72%;
+  z-index: 2;
+}
+
+.epipolar-line.shifted {
+  top: 46%;
+  transform: rotate(11deg);
+}
+
+.reconstruction-stage {
+  min-height: 340px;
+}
+
+.recon-object {
+  align-items: center;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(224, 228, 235, 0.56)),
+    rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(8, 9, 11, 0.12);
+  border-radius: 8px;
+  color: var(--ink);
+  display: flex;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  height: 76px;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  text-transform: uppercase;
+  top: 44%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  width: 116px;
+  z-index: 3;
+}
+
+.camera-primary {
+  bottom: 34px;
+  left: calc(var(--camera-left) - var(--baseline-width) / 2);
+}
+
+.camera-secondary {
+  left: calc(var(--camera-left) + var(--baseline-width) / 2);
+  top: var(--camera-top);
+}
+
+.baseline-bar {
+  background: linear-gradient(90deg, rgba(8, 9, 11, 0.56), rgba(8, 9, 11, 0.12));
+  bottom: 50px;
+  left: calc(var(--camera-left) - var(--baseline-width) / 2);
+  width: var(--baseline-width);
+}
+
+.ray-left {
+  bottom: 58px;
+  left: calc(var(--camera-left) - var(--baseline-width) / 2 + 18px);
+  transform: rotate(-36deg);
+  width: 38%;
+}
+
+.ray-right {
+  left: calc(var(--camera-left) + var(--baseline-width) / 2 + 18px);
+  top: calc(var(--camera-top) + 18px);
+  transform: rotate(160deg);
+  width: 36%;
+}
+
+.recon-splat {
+  background: rgba(8, 9, 11, 0.44);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  height: 9px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 9px;
+  z-index: 2;
+}
+
+.recon-splat.large {
+  background: rgba(8, 9, 11, 0.66);
+  height: 14px;
+  width: 14px;
+}
+
 .spatial-stage-strip {
   display: flex;
   gap: 10px;
@@ -2989,6 +3307,10 @@ h1 {
   .projection-image-plane,
   .projection-readout-grid article,
   .projection-step-card,
+  .spatial-drag-lab,
+  .slam-map-stage,
+  .slam-observation-panel,
+  .reconstruction-stage,
   .spatial-source-row a,
   .empty-state,
   .error
@@ -3086,10 +3408,11 @@ h1 {
     rgba(255, 255, 255, 0.32);
 }
 
-.spatial-topic-tabs button,
-.spatial-stage-strip button,
-.spatial-glass-focus,
-.spatial-stage-detail {
+  .spatial-topic-tabs button,
+  .spatial-stage-strip button,
+  .spatial-drag-lab,
+  .spatial-glass-focus,
+  .spatial-stage-detail {
   -webkit-backdrop-filter: blur(30px) saturate(175%);
   backdrop-filter: blur(30px) saturate(175%);
   background:
@@ -3107,9 +3430,10 @@ h1 {
   position: relative;
 }
 
-.spatial-topic-tabs button::before,
-.spatial-glass-focus::before,
-.spatial-stage-detail::before {
+  .spatial-topic-tabs button::before,
+  .spatial-drag-lab::before,
+  .spatial-glass-focus::before,
+  .spatial-stage-detail::before {
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
   content: "";
   inset: 0;
@@ -3118,9 +3442,10 @@ h1 {
   position: absolute;
 }
 
-.spatial-topic-tabs button > *,
-.spatial-glass-focus > *,
-.spatial-stage-detail > * {
+  .spatial-topic-tabs button > *,
+  .spatial-drag-lab > *,
+  .spatial-glass-focus > *,
+  .spatial-stage-detail > * {
   position: relative;
   z-index: 1;
 }
@@ -3214,6 +3539,7 @@ h1 {
   .spatial-topic-tabs,
   .spatial-glass-focus,
   .projection-lab-grid,
+  .spatial-visual-grid,
   .projection-control-row,
   .projection-readout-grid,
   .guided-lesson-grid,

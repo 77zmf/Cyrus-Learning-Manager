@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { spatialGlassPanels } from "../domain/spatial-glass";
 import { FormulaVisual } from "./FormulaVisual";
 import { MathText } from "./MathText";
-import { ProjectionDragLab } from "./ProjectionDragLab";
+import { SpatialPanelInteraction } from "./SpatialDragLabs";
 
 type ActiveStageMap = Record<string, string>;
 
@@ -56,7 +56,7 @@ export function SpatialGlassLab() {
           <FormulaVisual label={activePanel.title} latex={activePanel.formula} terms={activePanel.formulaTerms} />
         </article>
 
-        <ProjectionDragLab />
+        <SpatialPanelInteraction panelId={activePanel.id} />
 
         <div className="spatial-stage-strip" aria-label={`${activePanel.title} stages`}>
           {activePanel.stages.map((stage) => (

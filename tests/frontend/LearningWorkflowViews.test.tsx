@@ -96,12 +96,54 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "Camera frame" })).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Projection depth Z"), { target: { value: "3.1" } });
     expect(screen.getByRole("heading", { name: "Normalized plane" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "拖动 SLAM 地标，看位姿链如何收紧" })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: "Drag SLAM landmark lab" })).toBeInTheDocument();
+    fireEvent.pointerDown(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
+      clientX: 220,
+      clientY: 90,
+      pointerId: 2
+    });
+    fireEvent.pointerMove(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
+      clientX: 340,
+      clientY: 150,
+      pointerId: 2
+    });
+    fireEvent.pointerUp(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
+      clientX: 340,
+      clientY: 150,
+      pointerId: 2
+    });
+    expect(screen.getByText("SLAM drag count: 1")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "投影观测" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show SLAM visual stage 回环约束" }));
+    expect(screen.getByText(/回环边把当前位姿拉回已见过的位置/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" }));
     expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toHaveAttribute(
       "aria-pressed",
       "true"
     );
-    expect(screen.getByText("COLMAP SfM")).toBeInTheDocument();
+    expect(screen.getAllByText("COLMAP SfM").length).toBeGreaterThan(0);
+    expect(screen.getByRole("heading", { name: "拖动相机基线，看三维重建如何变密" })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: "Drag reconstruction camera rig" })).toBeInTheDocument();
+    fireEvent.pointerDown(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
+      clientX: 260,
+      clientY: 120,
+      pointerId: 3
+    });
+    fireEvent.pointerMove(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
+      clientX: 390,
+      clientY: 130,
+      pointerId: 3
+    });
+    fireEvent.pointerUp(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
+      clientX: 390,
+      clientY: 130,
+      pointerId: 3
+    });
+    expect(screen.getByText("Reconstruction drag count: 1")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "COLMAP SfM" })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Reconstruction baseline"), { target: { value: "2.8" } });
+    expect(screen.getByRole("heading", { name: "MVS 稠密化" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "查看 NeRF / 3DGS" }));
     expect(screen.getByText(/光线和高斯不是装饰/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" }));
