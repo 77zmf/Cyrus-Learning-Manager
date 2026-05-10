@@ -1,26 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&family=Playfair+Display:wght@700;900&display=swap");
 
 :root {
-  --ink: #0a0a0a;
-  --ink-soft: #2b2b2b;
-  --muted: #666666;
-  --paper: #f3f3f3;
+  --ink: #08090b;
+  --ink-soft: #24272d;
+  --muted: #656b76;
+  --paper: #f4f6f9;
   --paper-soft: #ffffff;
-  --paper-tint: #e7e7e7;
-  --line: #d0d0d0;
-  --line-strong: #8a8a8a;
-  --glass: rgba(255, 255, 255, 0.66);
-  --glass-strong: rgba(255, 255, 255, 0.82);
-  --glass-muted: rgba(245, 245, 245, 0.58);
-  --glass-dark: rgba(10, 10, 10, 0.82);
+  --paper-tint: #e9edf3;
+  --line: rgba(10, 12, 16, 0.12);
+  --line-strong: rgba(10, 12, 16, 0.26);
+  --glass: rgba(255, 255, 255, 0.48);
+  --glass-strong: rgba(255, 255, 255, 0.7);
+  --glass-muted: rgba(247, 249, 252, 0.34);
+  --glass-dark: rgba(10, 11, 14, 0.78);
+  --glass-edge: rgba(255, 255, 255, 0.82);
+  --glass-hairline: rgba(255, 255, 255, 0.42);
+  --glass-shadow: rgba(31, 38, 54, 0.16);
   --indigo: #111111;
   --indigo-deep: #000000;
   --green: #303030;
   --gold: #5a5a5a;
   --rust: #1f1f1f;
-  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow: rgba(17, 22, 31, 0.14);
   color: var(--ink);
   background: var(--paper);
+  color-scheme: light;
   font-family: Inter, "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -37,11 +41,38 @@ body {
   min-width: 320px;
   overflow-x: hidden;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(232, 236, 244, 0.62) 46%, rgba(255, 255, 255, 0.82)),
+    linear-gradient(90deg, rgba(8, 9, 11, 0.036) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.032) 1px, transparent 1px),
     var(--paper);
   background-attachment: fixed;
-  background-size: 44px 44px;
+  background-size: auto, 44px 44px, 44px 44px;
+  position: relative;
+}
+
+body::before,
+body::after {
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
+}
+
+body::before {
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.62), transparent 28%, rgba(255, 255, 255, 0.42) 56%, transparent 76%),
+    linear-gradient(24deg, rgba(7, 8, 10, 0.06), transparent 22%, rgba(7, 8, 10, 0.035) 58%, transparent);
+  filter: blur(28px);
+  opacity: 0.86;
+}
+
+body::after {
+  background-image:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.26) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(25deg, rgba(8, 9, 11, 0.022) 0 1px, transparent 1px 28px);
+  mix-blend-mode: screen;
+  opacity: 0.45;
 }
 
 button,
@@ -2448,6 +2479,333 @@ progress::-moz-progress-bar {
   color: var(--muted);
   margin-bottom: 0;
   padding: 18px;
+}
+
+/* iOS-style Liquid Glass web material. */
+body::before,
+body::after {
+  z-index: 0;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  -webkit-backdrop-filter: blur(34px) saturate(170%);
+  backdrop-filter: blur(34px) saturate(170%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(245, 248, 252, 0.46) 48%, rgba(255, 255, 255, 0.58)),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.68), transparent 38%, rgba(255, 255, 255, 0.28));
+  border: 1px solid var(--glass-edge);
+  border-bottom-color: rgba(8, 9, 11, 0.18);
+  border-radius: 8px;
+  box-shadow:
+    0 28px 72px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  padding: 26px;
+}
+
+h1 {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.status-pill {
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(165%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.36)),
+    rgba(255, 255, 255, 0.34);
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  box-shadow:
+    0 12px 32px rgba(18, 22, 30, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.tabs {
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(30px) saturate(170%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.32)),
+    rgba(255, 255, 255, 0.32);
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  box-shadow:
+    0 18px 44px rgba(19, 24, 33, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  gap: 4px;
+  padding: 5px;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar,
+.spatial-stage-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: rgba(8, 9, 11, 0.72);
+  min-height: 40px;
+  transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.tabs button:first-child {
+  border-left: 1px solid transparent;
+}
+
+.tabs button:hover {
+  background: rgba(255, 255, 255, 0.44);
+  color: var(--ink);
+}
+
+.tabs button.active {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(237, 241, 247, 0.62)),
+    rgba(255, 255, 255, 0.52);
+  border-color: rgba(255, 255, 255, 0.86);
+  box-shadow:
+    0 8px 22px rgba(18, 22, 30, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  color: var(--ink);
+}
+
+.panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(247, 249, 252, 0.36) 52%, rgba(255, 255, 255, 0.52)),
+    rgba(255, 255, 255, 0.34);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    0 30px 76px rgba(20, 26, 36, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  overflow: hidden;
+  position: relative;
+}
+
+.panel::before {
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.7), transparent 34%, rgba(255, 255, 255, 0.2) 64%, transparent),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 46%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.section-heading {
+  border-bottom-color: rgba(8, 9, 11, 0.1);
+}
+
+:where(
+  .metric,
+  .status-card,
+  .progress-row,
+  .task-row,
+  .track-card,
+  .study-main,
+  .study-card,
+  .workflow-strip article,
+  .learning-directory a,
+  .beginner-start-list li,
+  .foundation-card,
+  .course-toc,
+  .threeblue-source-strip,
+  .threeblue-route-card,
+  .guided-lesson-card,
+  .beginner-lesson,
+  .ready-check-block,
+  .action-card,
+  .derivation-card,
+  .node-card,
+  .edge-list article,
+  .formula-visual,
+  .formula-render,
+  .formula-term-grid div,
+  .spatial-source-row a,
+  .empty-state,
+  .error
+) {
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(247, 249, 252, 0.34)),
+    rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 16px 42px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+:where(.metric, .foundation-card, .guided-lesson-card, .action-card, .spatial-stage-detail, .course-toc) {
+  border-left: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+:where(.metric, .foundation-card, .workflow-strip article) {
+  border-top: 1px solid rgba(255, 255, 255, 0.76);
+}
+
+.metric,
+.workflow-strip article,
+.foundation-card,
+.status-card,
+.review-overview,
+.action-card,
+.threeblue-route-card,
+.guided-lesson-card,
+.course-toc,
+.study-card,
+.study-main,
+.node-card,
+.edge-list article,
+.tutor-panel,
+.formula-visual,
+.choice-feedback,
+.goodnotes-summary,
+.hermes-closeout {
+  border-left-width: 1px;
+  border-left-color: rgba(255, 255, 255, 0.7);
+  border-top-width: 1px;
+  border-top-color: rgba(255, 255, 255, 0.76);
+}
+
+:where(
+  .create-task button,
+  .study-main button,
+  .ready-check-block button,
+  .ready-choice-grid button,
+  .micro-question button,
+  .formula-choice-grid button,
+  .hermes-form button,
+  .choice-grid button,
+  .preset-grid button,
+  .mode-switch button
+) {
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(237, 241, 247, 0.52)),
+    rgba(255, 255, 255, 0.38);
+  border-color: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 10px 26px rgba(18, 22, 30, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+:where(
+  .create-task button,
+  .study-main button,
+  .ready-check-block button,
+  .ready-choice-grid button,
+  .micro-question button,
+  .formula-choice-grid button,
+  .hermes-form button,
+  .choice-grid button,
+  .preset-grid button,
+  .mode-switch button,
+  .spatial-topic-tabs button,
+  .spatial-stage-strip button
+):hover {
+  transform: translateY(-1px);
+}
+
+.spatial-glass-panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(236, 240, 246, 0.34) 52%, rgba(255, 255, 255, 0.5)),
+    rgba(255, 255, 255, 0.32);
+}
+
+.spatial-topic-tabs button,
+.spatial-stage-strip button,
+.spatial-glass-focus,
+.spatial-stage-detail {
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(245, 248, 252, 0.32)),
+    rgba(255, 255, 255, 0.28);
+  border-color: var(--glass-edge);
+  box-shadow:
+    0 18px 46px rgba(17, 22, 31, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  overflow: hidden;
+}
+
+.spatial-topic-tabs button {
+  position: relative;
+}
+
+.spatial-topic-tabs button::before,
+.spatial-glass-focus::before,
+.spatial-stage-detail::before {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.62;
+  pointer-events: none;
+  position: absolute;
+}
+
+.spatial-topic-tabs button > *,
+.spatial-glass-focus > *,
+.spatial-stage-detail > * {
+  position: relative;
+  z-index: 1;
+}
+
+.spatial-topic-tabs button.active,
+.spatial-stage-strip button.active {
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
+    rgba(9, 10, 12, 0.72);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 18px 42px rgba(8, 9, 11, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+}
+
+.spatial-stage-detail {
+  border-left: 1px solid var(--glass-edge);
+}
+
+.spatial-stage-detail > strong,
+.formula-block {
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
+  backdrop-filter: blur(16px) saturate(145%);
+  background: rgba(255, 255, 255, 0.46);
+  border-color: rgba(255, 255, 255, 0.68);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.formula-render {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(247, 249, 252, 0.52)),
+    rgba(255, 255, 255, 0.42);
+}
+
+.is-ready,
+.status-pill.is-ready {
+  color: #1b1f24;
+}
+
+.is-muted,
+.status-pill.is-muted {
+  color: #4d535c;
 }
 
 @media (max-width: 900px) {
