@@ -177,6 +177,41 @@ export const studyPlans: StudyPlan[] = [
     priority: "high"
   },
   {
+    id: "slam-reconstruction-first-line",
+    track: "world-spatial-models",
+    mode: "reconstruction",
+    title: "SLAM and 3D reconstruction first line",
+    question:
+      "Which object are you learning today: pose, projection, matching, backend optimization, COLMAP reconstruction, NeRF, or 3DGS?",
+    prompt:
+      "Work through pose graph, bundle adjustment, COLMAP, NeRF, and 3DGS as one asset chain. Start from the beginner object, write the core formula, then decide whether the output is learning evidence, reconstruction evidence, or a validation asset.",
+    checklist: [
+      "Name the representation: pose, pixel, feature match, point cloud, mesh, radiance field, or Gaussian set.",
+      "Write one formula in LaTeX and define every symbol.",
+      "State the failure mode: drift, bad calibration, wrong match, poor depth, dynamic object, or nonphysical asset.",
+      "Connect it to GoodNotes, Obsidian Canvas, and one Notion row.",
+      "Mark whether the output is only visual/research or can support stable validation."
+    ],
+    template:
+      "Topic:\nBeginner object:\nRepresentation:\nFormula:\n$$\n\n$$\nSymbols:\nFailure mode:\nGoodNotes page:\nObsidian links:\nNotion row:\nValidation asset boundary:",
+    sources: [
+      {
+        title: "COLMAP",
+        url: "https://colmap.org/"
+      },
+      {
+        title: "ORB-SLAM3",
+        url: "https://arxiv.org/abs/2007.11898"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      }
+    ],
+    taskTitle: "SLAM and 3D reconstruction first-line study session",
+    priority: "high"
+  },
+  {
     id: "ielts-output-loop",
     track: "ielts",
     mode: "ielts-output",

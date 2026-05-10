@@ -850,6 +850,162 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-slam-state-estimation-map",
+    track: "world-spatial-models",
+    title: "SLAM 从定位到建图",
+    layer: "Pose -> observation -> map",
+    beginnerBridge:
+      "SLAM 先不用想成一个大黑箱。它只是在同时回答两个问题：我在哪里，我看到的世界地图长什么样。",
+    coreIdeas: [
+      "状态不是只有 x，而是一串位姿 T_1, T_2, ...；每个 T 都包含位置和朝向。",
+      "观测可以是图像特征、深度点、LiDAR 点云或 IMU 约束；它们都在给位姿和地图加约束。",
+      "后端优化不是玄学，就是让预测观测和真实观测的误差整体变小。"
+    ],
+    derivationEntry:
+      "Start with T_{w<-c}, projection s u = K[R|t]X, then write reprojection error u_ij - pi(T_i X_j).",
+    practice:
+      "在 GoodNotes 画三层图：pose 节点、landmark 点、observation 边；再写一个重投影误差。",
+    goodNotes: "GoodNotes: Page SLAM-001/003",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> State Estimation",
+    notion: "Notion: Track=World & Spatial Models, Evidence=GoodNotes SLAM-001/003",
+    practiceQuestions: [
+      {
+        prompt: "SLAM 的两个核心问题是什么？",
+        answer: "答案：同时估计自己在哪里，以及周围地图是什么。"
+      },
+      {
+        prompt: "为什么位姿比普通位置多一个朝向？",
+        answer: "答案：相机或车不仅有位置，还要知道朝哪个方向看；投影和运动都依赖朝向。"
+      },
+      {
+        prompt: "后端优化为什么要最小化误差？",
+        answer: "答案：因为单次观测有噪声，整体优化能让所有约束尽量一致，减少漂移。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个对象最像视觉 SLAM 的核心误差？",
+      choices: [
+        {
+          label: "A",
+          value: "u_ij - pi(T_i X_j)",
+          isCorrect: true,
+          feedback: "正确：这是预测像素和真实观测像素之间的重投影误差。"
+        },
+        {
+          label: "B",
+          value: "daily plan",
+          isCorrect: false,
+          feedback: "还不对：SLAM 主线按对象和证据推进，不按每日计划推进。"
+        },
+        {
+          label: "C",
+          value: "rank(C)=n",
+          isCorrect: false,
+          feedback: "还不对：这是控制可控性，不是 SLAM 观测误差。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-001/003 写完了吗？",
+      expected:
+        "已记录：Page SLAM-001/003 应包含 pose、landmark、observation、projection、reprojection error、loop closure。"
+    },
+    sources: [
+      {
+        title: "A Tutorial Approach to Simultaneous Localization and Mapping",
+        url: "https://dspace.mit.edu/bitstream/handle/1721.1/36832/16-412JSpring2004/NR/rdonlyres/Aeronautics-and-Astronautics/16-412JSpring2004/A3C5517F-C092-4554-AA43-232DC74609B3/0/1Aslam_blas_report.pdf"
+      },
+      {
+        title: "ORB-SLAM3",
+        url: "https://arxiv.org/abs/2007.11898"
+      },
+      {
+        title: "TUM RGB-D SLAM Dataset",
+        url: "https://cvg.cit.tum.de/data/datasets/rgbd-dataset"
+      }
+    ]
+  },
+  {
+    id: "deep-sfm-mvs-colmap-reconstruction",
+    track: "world-spatial-models",
+    title: "SfM / MVS / COLMAP 重建实验线",
+    layer: "Images -> cameras -> sparse points -> dense geometry",
+    beginnerBridge:
+      "三维重建先看成一条流水线：照片进来，先恢复相机位姿和稀疏点，再补密集几何，最后才考虑 NeRF 或 3DGS。",
+    coreIdeas: [
+      "SfM 解决相机在哪里、稀疏三维点在哪里；MVS 在已知相机的基础上补密集表面。",
+      "COLMAP 是从真实图像到相机位姿、稀疏点云、稠密点云的标准练习工具。",
+      "NeRF/3DGS 通常需要相机位姿输入，但它们的输出偏可渲染，不自动等于 CARLA 可碰撞资产。"
+    ],
+    derivationEntry:
+      "Use epipolar constraint x_2^T F x_1=0, then BA min sum ||u_ij - pi(T_i X_j)||^2.",
+    practice:
+      "画 Images -> Feature Matching -> SfM -> Sparse Cloud -> MVS -> NeRF/3DGS -> Validation Asset，并标出每一步产物。",
+    goodNotes: "GoodNotes: Page SLAM-002/004",
+    obsidian: "Obsidian: World-Spatial -> Reconstruction -> COLMAP Lab",
+    notion: "Notion: Track=World & Spatial Models, Evidence=GoodNotes SLAM-002/004",
+    practiceQuestions: [
+      {
+        prompt: "SfM 先产出什么？",
+        answer: "答案：相机位姿和稀疏三维点。"
+      },
+      {
+        prompt: "MVS 和 SfM 的关系是什么？",
+        answer: "答案：MVS 通常在已知相机位姿后，进一步恢复更密的几何表面。"
+      },
+      {
+        prompt: "NeRF/3DGS 为什么不等于 CARLA 资产？",
+        answer: "答案：它们主要解决可渲染外观，物理碰撞、语义、车道拓扑和 OpenDRIVE 还要另外建模。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个流程顺序最像 COLMAP 到神经重建？",
+      choices: [
+        {
+          label: "A",
+          value: "images -> SfM poses -> MVS/dense -> NeRF or 3DGS",
+          isCorrect: true,
+          feedback: "正确：相机位姿是后续稠密重建和神经渲染的重要前置。"
+        },
+        {
+          label: "B",
+          value: "NeRF -> no camera poses -> stable CARLA",
+          isCorrect: false,
+          feedback: "还不对：NeRF 通常需要相机位姿，而且不自动形成稳定 CARLA 物理资产。"
+        },
+        {
+          label: "C",
+          value: "IELTS rubric -> point cloud",
+          isCorrect: false,
+          feedback: "还不对：这是完全不同的学习线。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-002/004 写完了吗？",
+      expected:
+        "已记录：Page SLAM-002/004 应包含 epipolar geometry、COLMAP pipeline、NeRF/3DGS rendering、validation asset boundary。"
+    },
+    sources: [
+      {
+        title: "COLMAP",
+        url: "https://colmap.org/"
+      },
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "NeRF project",
+        url: "https://www.matthewtancik.com/nerf"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      }
+    ]
+  },
+  {
     id: "deep-reconstruction-slam-handoff",
     track: "work-validation",
     title: "重建 SLAM 技术栈到验证资产",
@@ -1364,6 +1520,87 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "slam-zero-to-map",
+    track: "world-spatial-models",
+    title: "SLAM zero-to-map first line",
+    stage: "Beginner SLAM spine",
+    focus:
+      "Build SLAM from zero: coordinate frames, camera projection, feature matching, visual odometry, backend optimization, loop closure, VIO, LiDAR SLAM, and validation asset handoff.",
+    outputs: [
+      "one GoodNotes page for pose and projection",
+      "one GoodNotes page for BA or pose graph optimization",
+      "one Obsidian concept chain from SLAM output to validation artifact"
+    ],
+    sources: [
+      {
+        title: "A Tutorial Approach to Simultaneous Localization and Mapping",
+        url: "https://dspace.mit.edu/bitstream/handle/1721.1/36832/16-412JSpring2004/NR/rdonlyres/Aeronautics-and-Astronautics/16-412JSpring2004/A3C5517F-C092-4554-AA43-232DC74609B3/0/1Aslam_blas_report.pdf"
+      },
+      {
+        title: "ORB-SLAM3",
+        url: "https://arxiv.org/abs/2007.11898"
+      },
+      {
+        title: "TUM RGB-D SLAM Dataset",
+        url: "https://cvg.cit.tum.de/data/datasets/rgbd-dataset"
+      }
+    ]
+  },
+  {
+    id: "sfm-mvs-colmap-lab",
+    track: "world-spatial-models",
+    title: "SfM, MVS, and COLMAP reconstruction lab",
+    stage: "Photogrammetry to reconstruction",
+    focus:
+      "Use COLMAP as the concrete lab for feature extraction, matching, incremental SfM, bundle adjustment, sparse reconstruction, dense MVS, and camera-pose export.",
+    outputs: [
+      "one COLMAP pipeline card from images to sparse and dense output",
+      "one epipolar geometry and triangulation formula page",
+      "one asset-readiness checklist for point cloud, mesh, scale, and alignment"
+    ],
+    sources: [
+      {
+        title: "COLMAP",
+        url: "https://colmap.org/"
+      },
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "Open3D documentation",
+        url: "https://www.open3d.org/docs/latest/"
+      }
+    ]
+  },
+  {
+    id: "nerf-3dgs-validation-assets",
+    track: "world-spatial-models",
+    title: "NeRF and 3DGS validation asset bridge",
+    stage: "Neural reconstruction to validation boundary",
+    focus:
+      "Learn NeRF volume rendering, 3D Gaussian Splatting, pose requirements, dynamic-object limits, and the boundary between renderable scene assets and CARLA/Autoware validation assets.",
+    outputs: [
+      "one NeRF rendering equation page",
+      "one 3DGS Gaussian projection page",
+      "one stable-vs-reconstruction boundary note for CARLA assets"
+    ],
+    sources: [
+      {
+        title: "NeRF project",
+        url: "https://www.matthewtancik.com/nerf"
+      },
+      {
+        title: "3D Gaussian Splatting",
+        url: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+      },
+      {
+        title: "COLMAP",
+        url: "https://colmap.org/"
+      }
+    ]
+  },
+  {
     id: "world-spatial-paper-reproduction-map",
     track: "world-spatial-models",
     title: "World and spatial paper reproduction ladder",
@@ -1647,6 +1884,42 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://web.stanford.edu/class/cs231a/",
     notes:
       "Self-paced LaTeX item: derive s u = K[R|t]X, occupancy field f(x,y,z), and connect BEV/occupancy errors to planner cost."
+  },
+  {
+    id: "seed_slam_zero_to_map",
+    title: "Start SLAM zero-to-map with pose and projection",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/2007.11898",
+    notes:
+      "Self-paced SLAM item: write T, camera projection, feature observation, reprojection error, and one pose-graph sketch."
+  },
+  {
+    id: "seed_colmap_sfm_mvs_lab",
+    title: "Build the COLMAP SfM/MVS reconstruction lab note",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://colmap.org/",
+    notes:
+      "Write the pipeline: images, feature extraction, matching, incremental SfM, bundle adjustment, sparse cloud, dense MVS, and asset-readiness checks."
+  },
+  {
+    id: "seed_nerf_3dgs_validation_asset",
+    title: "Compare NeRF and 3DGS as validation assets",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/",
+    notes:
+      "Derive one NeRF rendering equation, one 3DGS projection equation, then mark what is renderable, physical, semantic, and stable-validation ready."
   },
   {
     id: "seed_world_spatial_paper_ladder",

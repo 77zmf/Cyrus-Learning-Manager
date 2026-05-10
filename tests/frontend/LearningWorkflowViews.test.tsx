@@ -18,7 +18,8 @@ describe("learning workflow views", () => {
       "href",
       "#section-3blue1brown"
     );
-    expect(screen.getByRole("link", { name: "控制课程目录" })).toHaveAttribute("href", "#section-guided-path");
+    expect(screen.getByText("空间玻璃学习舱").closest("a")).toHaveAttribute("href", "#section-spatial-glass");
+    expect(screen.getByRole("link", { name: "控制+SLAM课程目录" })).toHaveAttribute("href", "#section-guided-path");
     expect(screen.getByRole("heading", { name: "Start Here for Beginners" })).toBeInTheDocument();
     expect(screen.getByText("选一节课")).toBeInTheDocument();
     expect(screen.getByText("补前置卡")).toBeInTheDocument();
@@ -38,7 +39,11 @@ describe("learning workflow views", () => {
     expect(screen.getByText("状态、输入、输出")).toBeInTheDocument();
     expect(screen.getByText("概率和期望")).toBeInTheDocument();
     expect(screen.getByText("优化目标和约束")).toBeInTheDocument();
-    expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getByText("齐次坐标")).toBeInTheDocument();
+    expect(screen.getByText("像素和相机内参")).toBeInTheDocument();
+    expect(screen.getByText("位姿和轨迹")).toBeInTheDocument();
+    expect(screen.getAllByText("重投影误差").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("最小练习").length).toBeGreaterThanOrEqual(18);
     expect(screen.getByRole("heading", { name: "3Blue1Brown Math Bridge" })).toBeInTheDocument();
     expect(screen.getByText("导入来源")).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "3Blue1Brown route directory" })).toBeInTheDocument();
@@ -61,6 +66,29 @@ describe("learning workflow views", () => {
     expect(screen.getByText("用 2D 点和两次坐标变换画出 lidar 到 map 的路径。")).toBeInTheDocument();
     expect(container.querySelectorAll("details.threeblue-route-card").length).toBeGreaterThanOrEqual(7);
     expect(container.querySelectorAll("details.threeblue-route-card[open]").length).toBe(1);
+    expect(screen.getByRole("heading", { name: "Spatial Glass Lab" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Spatial glass topics" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开 SLAM Interface" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" })).toBeInTheDocument();
+    expect(screen.getAllByText("位姿链").length).toBeGreaterThan(0);
+    expect(container.querySelector(".spatial-stage-strip")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" }));
+    expect(screen.getByRole("button", { name: "打开 3D Reconstruction Interface" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+    expect(screen.getByText("COLMAP SfM")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "查看 NeRF / 3DGS" }));
+    expect(screen.getByText(/光线和高斯不是装饰/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "打开 Fei-Fei Li Spatial Intelligence" }));
+    expect(screen.getByRole("heading", { name: "Fei-Fei Li Spatial Intelligence" })).toBeInTheDocument();
+    expect(screen.getByText("三维世界后验")).toBeInTheDocument();
+    expect(screen.getByText("World Labs").closest("a")).toHaveAttribute("href", "https://www.worldlabs.ai/");
+    expect(screen.getByText("Stanford HAI").closest("a")).toHaveAttribute(
+      "href",
+      "https://hai.stanford.edu/people/fei-fei-li"
+    );
     expect(screen.getByRole("heading", { name: "Cyrus Guided Path" })).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "Course directory" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 1 课：状态空间模型" })).toBeInTheDocument();
@@ -72,24 +100,28 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "第 10 课：MPC 模型预测控制" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 13 课：随机控制与动态规划" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 14 课：世界模型与空间模型接口" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 15 课：刚体变换与相机投影" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 16 课：特征匹配与对极几何" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 17 课：SLAM 后端与位姿图优化" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 18 课：SfM/MVS 到 NeRF/3DGS 重建" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /第 10 课：MPC 模型预测控制/ })).toHaveAttribute(
       "href",
       "#lesson-mpc"
     );
-    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(14);
+    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(18);
     expect(container.querySelectorAll("details.guided-lesson-card[open]").length).toBe(1);
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
-    expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(14);
-    expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(18);
+    expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(18);
     expect(screen.getAllByText("卡住就回到：状态、输入、输出").length).toBeGreaterThan(0);
     expect(screen.getAllByText("卡住就回到：优化目标和约束").length).toBeGreaterThan(0);
     expect(screen.getByText("先把状态想成一张仪表盘。")).toBeInTheDocument();
     expect(screen.getByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？")).toBeInTheDocument();
     expect(screen.getByText("先把世界模型想成会在脑子里预演的模型。")).toBeInTheDocument();
-    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(14);
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(18);
     expect(screen.getByText("状态向量 x")).toBeInTheDocument();
     expect(screen.getByText("系统矩阵 A")).toBeInTheDocument();
     expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
@@ -130,8 +162,11 @@ describe("learning workflow views", () => {
     expect(screen.getByText("MPC constrained rollout")).toBeInTheDocument();
     expect(screen.getByText("World model imagined rollout")).toBeInTheDocument();
     expect(screen.getByText("Camera projection to BEV")).toBeInTheDocument();
+    expect(screen.getByText("SLAM rigid transform and projection")).toBeInTheDocument();
+    expect(screen.getByText("Bundle adjustment and pose graph")).toBeInTheDocument();
+    expect(screen.getByText("NeRF and 3DGS rendering equations")).toBeInTheDocument();
     expect(screen.getByText("Reconstruction SLAM pose-prior handoff")).toBeInTheDocument();
-    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(8);
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(12);
     expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
     expect(screen.getByText("Riccati 方程")).toBeInTheDocument();
     expect(screen.getByText("Kalman 增益")).toBeInTheDocument();

@@ -40,8 +40,17 @@ describe("beginner learning workflow", () => {
 
   it("adds one beginner ready check to every guided control lesson", () => {
     const foundationTitles = new Set(beginnerFoundations.map((foundation) => foundation.title));
+    const lessonTitles = guidedControlLessons.map((lesson) => lesson.title);
 
-    expect(guidedControlLessons).toHaveLength(14);
+    expect(guidedControlLessons).toHaveLength(18);
+    expect(lessonTitles).toEqual(
+      expect.arrayContaining([
+        "第 15 课：刚体变换与相机投影",
+        "第 16 课：特征匹配与对极几何",
+        "第 17 课：SLAM 后端与位姿图优化",
+        "第 18 课：SfM/MVS 到 NeRF/3DGS 重建"
+      ])
+    );
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck)).toBe(true);
     expect(guidedControlLessons.every((lesson) => foundationTitles.has(lesson.readyCheck.prerequisite))).toBe(true);
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck.conceptAnswer.length > 0)).toBe(true);

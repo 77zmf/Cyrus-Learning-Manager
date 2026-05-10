@@ -8,6 +8,7 @@ describe("loadConfig", () => {
     expect(config).toEqual({
       port: 8787,
       notionToken: null,
+      notionProxyUrl: null,
       notionParentPageId: "350ef7e6aaa980629326e56e121a39cb",
       notionTasksDatabaseId: null,
       obsidianVaultPath: "/Users/cyber/Documents/Obsidian Vault/Cyrus-Knowledge",
@@ -22,6 +23,7 @@ describe("loadConfig", () => {
     const config = loadConfig({
       LOCAL_SYNC_PORT: "9000",
       NOTION_TOKEN: " secret_xxx ",
+      NOTION_PROXY_URL: " http://127.0.0.1:7890 ",
       NOTION_PARENT_PAGE_ID: " parent-id ",
       NOTION_TASKS_DATABASE_ID: " tasks-db ",
       OBSIDIAN_VAULT_PATH: " /tmp/vault ",
@@ -34,6 +36,7 @@ describe("loadConfig", () => {
     expect(config).toEqual({
       port: 9000,
       notionToken: "secret_xxx",
+      notionProxyUrl: "http://127.0.0.1:7890",
       notionParentPageId: "parent-id",
       notionTasksDatabaseId: "tasks-db",
       obsidianVaultPath: "/tmp/vault",
@@ -42,6 +45,15 @@ describe("loadConfig", () => {
       hermesProvider: "Kimi Test",
       localAppKey: "local-key"
     });
+  });
+
+  it("falls back to process proxy env for Notion when no explicit proxy is set", () => {
+    expect(loadConfig({ HTTPS_PROXY: " http://127.0.0.1:7890 " }).notionProxyUrl).toBe(
+      "http://127.0.0.1:7890"
+    );
+    expect(loadConfig({ HTTP_PROXY: " http://127.0.0.1:7891 " }).notionProxyUrl).toBe(
+      "http://127.0.0.1:7891"
+    );
   });
 
   it("defaults blank or invalid port values to 8787", () => {

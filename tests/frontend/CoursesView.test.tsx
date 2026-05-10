@@ -13,6 +13,9 @@ describe("CoursesView", () => {
     expect(screen.getByText("World models and latent dynamics")).toBeInTheDocument();
     expect(screen.getByText("Spatial models, 3D geometry, BEV, and occupancy")).toBeInTheDocument();
     expect(screen.getByText("World and spatial paper reproduction ladder")).toBeInTheDocument();
+    expect(screen.getByText("SLAM zero-to-map first line")).toBeInTheDocument();
+    expect(screen.getByText("SfM, MVS, and COLMAP reconstruction lab")).toBeInTheDocument();
+    expect(screen.getByText("NeRF and 3DGS validation asset bridge")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown autonomous-driving math intuition")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown first week: linear algebra")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown math-intuition route")).toBeInTheDocument();
@@ -38,6 +41,8 @@ describe("CoursesView", () => {
     expect(screen.getByText("IELTS 输出到错误归因")).toBeInTheDocument();
     expect(screen.getByText("哲学论证到工程判断")).toBeInTheDocument();
     expect(screen.getByText("重建 SLAM 技术栈到验证资产")).toBeInTheDocument();
+    expect(screen.getByText("SLAM 从定位到建图")).toBeInTheDocument();
+    expect(screen.getByText("SfM / MVS / COLMAP 重建实验线")).toBeInTheDocument();
     expect(screen.getByText("MIT 6.006 到 simctl 数据结构")).toBeInTheDocument();
     expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(12);
     expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(12);

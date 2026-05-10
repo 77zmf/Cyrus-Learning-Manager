@@ -274,6 +274,96 @@ export const worldSpatialFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const slamTransformFormulaTerms: FormulaTerm[] = [
+  {
+    label: "齐次位姿",
+    symbol: "T_{a\\leftarrow b}",
+    meaning: "把同一个点从 b 坐标系表达成 a 坐标系，里面同时包含旋转和平移。"
+  },
+  {
+    label: "旋转矩阵",
+    symbol: "R",
+    meaning: "描述朝向变化，保持长度和角度不变。"
+  },
+  {
+    label: "平移向量",
+    symbol: "t",
+    meaning: "描述坐标原点之间的位移。"
+  }
+];
+
+export const slamProjectionFormulaTerms: FormulaTerm[] = [
+  {
+    label: "相机内参",
+    symbol: "K",
+    meaning: "把相机坐标里的归一化点转换成像素坐标，包含焦距和主点。"
+  },
+  {
+    label: "外参",
+    symbol: "[R\\mid t]",
+    meaning: "把世界点转换到相机坐标，说明相机在世界里的位姿。"
+  },
+  {
+    label: "像素尺度",
+    symbol: "s",
+    meaning: "齐次坐标里的尺度，投影后要除掉它才得到像素位置。"
+  }
+];
+
+export const epipolarFormulaTerms: FormulaTerm[] = [
+  {
+    label: "对极约束",
+    symbol: "\\tilde{x}_2^TF\\tilde{x}_1=0",
+    meaning: "同一个三维点在两张图里的匹配必须落在对应的对极线上。"
+  },
+  {
+    label: "本质矩阵",
+    symbol: "E=[t]_\\times R",
+    meaning: "当相机内参已知时，用相对旋转和平移表达两视图几何。"
+  },
+  {
+    label: "三角化",
+    symbol: "X",
+    meaning: "用多张图里的匹配像素反推出三维点的位置。"
+  }
+];
+
+export const slamBackendFormulaTerms: FormulaTerm[] = [
+  {
+    label: "重投影误差",
+    symbol: "u_{ij}-\\pi(T_iX_j)",
+    meaning: "预测像素和真实匹配像素之间的差，是视觉 SLAM 和 SfM 的核心误差。"
+  },
+  {
+    label: "位姿图残差",
+    symbol: "\\log(Z_{ij}^{-1}T_i^{-1}T_j)",
+    meaning: "比较两帧相对位姿观测和当前估计是否一致。"
+  },
+  {
+    label: "信息矩阵",
+    symbol: "\\Omega_{ij}",
+    meaning: "给可靠约束更大权重，给噪声更大的约束更小权重。"
+  }
+];
+
+export const nerfGaussianFormulaTerms: FormulaTerm[] = [
+  {
+    label: "体渲染颜色",
+    symbol: "\\hat{C}(r)",
+    meaning: "沿一条相机光线把每个采样点的颜色和密度累加成最终像素颜色。"
+  },
+  {
+    label: "透射率",
+    symbol: "T_i",
+    meaning: "表示光线走到第 i 个采样点之前还有多少光没有被遮挡。"
+  },
+  {
+    label: "高斯投影",
+    symbol: "\\Sigma'=JW\\Sigma W^TJ^T",
+    meaning: "把三维高斯的协方差投影到图像平面，用于 3DGS splatting。"
+  }
+];
+
 export const threeBlueOneBrownLinearAlgebraTerms: FormulaTerm[] = [
   {
     label: "点向量",

@@ -8,6 +8,11 @@ import {
   nonlinearFormulaTerms,
   observabilityFormulaTerms,
   robustFormulaTerms,
+  epipolarFormulaTerms,
+  nerfGaussianFormulaTerms,
+  slamBackendFormulaTerms,
+  slamProjectionFormulaTerms,
+  slamTransformFormulaTerms,
   stabilityFormulaTerms,
   stateFeedbackFormulaTerms,
   stateSpaceFormulaTerms,
@@ -346,6 +351,34 @@ export const beginnerFoundations: BeginnerFoundation[] = [
     example: "看 BEVFormer 时先问它解决什么感知表示问题，再看 attention 公式和失败模式。",
     exercise: "给任意一篇论文写四行：problem、assumption、formula、reproduction。",
     goodNotes: "每篇论文只抄一个核心公式，并解释每个符号的工程含义。"
+  },
+  {
+    title: "齐次坐标",
+    plain: "齐次坐标是在普通坐标后面补一个 1，让旋转和平移可以合成同一个矩阵乘法。",
+    example: "三维点 X=[x,y,z,1]^T 乘 T_{w\\leftarrow c} 后，就能从相机坐标变到世界坐标。",
+    exercise: "写一个二维点 [2,3,1]^T，再写一个平移矩阵把它往右移 1。",
+    goodNotes: "画普通坐标和齐次坐标的区别，写一句：平移也能被矩阵表示。"
+  },
+  {
+    title: "像素和相机内参",
+    plain: "相机内参 K 把相机里的 3D 方向变成图像里的像素位置。",
+    example: "焦距越大，同一个物体投到图像上越大；主点决定图像坐标中心在哪里。",
+    exercise: "画一条从相机中心出发的光线，标出 3D 点、成像平面和像素 u,v。",
+    goodNotes: "写 K、焦距、主点、像素坐标四个词，不要求一次算完所有投影。"
+  },
+  {
+    title: "位姿和轨迹",
+    plain: "位姿是一帧里的位置和朝向，轨迹是一串按时间排列的位姿。",
+    example: "SLAM 输出 T_{map\\leftarrow base}(t)，就是车在地图坐标系里的连续位置和朝向。",
+    exercise: "画 3 个小车位置，给每个位置画朝向箭头。",
+    goodNotes: "把 pose 写成 R+t，把 trajectory 写成 pose_1, pose_2, pose_3。"
+  },
+  {
+    title: "重投影误差",
+    plain: "重投影误差就是：用当前估计的相机和三维点预测一个像素，再和真实匹配像素比较。",
+    example: "如果预测点离真实角点很远，说明相机位姿、三维点或匹配关系里至少有一个不准。",
+    exercise: "在一张图里画真实像素 u，再画预测像素 u_hat，用箭头表示误差。",
+    goodNotes: "写 u_{ij}-\\pi(T_iX_j)，旁边用中文写“预测像素减真实像素”。"
   }
 ];
 
@@ -447,6 +480,34 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
     example: "空间模型告诉你哪里有路和障碍，世界模型预演动作之后会发生什么。",
     exercise: "写 representation、prediction、failure mode 三行。",
     goodNotes: "把 Control、World Model、Spatial Model 画成三角关系。"
+  },
+  "lesson-rigid-camera-projection": {
+    question: "这节课先问：同一个三维点，为什么在不同坐标系和像素里会变成不同数字？",
+    intuition: "先把坐标变换看成翻译语言：车身坐标、相机坐标、地图坐标都在描述同一个世界。",
+    example: "相机看见一个路锥，SLAM 需要知道这个路锥在相机里、车身里、地图里分别在哪里。",
+    exercise: "画 world、camera、image 三层，连出 X -> camera point -> pixel。",
+    goodNotes: "先画三层坐标，再写 T 和 s\\tilde{u}=K[R|t]\\tilde{X}。"
+  },
+  "lesson-feature-epipolar-geometry": {
+    question: "这节课先问：两张图里怎么知道两个角点来自同一个三维点？",
+    intuition: "匹配点不是随便配，第二张图里的点必须落在第一张图预测出的对极线上。",
+    example: "你从左眼和右眼看同一个物体，两个视角的像素位置共同决定深度。",
+    exercise: "画两台相机、一个三维点、两条成像光线和一条对极线。",
+    goodNotes: "把 feature matching、epipolar line、triangulation 写成一页图。"
+  },
+  "lesson-slam-backend-pose-graph": {
+    question: "这节课先问：前端给了很多匹配和相对运动，后端怎样把整条轨迹调顺？",
+    intuition: "后端像总校准：每一条观测都是约束，目标是让所有约束的误差整体最小。",
+    example: "车辆绕一圈回到起点时，如果轨迹没有闭合，loop closure 会把整条轨迹拉回一致。",
+    exercise: "画 4 个 pose 节点和 5 条约束边，最后一条边标成 loop closure。",
+    goodNotes: "把 BA 和 pose graph 并排写：一个优化相机+点，一个优化位姿图。"
+  },
+  "lesson-sfm-mvs-nerf-3dgs": {
+    question: "这节课先问：从一堆照片到可看的三维场景，中间到底产出了什么？",
+    intuition: "SfM 先求相机和稀疏点，MVS 补 dense geometry，NeRF/3DGS 再做可渲染表示。",
+    example: "COLMAP 先给相机位姿和稀疏点云；NeRF 和 3DGS 通常需要这些位姿作为训练输入。",
+    exercise: "画 Images -> SfM -> Sparse Cloud -> MVS Dense -> NeRF/3DGS -> Validation Asset。",
+    goodNotes: "把 pipeline 画成一条资产链，并标出哪些能进 CARLA，哪些只是视觉研究层。"
   }
 };
 
@@ -1032,6 +1093,118 @@ const lessonReadyChecks: Record<string, LessonReadyCheck> = {
     ],
     goodNotesPrompt: "Page 014 写完了吗？",
     goodNotesExpected: "已记录：Page 014 至少有 latent dynamics、camera projection、failure mode。"
+  },
+  "lesson-rigid-camera-projection": {
+    prerequisite: "齐次坐标",
+    conceptQuestion: "为什么 SLAM 里要把 R 和 t 放进同一个 T 矩阵？",
+    conceptAnswer: "答案：因为位姿同时包含旋转和平移，齐次矩阵能用一次矩阵乘法完成坐标变换。",
+    formulaPrompt: "哪个表达式表示三维点投影到像素？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "s\\tilde{u}=K[R|t]\\tilde{X}",
+        isCorrect: true,
+        feedback: "正确：外参先把世界点放到相机里，内参再把它投到像素。"
+      },
+      {
+        label: "B",
+        value: "rank(C)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性检查，不是相机投影。"
+      },
+      {
+        label: "C",
+        value: "V_dot<0",
+        isCorrect: false,
+        feedback: "还不对：这是 Lyapunov 稳定性入口。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-001 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-001 至少有 world/camera/image 三层、T、K、投影链。"
+  },
+  "lesson-feature-epipolar-geometry": {
+    prerequisite: "像素和相机内参",
+    conceptQuestion: "对极几何为什么能筛掉错误匹配？",
+    conceptAnswer: "答案：同一个三维点在两张图里的像素必须满足 x2^T F x1=0，不满足的匹配大概率是错的。",
+    formulaPrompt: "哪个公式是两视图匹配的对极约束？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "\\tilde{x}_2^TF\\tilde{x}_1=0",
+        isCorrect: true,
+        feedback: "正确：这是两视图几何里最核心的匹配约束。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是状态反馈。"
+      },
+      {
+        label: "C",
+        value: "p(z_{t+1}|z_t,a_t)",
+        isCorrect: false,
+        feedback: "还不对：这是世界模型动态。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-002 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-002 至少有两相机、匹配点、对极线、三角化。"
+  },
+  "lesson-slam-backend-pose-graph": {
+    prerequisite: "重投影误差",
+    conceptQuestion: "SLAM 后端在优化什么？",
+    conceptAnswer: "答案：它调整位姿和地图点，让重投影误差、相对位姿误差、回环约束整体最小。",
+    formulaPrompt: "哪个对象是视觉 BA 的核心误差？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "u_{ij}-\\pi(T_iX_j)",
+        isCorrect: true,
+        feedback: "正确：预测像素和观测像素的差就是重投影误差。"
+      },
+      {
+        label: "B",
+        value: "A-BK",
+        isCorrect: false,
+        feedback: "还不对：这是控制闭环矩阵。"
+      },
+      {
+        label: "C",
+        value: "T_i only",
+        isCorrect: false,
+        feedback: "还不对：只列出位姿不等于定义优化误差。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-003 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-003 至少有 frontend/backend、BA、pose graph、loop closure。"
+  },
+  "lesson-sfm-mvs-nerf-3dgs": {
+    prerequisite: "位姿和轨迹",
+    conceptQuestion: "SfM、MVS、NeRF、3DGS 的先后关系是什么？",
+    conceptAnswer: "答案：SfM 先估计相机位姿和稀疏点，MVS 补密集几何，NeRF/3DGS 用图像和位姿学习可渲染场景。",
+    formulaPrompt: "哪个表达式表示 NeRF 沿光线累加颜色？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "\\hat{C}(r)=\\sum_i T_i(1-e^{-\\sigma_i\\delta_i})c_i",
+        isCorrect: true,
+        feedback: "正确：NeRF 的离散体渲染就是沿光线加权累加颜色。"
+      },
+      {
+        label: "B",
+        value: "rank(O)=n",
+        isCorrect: false,
+        feedback: "还不对：这是可观性条件。"
+      },
+      {
+        label: "C",
+        value: "x_dot=Ax+Bu",
+        isCorrect: false,
+        feedback: "还不对：这是状态空间入口。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-004 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-004 至少有 SfM/MVS/COLMAP/NeRF/3DGS 的资产链和边界。"
   }
 };
 
@@ -1581,6 +1754,166 @@ const guidedControlLessonSeeds: GuidedLessonSeed[] = [
       }
     ],
     selfCheck: ["latent dynamics", "camera projection", "occupancy/3D representation"]
+  },
+  {
+    id: "lesson-rigid-camera-projection",
+    title: "第 15 课：刚体变换与相机投影",
+    goal: "从零理解 SLAM 的第一步：同一个三维点如何从世界坐标、相机坐标变成像素。",
+    formula:
+      "T_{w\\leftarrow c}=\\begin{bmatrix}R&t\\\\0&1\\end{bmatrix},\\quad s\\tilde{u}=K[R\\mid t]\\tilde{X}",
+    formulaTerms: [...slamTransformFormulaTerms, ...slamProjectionFormulaTerms],
+    now: "现在做：在 GoodNotes 画 world -> camera -> image 三层坐标，不急着写代码。",
+    goodNotesPage: "GoodNotes Page SLAM-001：刚体变换与相机投影",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Camera Projection",
+    notionRow: "Notion row：Topic=SLAM projection, Mastery=1, Evidence=GoodNotes Page SLAM-001",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "画 world、camera、image 三层。",
+        output: "明确 X 是 3D 点，u 是像素点。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 T_{w\\leftarrow c} 里的 R 和 t。",
+        output: "R 管朝向，t 管位置，T 把它们合成一个位姿。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 s\\tilde{u}=K[R|t]\\tilde{X}。",
+        output: "外参先换坐标，内参再投像素。"
+      },
+      {
+        label: "Step 4",
+        instruction: "把公式接到 SLAM。",
+        output: "SLAM 后面所有误差都要比较预测像素和真实像素。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Obsidian 连接 Camera Model、Pose、Projection。",
+        output: "建立 SLAM 主线的第一个概念三角。"
+      }
+    ],
+    selfCheck: ["T 同时包含 R 和 t", "K 是相机内参", "投影要除掉齐次尺度 s"]
+  },
+  {
+    id: "lesson-feature-epipolar-geometry",
+    title: "第 16 课：特征匹配与对极几何",
+    goal: "理解视觉 SLAM 前端如何从两张图的匹配点估计相机运动和三维点。",
+    formula:
+      "\\tilde{x}_2^TF\\tilde{x}_1=0,\\quad E=[t]_\\times R,\\quad \\min_X\\sum_i\\|u_i-\\pi(T_iX)\\|^2",
+    formulaTerms: epipolarFormulaTerms,
+    now: "现在做：画两台相机、一个三维点、两条成像光线和一条对极线。",
+    goodNotesPage: "GoodNotes Page SLAM-002：特征匹配与对极几何",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Epipolar Geometry",
+    notionRow: "Notion row：Topic=Epipolar geometry, Mastery=1, Evidence=GoodNotes Page SLAM-002",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先定义 feature matching。",
+        output: "同一个角点或描述子在两张图里找到对应像素。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写对极约束 \\tilde{x}_2^TF\\tilde{x}_1=0。",
+        output: "错误匹配通常不满足这条几何约束。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 E=[t]_\\times R。",
+        output: "内参已知时，相对位姿进入本质矩阵。"
+      },
+      {
+        label: "Step 4",
+        instruction: "解释 triangulation。",
+        output: "两条光线交会的位置就是三维点估计。"
+      },
+      {
+        label: "Step 5",
+        instruction: "在 Obsidian 连接 Feature、Epipolar、Triangulation。",
+        output: "前端跟踪不再是黑箱。"
+      }
+    ],
+    selfCheck: ["feature matching", "epipolar constraint", "triangulation"]
+  },
+  {
+    id: "lesson-slam-backend-pose-graph",
+    title: "第 17 课：SLAM 后端与位姿图优化",
+    goal: "把视觉 SLAM 和 LiDAR SLAM 的后端都看成误差最小化问题。",
+    formula:
+      "\\min_{T_i,X_j}\\sum_{i,j}\\|u_{ij}-\\pi(T_iX_j)\\|^2_{\\Sigma^{-1}},\\quad \\min_{T_i}\\sum_{(i,j)}\\|\\log(Z_{ij}^{-1}T_i^{-1}T_j)\\|^2_{\\Omega_{ij}}",
+    formulaTerms: slamBackendFormulaTerms,
+    now: "现在做：画 pose graph，节点是位姿，边是里程计、匹配或回环约束。",
+    goodNotesPage: "GoodNotes Page SLAM-003：BA 与位姿图优化",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Backend Optimization",
+    notionRow: "Notion row：Topic=SLAM backend, Mastery=1, Evidence=GoodNotes Page SLAM-003",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "区分 frontend 和 backend。",
+        output: "前端提供匹配、里程计和候选回环；后端负责整体一致。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 BA 目标。",
+        output: "同时调相机位姿 T_i 和三维点 X_j，让重投影误差最小。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 pose graph 目标。",
+        output: "只优化位姿节点，让相对位姿约束尽量一致。"
+      },
+      {
+        label: "Step 4",
+        instruction: "解释 loop closure。",
+        output: "回到旧地点时增加一条强约束，减少累计漂移。"
+      },
+      {
+        label: "Step 5",
+        instruction: "把输出接到 validation asset。",
+        output: "trajectory、drift、coverage、RMSE 都可以成为证据。"
+      }
+    ],
+    selfCheck: ["frontend/backend", "bundle adjustment", "pose graph + loop closure"]
+  },
+  {
+    id: "lesson-sfm-mvs-nerf-3dgs",
+    title: "第 18 课：SfM/MVS 到 NeRF/3DGS 重建",
+    goal: "把 COLMAP、NeRF、3DGS 放进同一条三维重建资产链，并区分可渲染和可仿真。",
+    formula:
+      "\\hat{C}(r)=\\sum_i T_i(1-e^{-\\sigma_i\\delta_i})c_i,\\quad \\Sigma'=JW\\Sigma W^TJ^T",
+    formulaTerms: nerfGaussianFormulaTerms,
+    now: "现在做：画 Images -> COLMAP SfM -> MVS -> NeRF/3DGS -> validation asset。",
+    goodNotesPage: "GoodNotes Page SLAM-004：COLMAP 到 NeRF/3DGS",
+    obsidianNode: "Obsidian node：World-Spatial -> Reconstruction -> Asset Pipeline",
+    notionRow: "Notion row：Topic=SfM/MVS/NeRF/3DGS, Mastery=1, Evidence=GoodNotes Page SLAM-004",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "写 SfM 输入和输出。",
+        output: "输入是多视角图像，输出是相机位姿和稀疏点云。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 MVS 的作用。",
+        output: "在已知相机位姿上补出更密的几何。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 NeRF 体渲染。",
+        output: "它学习沿光线的颜色和密度，不等于仿真物理资产。"
+      },
+      {
+        label: "Step 4",
+        instruction: "写 3DGS 高斯投影。",
+        output: "它渲染快，适合视觉资产，但碰撞和语义要另外建模。"
+      },
+      {
+        label: "Step 5",
+        instruction: "标注 stable / reconstruction 边界。",
+        output: "能进稳定验证的必须有 mesh、OpenDRIVE、collision proxy 或明确证据。"
+      }
+    ],
+    selfCheck: ["COLMAP produces poses", "NeRF/3DGS are renderable representations", "CARLA needs physical/semantic assets"]
   }
 ];
 
@@ -1605,6 +1938,14 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     goodNotes: "GoodNotes: 021 World Models",
     obsidian: "Obsidian: World Model -> Latent Dynamics",
     notion: "Notion: Resource Type = Paper, Status = Active"
+  },
+  {
+    title: "SLAM reconstruction first line",
+    focus: "Start from pose, projection, epipolar geometry, backend optimization, then COLMAP/NeRF/3DGS.",
+    prompt: "Open lessons 15-18, write one GoodNotes page, and keep the output as trajectory, map, reconstruction asset, or formula evidence.",
+    goodNotes: "GoodNotes: SLAM-001 to SLAM-004",
+    obsidian: "Obsidian: World-Spatial -> SLAM and Reconstruction",
+    notion: "Notion: Track=World & Spatial Models, Status=Active, Evidence=GoodNotes SLAM page"
   },
   {
     title: "3Blue1Brown visual math sprint",
@@ -1708,6 +2049,52 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
       "说明 BEV 表示为什么适合规划和占据理解。"
     ],
     output: "one spatial-model sketch linking camera geometry, BEV grid, and driving decisions"
+  },
+  {
+    title: "SLAM rigid transform and projection",
+    formula:
+      "T_{w\\leftarrow c}=\\begin{bmatrix}R&t\\\\0&1\\end{bmatrix},\\quad s\\tilde{u}=K[R\\mid t]\\tilde{X}",
+    formulaTerms: [...slamTransformFormulaTerms, ...slamProjectionFormulaTerms],
+    steps: [
+      "画 world、camera、image 三层坐标。",
+      "解释 R、t、T 分别负责朝向、位置和整个位姿。",
+      "把三维点投影到像素，标出齐次尺度 s。"
+    ],
+    output: "one SLAM-001 page linking coordinate transform to camera projection"
+  },
+  {
+    title: "Epipolar geometry and triangulation",
+    formula: "\\tilde{x}_2^TF\\tilde{x}_1=0,\\quad E=[t]_\\times R,\\quad \\min_X\\sum_i\\|u_i-\\pi(T_iX)\\|^2",
+    formulaTerms: epipolarFormulaTerms,
+    steps: [
+      "画两台相机和同一个三维点。",
+      "写对极约束，说明它如何过滤错误匹配。",
+      "用三角化解释多视角怎样恢复三维点。"
+    ],
+    output: "one SLAM-002 page with feature matching, epipolar line, and triangulation"
+  },
+  {
+    title: "Bundle adjustment and pose graph",
+    formula:
+      "\\min_{T_i,X_j}\\sum_{i,j}\\|u_{ij}-\\pi(T_iX_j)\\|^2_{\\Sigma^{-1}},\\quad \\min_{T_i}\\sum_{(i,j)}\\|\\log(Z_{ij}^{-1}T_i^{-1}T_j)\\|^2_{\\Omega_{ij}}",
+    formulaTerms: slamBackendFormulaTerms,
+    steps: [
+      "把相机位姿画成节点，把相对位姿或匹配画成边。",
+      "区分 BA 同时优化位姿和点，pose graph 主要优化位姿。",
+      "用 loop closure 解释为什么回到旧地点能减少漂移。"
+    ],
+    output: "one SLAM-003 page comparing visual BA and pose graph optimization"
+  },
+  {
+    title: "NeRF and 3DGS rendering equations",
+    formula: "\\hat{C}(r)=\\sum_i T_i(1-e^{-\\sigma_i\\delta_i})c_i,\\quad \\Sigma'=JW\\Sigma W^TJ^T",
+    formulaTerms: nerfGaussianFormulaTerms,
+    steps: [
+      "写 NeRF 沿光线累加颜色和密度。",
+      "写 3DGS 如何把三维高斯投影到图像。",
+      "标注 renderable representation 和 CARLA physical asset 的边界。"
+    ],
+    output: "one SLAM-004 page connecting COLMAP poses, NeRF, 3DGS, and validation assets"
   },
   {
     title: "Reconstruction SLAM pose-prior handoff",
@@ -1897,7 +2284,7 @@ export const libraryTrackRoutes: LibraryTrackRoute[] = [
   {
     title: "World and spatial route",
     tracks: "World & Spatial Models",
-    output: "latent dynamics note, BEV/occupancy comparison, paper reproduction hook"
+    output: "SLAM projection, pose graph, COLMAP reconstruction, NeRF/3DGS asset boundary"
   },
   {
     title: "Output-first IELTS route",

@@ -201,6 +201,47 @@ const formulaMatchers: FormulaMatcher[] = [
     pattern: /s\\mathbf\{u\}=K\[R\|t\]X/
   },
   {
+    pattern: /s\\tilde\{u\}=K\[R\|t\]\\tilde\{X\}/,
+    normalize: () => "s\\tilde{u}=K[R\\mid t]\\tilde{X}"
+  },
+  {
+    pattern: /s\\tilde\{u\}=K\[R\\mid t\]\\tilde\{X\}/
+  },
+  {
+    pattern: /s\\tilde\{u\}=K\[R\|t\]\\tilde\{X\}/
+  },
+  {
+    pattern: /T_\{[a-zA-Z]+\\leftarrow [a-zA-Z]+\}/
+  },
+  {
+    pattern: /T_\{w\\leftarrow c\}/
+  },
+  {
+    pattern: /T_\{map\\leftarrow base\}/
+  },
+  {
+    pattern: /\\tilde\{x\}_2\^TF\\tilde\{x\}_1=0/
+  },
+  {
+    pattern: /E=\[t\]_\\times R/
+  },
+  {
+    pattern: /u_\{ij\}-\\pi\(T_iX_j\)/
+  },
+  {
+    pattern: /u_ij - pi\(T_i X_j\)/,
+    normalize: () => "u_{ij}-\\pi(T_iX_j)"
+  },
+  {
+    pattern: /\\log\(Z_\{ij\}\^-1T_i\^-1T_j\)/
+  },
+  {
+    pattern: /\\hat\{C\}\(r\)/
+  },
+  {
+    pattern: /\\Sigma'=JW\\Sigma W\^TJ\^T/
+  },
+  {
     pattern: /f\(x,y,z\)/
   }
 ];

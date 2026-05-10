@@ -1,8 +1,10 @@
 import { Client } from "@notionhq/client";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import type { LearningTask } from "../../src/domain/types";
 
 export interface NotionSyncConfig {
   notionToken: string | null;
+  notionProxyUrl?: string | null;
   notionTasksDatabaseId: string | null;
 }
 
@@ -43,7 +45,7 @@ export async function syncTaskToNotion(
   }
 
   try {
-    const notion = new Client({ auth: config.notionToken });
+    const notion = createNotionClient(config);
     const properties = toNotionProperties(task);
     const response = task.notionPageId
       ? await notion.pages.update({
@@ -80,7 +82,7 @@ export async function validateNotionDatabaseSchema(
   }
 
   try {
-    const notion = new Client({ auth: config.notionToken });
+    const notion = createNotionClient(config);
     const database = await notion.databases.retrieve({
       database_id: config.notionTasksDatabaseId
     });
@@ -121,4 +123,11 @@ function toNotionProperties(task: LearningTask) {
     },
     "Updated At": { date: { start: task.updatedAt } }
   };
+}
+
+function createNotionClient(config: NotionSyncConfig) {
+  return new Client({
+    auth: config.notionToken ?? undefined,
+    agent: config.notionProxyUrl ? new HttpsProxyAgent(config.notionProxyUrl) : undefined
+  });
 }

@@ -57,6 +57,8 @@ describe("knowledge seeds", () => {
   it("keeps deep study cards actionable and sourced", () => {
     expect(deepStudyCards.length).toBeGreaterThanOrEqual(12);
     expect(deepStudyCards.some((card) => card.id === "deep-reconstruction-slam-handoff")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-slam-state-estimation-map")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-sfm-mvs-colmap-reconstruction")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "IELTS 输出到错误归因")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "哲学论证到工程判断")).toBe(true);
     expect(deepStudyCards.every((card) => card.coreIdeas.length >= 3)).toBe(true);
@@ -65,5 +67,47 @@ describe("knowledge seeds", () => {
     expect(deepStudyCards.every((card) => card.practiceQuestions.length === 3)).toBe(true);
     expect(deepStudyCards.every((card) => card.formulaCheck.choices.some((choice) => choice.isCorrect))).toBe(true);
     expect(deepStudyCards.every((card) => card.goodNotesCheck.expected.length > 0)).toBe(true);
+  });
+
+  it("adds a complete SLAM and 3D reconstruction first line", () => {
+    expect(knowledgeModules).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "slam-zero-to-map",
+          track: "world-spatial-models",
+          title: "SLAM zero-to-map first line"
+        }),
+        expect.objectContaining({
+          id: "sfm-mvs-colmap-lab",
+          track: "world-spatial-models",
+          title: "SfM, MVS, and COLMAP reconstruction lab"
+        }),
+        expect.objectContaining({
+          id: "nerf-3dgs-validation-assets",
+          track: "world-spatial-models",
+          title: "NeRF and 3DGS validation asset bridge"
+        })
+      ])
+    );
+
+    expect(knowledgeSeedTasks).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: "seed_slam_zero_to_map",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_colmap_sfm_mvs_lab",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_nerf_3dgs_validation_asset",
+          track: "world-spatial-models",
+          status: "active"
+        })
+      ])
+    );
   });
 });

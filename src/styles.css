@@ -9,6 +9,10 @@
   --paper-tint: #e7e7e7;
   --line: #d0d0d0;
   --line-strong: #8a8a8a;
+  --glass: rgba(255, 255, 255, 0.66);
+  --glass-strong: rgba(255, 255, 255, 0.82);
+  --glass-muted: rgba(245, 245, 245, 0.58);
+  --glass-dark: rgba(10, 10, 10, 0.82);
   --indigo: #111111;
   --indigo-deep: #000000;
   --green: #303030;
@@ -36,6 +40,7 @@ body {
     linear-gradient(90deg, rgba(0, 0, 0, 0.045) 1px, transparent 1px),
     linear-gradient(180deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
     var(--paper);
+  background-attachment: fixed;
   background-size: 44px 44px;
 }
 
@@ -182,12 +187,12 @@ label,
 }
 
 .panel {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(248, 248, 248, 0.96)),
-    var(--paper-soft);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
+  background: linear-gradient(180deg, var(--glass-strong), var(--glass-muted));
   border: 1px solid var(--line-strong);
   border-radius: 8px;
-  box-shadow: 0 18px 44px var(--shadow);
+  box-shadow: 0 22px 54px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.72);
   padding: 24px;
 }
 
@@ -643,6 +648,7 @@ textarea {
 #section-start,
 #section-foundations,
 #section-3blue1brown,
+#section-spatial-glass,
 #section-guided-path,
 #section-launch-queue,
 #section-tutor {
@@ -1074,6 +1080,202 @@ textarea {
 
 .compact-toc {
   border-left-color: var(--line-strong);
+}
+
+.spatial-glass-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.spatial-topic-tabs {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.spatial-topic-tabs button {
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  align-items: start;
+  backdrop-filter: blur(18px) saturate(130%);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 8px;
+  min-height: 108px;
+  padding: 14px;
+  text-align: left;
+}
+
+.spatial-topic-tabs button:hover {
+  background: var(--glass-strong);
+}
+
+.spatial-topic-tabs button.active {
+  background: var(--glass-dark);
+  border-color: var(--ink);
+  color: var(--paper-soft);
+}
+
+.spatial-topic-tabs span,
+.spatial-stage-strip span,
+.spatial-focus-copy span,
+.spatial-stage-detail > span {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.spatial-topic-tabs span {
+  color: inherit;
+  opacity: 0.72;
+}
+
+.spatial-topic-tabs strong {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.18rem;
+  line-height: 1.18;
+}
+
+.spatial-glass-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.spatial-glass-focus {
+  -webkit-backdrop-filter: blur(26px) saturate(140%);
+  backdrop-filter: blur(26px) saturate(140%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(244, 244, 244, 0.56));
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 18px 42px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+  padding: 16px;
+}
+
+.spatial-focus-copy {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.spatial-focus-copy span,
+.spatial-stage-detail > span {
+  color: var(--muted);
+}
+
+.spatial-focus-copy h3,
+.spatial-stage-detail h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.52rem;
+  line-height: 1.18;
+  margin: 0;
+}
+
+.spatial-focus-copy p,
+.spatial-stage-detail p {
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.spatial-stage-strip {
+  display: flex;
+  gap: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  scroll-snap-type: x mandatory;
+}
+
+.spatial-stage-strip button {
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  display: grid;
+  flex: 0 0 min(310px, 82vw);
+  gap: 5px;
+  min-height: 82px;
+  padding: 12px 14px;
+  scroll-snap-align: start;
+  text-align: left;
+}
+
+.spatial-stage-strip button.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper-soft);
+}
+
+.spatial-stage-strip em {
+  color: inherit;
+  font-size: 0.86rem;
+  font-style: normal;
+  line-height: 1.35;
+  opacity: 0.78;
+}
+
+.spatial-stage-detail {
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--ink);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.spatial-stage-detail > strong {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  line-height: 1.45;
+  padding: 10px;
+}
+
+.spatial-source-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.spatial-source-row a {
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 6px;
+  min-height: 92px;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.spatial-source-row a:hover {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.spatial-source-row strong {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.spatial-source-row span {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .guided-lesson-grid {
@@ -2293,6 +2495,8 @@ progress::-moz-progress-bar {
   .study-controls,
   .study-workspace,
   .workflow-strip,
+  .spatial-topic-tabs,
+  .spatial-glass-focus,
   .guided-lesson-grid,
   .notebook-layout,
   .map-layout,

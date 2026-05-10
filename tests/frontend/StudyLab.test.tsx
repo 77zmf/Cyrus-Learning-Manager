@@ -79,4 +79,17 @@ describe("StudyLab", () => {
       "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
     );
   });
+
+  it("offers a SLAM first-line session under world and spatial models", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "world-spatial-models" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Reconstruction" }));
+
+    expect(screen.getByText("SLAM and 3D reconstruction first line")).toBeInTheDocument();
+    expect(screen.getByText(/pose graph, bundle adjustment, COLMAP, NeRF, and 3DGS/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "COLMAP" })).toHaveAttribute("href", "https://colmap.org/");
+  });
 });

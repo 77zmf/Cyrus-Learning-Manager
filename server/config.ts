@@ -6,6 +6,7 @@ loadDotenv({ path: ".env", override: false });
 export interface AppConfig {
   port: number;
   notionToken: string | null;
+  notionProxyUrl: string | null;
   notionParentPageId: string;
   notionTasksDatabaseId: string | null;
   obsidianVaultPath: string;
@@ -28,6 +29,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   return {
     port: Number.isInteger(parsedPort) && parsedPort > 0 && parsedPort <= 65535 ? parsedPort : 8787,
     notionToken: env.NOTION_TOKEN?.trim() || null,
+    notionProxyUrl:
+      env.NOTION_PROXY_URL?.trim() ||
+      env.HTTPS_PROXY?.trim() ||
+      env.HTTP_PROXY?.trim() ||
+      null,
     notionParentPageId: env.NOTION_PARENT_PAGE_ID?.trim() || defaultParentPageId,
     notionTasksDatabaseId: env.NOTION_TASKS_DATABASE_ID?.trim() || null,
     obsidianVaultPath: env.OBSIDIAN_VAULT_PATH?.trim() || defaultObsidianVaultPath,
