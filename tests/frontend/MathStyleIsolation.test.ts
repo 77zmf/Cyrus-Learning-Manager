@@ -2,7 +2,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const css = readFileSync(join(process.cwd(), "src/styles.css"), "utf8");
+const css = ["src/styles.css", "src/styles/base.css", "src/styles/math.css"]
+  .map((path) => readFileSync(join(process.cwd(), path), "utf8"))
+  .join("\n");
 
 const formulaBearingContainers = [
   ".study-main",

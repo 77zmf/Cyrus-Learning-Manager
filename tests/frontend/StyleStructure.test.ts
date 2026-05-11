@@ -32,4 +32,21 @@ describe("style source structure", () => {
     expect(base).toContain(".panel");
     expect(base).toContain("backdrop-filter: blur(22px) saturate(135%)");
   });
+
+  it("keeps formula and KaTeX styling in a focused math stylesheet", () => {
+    const entry = readSource("src/styles.css");
+    const mathPath = join(root, "src/styles/math.css");
+
+    expect(existsSync(mathPath)).toBe(true);
+    expect(entry).toContain('@import "./styles/math.css";');
+    expect(entry).not.toContain(".app-shell .katex");
+    expect(entry).not.toContain(".formula-render .katex-display");
+
+    const math = readSource("src/styles/math.css");
+
+    expect(math).toContain(".math-inline");
+    expect(math).toContain(".app-shell .katex");
+    expect(math).toContain(".formula-render");
+    expect(math).toContain(".formula-term-grid");
+  });
 });
