@@ -10,6 +10,7 @@ import {
 } from "../domain/study-lab";
 import { tracks } from "../domain/tracks";
 import type { TrackId } from "../domain/types";
+import { FormulaVisual } from "./FormulaVisual";
 import { MathLines, MathText } from "./MathText";
 
 interface StudyLabProps {
@@ -104,6 +105,17 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
             ))}
           </ol>
         </article>
+
+        {plan.formulaCue ? (
+          <article className="study-card formula-cue-card">
+            <h3>Video Formula Starter</h3>
+            <FormulaVisual
+              label={plan.formulaCue.label}
+              latex={plan.formulaCue.latex}
+              terms={plan.formulaCue.terms}
+            />
+          </article>
+        ) : null}
 
         <article className="study-card template-card">
           <h3>Output Template</h3>

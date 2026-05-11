@@ -114,7 +114,7 @@ export function App() {
         {tab === "learn" ? <LearnView /> : null}
         {tab === "notebook" ? <NotebookView /> : null}
         {tab === "map" ? <MindMapView /> : null}
-        {tab === "library" ? <CoursesView /> : null}
+        {tab === "library" ? <CoursesView onCreateTask={handleCreateTask} /> : null}
         {tab === "review" ? (
           <ReviewView
             tasks={tasks}

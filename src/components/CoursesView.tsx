@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { CreateTaskInput } from "../api/client";
 import {
   deepStudyCards,
   modulesForTrack,
@@ -8,8 +9,13 @@ import {
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
 import { MathText } from "./MathText";
+import { StudyLab } from "./StudyLab";
 
-export function CoursesView() {
+interface CoursesViewProps {
+  onCreateTask?: (input: CreateTaskInput) => void;
+}
+
+export function CoursesView({ onCreateTask = () => undefined }: CoursesViewProps) {
   return (
     <section className="panel">
       <div className="section-heading">
@@ -18,6 +24,7 @@ export function CoursesView() {
           Course modules, source links, video entry points, derivation outputs, and paper queues.
         </p>
       </div>
+      <StudyLab onCreateTask={onCreateTask} />
       <section className="subsection-block route-block">
         <div className="section-heading">
           <h2>Track Routes</h2>

@@ -1,4 +1,5 @@
 import type { TaskPriority, TrackId } from "./types";
+import type { FormulaTerm } from "./formula-visuals";
 
 export type StudyMode =
   | "formula"
@@ -26,6 +27,11 @@ export interface StudyPlan {
   sources: StudySource[];
   taskTitle: string;
   priority: TaskPriority;
+  formulaCue?: {
+    label: string;
+    latex: string;
+    terms: FormulaTerm[];
+  };
 }
 
 export const studyModeLabels: Record<StudyMode, string> = {
@@ -122,6 +128,27 @@ export const studyPlans: StudyPlan[] = [
     ],
     template:
       "Video:\nCore intuition:\nAutonomous-driving connection:\nMinimal experiment:\nReusable sentence:\nOpen question:\nNext video:",
+    formulaCue: {
+      label: "First 3Blue1Brown video formula",
+      latex: "\\mathbf{p}_{map}=T_{map\\leftarrow base}T_{base\\leftarrow lidar}\\mathbf{p}_{lidar}",
+      terms: [
+        {
+          label: "点向量",
+          symbol: "\\mathbf{p}",
+          meaning: "把视频里的箭头或空间点写成可计算的向量。"
+        },
+        {
+          label: "坐标变换",
+          symbol: "T_{a\\leftarrow b}",
+          meaning: "把同一个点从 b 坐标语言翻译到 a 坐标语言。"
+        },
+        {
+          label: "坐标变换链",
+          symbol: "T_{map\\leftarrow base}T_{base\\leftarrow lidar}",
+          meaning: "矩阵连续相乘，把 LiDAR 点一步步翻译到地图坐标。"
+        }
+      ]
+    },
     sources: [
       {
         title: "3Blue1Brown official site",

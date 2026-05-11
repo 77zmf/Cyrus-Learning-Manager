@@ -92,4 +92,26 @@ describe("StudyLab", () => {
     expect(screen.getByText(/pose graph, bundle adjustment, COLMAP, NeRF, and 3DGS/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "COLMAP" })).toHaveAttribute("href", "https://colmap.org/");
   });
+
+  it("renders the first 3Blue1Brown video formula cue as visual math", () => {
+    const { container } = render(<StudyLab onCreateTask={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "3blue1brown" }
+    });
+
+    expect(screen.getByText("3Blue1Brown video note")).toBeInTheDocument();
+    expect(screen.getByLabelText("Formula visual: First 3Blue1Brown video formula")).toBeInTheDocument();
+    expect(screen.getByText("坐标变换链")).toBeInTheDocument();
+    expect(container.querySelectorAll(".math-inline .katex").length).toBeGreaterThan(0);
+    expect(visibleTextWithoutRenderedMath(container)).not.toContain("\\mathbf{p}_{map}");
+  });
 });
+
+function visibleTextWithoutRenderedMath(container: HTMLElement) {
+  const clone = container.cloneNode(true) as HTMLElement;
+
+  clone.querySelectorAll(".katex, script, style").forEach((node) => node.remove());
+
+  return clone.textContent ?? "";
+}

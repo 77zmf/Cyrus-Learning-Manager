@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { CoursesView } from "../../src/components/CoursesView";
 
 describe("CoursesView", () => {
@@ -8,7 +8,7 @@ describe("CoursesView", () => {
 
     expect(screen.getByText("Tsinghua Automation undergraduate full path")).toBeInTheDocument();
     expect(screen.getByText("Graduate control engineering path")).toBeInTheDocument();
-    expect(screen.getByText("Control formula derivation ladder")).toBeInTheDocument();
+    expect(screen.getAllByText("Control formula derivation ladder").length).toBeGreaterThan(0);
     expect(screen.getByText("MIT EECS full coverage map")).toBeInTheDocument();
     expect(screen.getByText("World models and latent dynamics")).toBeInTheDocument();
     expect(screen.getByText("Spatial models, 3D geometry, BEV, and occupancy")).toBeInTheDocument();
@@ -77,5 +77,19 @@ describe("CoursesView", () => {
 
     fireEvent.click(screen.getByRole("checkbox", { name: "确认 线性代数到状态空间 GoodNotes 输出" }));
     expect(screen.getByText(/已记录：Page M001 应包含状态列向量、A\/B 含义、二维小车例子/)).toBeInTheDocument();
+  });
+
+  it("exposes the 3Blue1Brown video formula starter from the library page", () => {
+    render(<CoursesView onCreateTask={vi.fn()} />);
+
+    expect(screen.getByText("Study Lab")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "3blue1brown" }
+    });
+
+    expect(screen.getByText("3Blue1Brown video note")).toBeInTheDocument();
+    expect(screen.getByLabelText("Formula visual: First 3Blue1Brown video formula")).toBeInTheDocument();
+    expect(screen.getByText("坐标变换链")).toBeInTheDocument();
   });
 });
