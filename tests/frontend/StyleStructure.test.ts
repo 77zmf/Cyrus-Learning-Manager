@@ -49,4 +49,22 @@ describe("style source structure", () => {
     expect(math).toContain(".formula-render");
     expect(math).toContain(".formula-term-grid");
   });
+
+  it("keeps Manim Studio and guided storyboard styling in a focused stylesheet", () => {
+    const entry = readSource("src/styles.css");
+    const manimPath = join(root, "src/styles/manim.css");
+
+    expect(existsSync(manimPath)).toBe(true);
+    expect(entry).toContain('@import "./styles/manim.css";');
+    expect(entry).not.toMatch(/^\.manim-studio\s*\{/m);
+    expect(entry).not.toMatch(/^\.guided-manim-card\s*\{/m);
+
+    const manim = readSource("src/styles/manim.css");
+
+    expect(manim).toContain(".manim-studio");
+    expect(manim).toContain(".manim-topic-tabs");
+    expect(manim).toContain(".manim-video-placeholder");
+    expect(manim).toContain(".guided-manim-card");
+    expect(manim).toContain(".guided-manim-stage");
+  });
 });
