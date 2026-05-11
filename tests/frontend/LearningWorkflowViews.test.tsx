@@ -6,6 +6,48 @@ import { NotebookView } from "../../src/components/NotebookView";
 import { ReviewView } from "../../src/components/ReviewView";
 import { SyncCenter } from "../../src/components/SyncCenter";
 
+function mockRect(element: Element, rect: { left: number; top: number; width: number; height: number }) {
+  const rectValue = {
+    bottom: rect.top + rect.height,
+    height: rect.height,
+    left: rect.left,
+    right: rect.left + rect.width,
+    top: rect.top,
+    width: rect.width,
+    x: rect.left,
+    y: rect.top,
+    toJSON: () => ({})
+  } as DOMRect;
+
+  Object.defineProperty(element, "getBoundingClientRect", {
+    configurable: true,
+    value: () => rectValue
+  });
+}
+
+function normalizedText(container: HTMLElement) {
+  return (container.textContent ?? "").replace(/\s+/g, " ");
+}
+
+function dispatchPointer(
+  element: Element,
+  type: "pointerdown" | "pointermove" | "pointerup",
+  point: { clientX: number; clientY: number; pointerId: number }
+) {
+  const event = new Event(type, { bubbles: true, cancelable: true });
+
+  Object.defineProperties(event, {
+    button: { value: 0 },
+    buttons: { value: type === "pointerup" ? 0 : 1 },
+    clientX: { value: point.clientX },
+    clientY: { value: point.clientY },
+    pointerId: { value: point.pointerId },
+    pointerType: { value: "mouse" }
+  });
+
+  fireEvent(element, event);
+}
+
 describe("learning workflow views", () => {
   it("renders web learning as the primary interactive surface", () => {
     const { container } = render(<LearnView />);
@@ -142,22 +184,15 @@ describe("learning workflow views", () => {
     );
     expect(screen.getByText("Pose graph loop closure Manim scene")).toBeInTheDocument();
     expect(screen.getByText("npm run manim:render -- SlamProjectionScene")).toBeInTheDocument();
-    fireEvent.pointerDown(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
-      clientX: 220,
-      clientY: 90,
-      pointerId: 2
-    });
-    fireEvent.pointerMove(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
-      clientX: 340,
-      clientY: 150,
-      pointerId: 2
-    });
-    fireEvent.pointerUp(screen.getByRole("application", { name: "Drag SLAM landmark lab" }), {
-      clientX: 340,
-      clientY: 150,
-      pointerId: 2
-    });
+    const slamLandmarkLab = screen.getByRole("application", { name: "Drag SLAM landmark lab" });
+    expect(screen.getByText("X=0.62, Y=0.36")).toBeInTheDocument();
+    mockRect(slamLandmarkLab, { left: 100, top: 50, width: 400, height: 200 });
+    dispatchPointer(slamLandmarkLab, "pointerdown", { clientX: 220, clientY: 90, pointerId: 2 });
+    dispatchPointer(slamLandmarkLab, "pointermove", { clientX: 340, clientY: 150, pointerId: 2 });
+    dispatchPointer(slamLandmarkLab, "pointerup", { clientX: 340, clientY: 150, pointerId: 2 });
     expect(screen.getByText("SLAM drag count: 1")).toBeInTheDocument();
+    expect(normalizedText(container)).not.toContain("X=0.62, Y=0.36");
+    expect(normalizedText(container)).toMatch(/X=0\.\d{2}, Y=0\.\d{2}/);
     expect(screen.getByRole("heading", { name: "投影观测" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show SLAM visual stage 回环约束" }));
     expect(screen.getByText(/回环边把当前位姿拉回已见过的位置/)).toBeInTheDocument();
@@ -171,22 +206,14 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("application", { name: "Drag reconstruction camera rig" })).toBeInTheDocument();
     expect(screen.getByText("COLMAP to Gaussian reconstruction Manim scene")).toBeInTheDocument();
     expect(screen.getByText("npm run manim:render -- ReconstructionPipelineScene")).toBeInTheDocument();
-    fireEvent.pointerDown(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
-      clientX: 260,
-      clientY: 120,
-      pointerId: 3
-    });
-    fireEvent.pointerMove(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
-      clientX: 390,
-      clientY: 130,
-      pointerId: 3
-    });
-    fireEvent.pointerUp(screen.getByRole("application", { name: "Drag reconstruction camera rig" }), {
-      clientX: 390,
-      clientY: 130,
-      pointerId: 3
-    });
+    const reconstructionRig = screen.getByRole("application", { name: "Drag reconstruction camera rig" });
+    expect(screen.getByText("75 / 161")).toBeInTheDocument();
+    mockRect(reconstructionRig, { left: 100, top: 50, width: 400, height: 200 });
+    dispatchPointer(reconstructionRig, "pointerdown", { clientX: 260, clientY: 120, pointerId: 3 });
+    dispatchPointer(reconstructionRig, "pointermove", { clientX: 390, clientY: 130, pointerId: 3 });
+    dispatchPointer(reconstructionRig, "pointerup", { clientX: 390, clientY: 130, pointerId: 3 });
     expect(screen.getByText("Reconstruction drag count: 1")).toBeInTheDocument();
+    expect(normalizedText(container)).not.toContain("75 / 161");
     expect(screen.getByRole("heading", { name: "COLMAP SfM" })).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Reconstruction baseline"), { target: { value: "2.8" } });
     expect(screen.getByRole("heading", { name: "MVS 稠密化" })).toBeInTheDocument();
