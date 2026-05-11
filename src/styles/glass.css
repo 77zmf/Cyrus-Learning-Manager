@@ -1,0 +1,443 @@
+/* iOS-style Liquid Glass web material. */
+body::before,
+body::after {
+  z-index: 0;
+}
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  -webkit-backdrop-filter: blur(34px) saturate(170%);
+  backdrop-filter: blur(34px) saturate(170%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(245, 248, 252, 0.46) 48%, rgba(255, 255, 255, 0.58)),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.68), transparent 38%, rgba(255, 255, 255, 0.28));
+  border: 1px solid var(--glass-edge);
+  border-bottom-color: rgba(8, 9, 11, 0.18);
+  border-radius: 8px;
+  box-shadow:
+    0 28px 72px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  padding: 26px;
+}
+
+h1 {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.status-pill {
+  -webkit-backdrop-filter: blur(24px) saturate(165%);
+  backdrop-filter: blur(24px) saturate(165%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.36)),
+    rgba(255, 255, 255, 0.34);
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  box-shadow:
+    0 12px 32px rgba(18, 22, 30, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.tabs {
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(30px) saturate(170%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.32)),
+    rgba(255, 255, 255, 0.32);
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  box-shadow:
+    0 18px 44px rgba(19, 24, 33, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  gap: 4px;
+  padding: 5px;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar,
+.spatial-stage-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: rgba(8, 9, 11, 0.72);
+  min-height: 40px;
+  transition: background 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.tabs button:first-child {
+  border-left: 1px solid transparent;
+}
+
+.tabs button:hover {
+  background: rgba(255, 255, 255, 0.44);
+  color: var(--ink);
+}
+
+.tabs button.active {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(237, 241, 247, 0.62)),
+    rgba(255, 255, 255, 0.52);
+  border-color: rgba(255, 255, 255, 0.86);
+  box-shadow:
+    0 8px 22px rgba(18, 22, 30, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.06);
+  color: var(--ink);
+}
+
+.panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(247, 249, 252, 0.36) 52%, rgba(255, 255, 255, 0.52)),
+    rgba(255, 255, 255, 0.34);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    0 30px 76px rgba(20, 26, 36, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  overflow: hidden;
+  position: relative;
+}
+
+.panel::before {
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.7), transparent 34%, rgba(255, 255, 255, 0.2) 64%, transparent),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), transparent 46%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.section-heading {
+  border-bottom-color: rgba(8, 9, 11, 0.1);
+}
+
+:where(
+  .metric,
+  .status-card,
+  .progress-row,
+  .task-row,
+  .track-card,
+  .module-block,
+  .module-output,
+  .source-links,
+  .filters,
+  .create-task,
+  .mode-switch,
+  .study-main,
+  .study-card,
+  .review-overview,
+  .field-grid span,
+  .subsection-block,
+  .workflow-strip article,
+  .learning-directory a,
+  .beginner-start-list li,
+  .foundation-card,
+  .course-toc,
+  .threeblue-source-strip,
+  .threeblue-route-card,
+  .route-card,
+  .route-source-link,
+  .route-topic,
+  .guided-lesson-card,
+  .guided-manim-card,
+  .guided-manim-stage,
+  .guided-manim-frame,
+  .guided-manim-video,
+  .lesson-ready-check,
+  .guided-step-list li,
+  .self-check,
+  .beginner-lesson,
+  .ready-check-block,
+  .action-card,
+  .derivation-card,
+  .node-card,
+  .edge-list article,
+  .deep-study-card,
+  .micro-question,
+  .formula-check,
+  .goodnotes-output-check,
+  .readiness-card,
+  .template-card pre,
+  .hermes-command,
+  .hermes-presets,
+  .hermes-form,
+  .hermes-output,
+  .hermes-command code,
+  .preset-grid button,
+  .tutor-question,
+  .tutor-question pre,
+  .tutor-notes,
+  .tutor-closeout,
+  .tutor-notes pre,
+  .tutor-closeout pre,
+  .feedback,
+  .lesson-complete,
+  .manim-reference-strip,
+  .manim-explorable-focus,
+  .manim-explorable-preview,
+  .manim-studio,
+  .manim-source-row,
+  .manim-scene-card,
+  .manim-video-placeholder,
+  .formula-visual,
+  .formula-render,
+  .formula-term-grid div,
+  .projection-world,
+  .projection-image-plane,
+  .projection-readout-grid article,
+  .projection-step-card,
+  .spatial-drag-lab,
+  .slam-map-stage,
+  .slam-observation-panel,
+  .reconstruction-stage,
+  .spatial-source-row a,
+  .empty-state,
+  .error
+) {
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(247, 249, 252, 0.34)),
+    rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 16px 42px rgba(17, 22, 31, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+:where(
+  .module-block,
+  .module-output,
+  .source-links,
+  .filters,
+  .create-task,
+  .subsection-block,
+  .guided-step-list li,
+  .self-check,
+  .deep-study-card,
+  .readiness-card,
+  .template-card pre,
+  .hermes-command code,
+  .tutor-question pre,
+  .tutor-notes pre,
+  .tutor-closeout pre,
+  .lesson-complete
+) {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+}
+
+:where(.metric, .foundation-card, .guided-lesson-card, .action-card, .spatial-stage-detail, .course-toc) {
+  border-left: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+:where(.metric, .foundation-card, .workflow-strip article) {
+  border-top: 1px solid rgba(255, 255, 255, 0.76);
+}
+
+.metric,
+.workflow-strip article,
+.foundation-card,
+.status-card,
+.review-overview,
+.action-card,
+.threeblue-route-card,
+.guided-lesson-card,
+.guided-manim-video,
+.course-toc,
+.study-card,
+.study-main,
+.node-card,
+.edge-list article,
+.tutor-panel,
+.tutor-question,
+.formula-visual,
+.choice-feedback,
+.feedback,
+.goodnotes-summary,
+.hermes-command,
+.hermes-presets,
+.hermes-form,
+.hermes-output,
+.hermes-closeout {
+  border-left-width: 1px;
+  border-left-color: rgba(255, 255, 255, 0.7);
+  border-top-width: 1px;
+  border-top-color: rgba(255, 255, 255, 0.76);
+}
+
+:where(
+  .create-task button,
+  .study-main button,
+  .ready-check-block button,
+  .ready-choice-grid button,
+  .micro-question button,
+  .formula-choice-grid button,
+  .hermes-form button,
+  .choice-grid button,
+  .preset-grid button,
+  .mode-switch button,
+  .next-question,
+  .manim-topic-tabs button,
+  .manim-studio-heading a,
+  .projection-step-strip button,
+  .guided-manim-frame-buttons button
+) {
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(237, 241, 247, 0.52)),
+    rgba(255, 255, 255, 0.38);
+  border-color: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 10px 26px rgba(18, 22, 30, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+:where(
+  .create-task button,
+  .study-main button,
+  .ready-check-block button,
+  .ready-choice-grid button,
+  .micro-question button,
+  .formula-choice-grid button,
+  .hermes-form button,
+  .choice-grid button,
+  .preset-grid button,
+  .mode-switch button,
+  .next-question,
+  .manim-topic-tabs button,
+  .manim-studio-heading a,
+  .spatial-topic-tabs button,
+  .spatial-stage-strip button,
+  .projection-step-strip button,
+  .guided-manim-frame-buttons button
+):hover {
+  transform: translateY(-1px);
+}
+
+.spatial-topic-tabs button,
+.spatial-stage-strip button,
+.spatial-drag-lab,
+.spatial-stage-detail {
+  -webkit-backdrop-filter: blur(30px) saturate(175%);
+  backdrop-filter: blur(30px) saturate(175%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(245, 248, 252, 0.32)),
+    rgba(255, 255, 255, 0.28);
+  border-color: var(--glass-edge);
+  box-shadow:
+    0 18px 46px rgba(17, 22, 31, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(8, 9, 11, 0.055);
+  overflow: hidden;
+}
+
+.spatial-topic-tabs button {
+  position: relative;
+}
+
+.spatial-topic-tabs button::before,
+.spatial-drag-lab::before,
+.spatial-stage-detail::before {
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
+  content: "";
+  inset: 0;
+  opacity: 0.62;
+  pointer-events: none;
+  position: absolute;
+}
+
+.spatial-topic-tabs button > *,
+.spatial-drag-lab > *,
+.spatial-stage-detail > * {
+  position: relative;
+  z-index: 1;
+}
+
+.spatial-topic-tabs button.active,
+.spatial-stage-strip button.active {
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
+    rgba(9, 10, 12, 0.72);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 18px 42px rgba(8, 9, 11, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+}
+
+.spatial-stage-detail {
+  border-left: 1px solid var(--glass-edge);
+}
+
+.spatial-stage-detail > strong,
+.formula-block {
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
+  backdrop-filter: blur(16px) saturate(145%);
+  background: rgba(255, 255, 255, 0.46);
+  border-color: rgba(255, 255, 255, 0.68);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.formula-render {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(247, 249, 252, 0.52)),
+    rgba(255, 255, 255, 0.42);
+}
+
+input,
+select,
+textarea {
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(247, 249, 252, 0.42)),
+    rgba(255, 255, 255, 0.34);
+  border-color: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 8px 22px rgba(17, 22, 31, 0.07);
+}
+
+.lesson-complete,
+.choice-grid button.is-correct,
+.spatial-topic-tabs button.active,
+.spatial-stage-strip button.active,
+.manim-topic-tabs button.active {
+  background:
+    linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
+    rgba(9, 10, 12, 0.72);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 18px 42px rgba(8, 9, 11, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22);
+  color: var(--paper-soft);
+}
+
+.is-ready,
+.status-pill.is-ready {
+  color: #1b1f24;
+}
+
+.is-muted,
+.status-pill.is-muted {
+  color: #4d535c;
+}

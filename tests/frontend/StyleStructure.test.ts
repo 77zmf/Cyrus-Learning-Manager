@@ -105,4 +105,48 @@ describe("style source structure", () => {
     expect(lessons).toContain(".ready-choice-grid");
     expect(lessons).toContain(".self-check");
   });
+
+  it("keeps global Liquid Glass coverage in a focused stylesheet", () => {
+    const entry = readSource("src/styles.css");
+    const appEntry = readSource("src/main.tsx");
+    const glassPath = join(root, "src/styles/glass.css");
+
+    expect(existsSync(glassPath)).toBe(true);
+    expect(entry).not.toContain('@import "./styles/glass.css";');
+    expect(appEntry).toMatch(/import "\.\/styles\.css";\nimport "\.\/styles\/glass\.css";/);
+    expect(entry).not.toContain("/* iOS-style Liquid Glass web material. */");
+    expect(entry).not.toContain("body::before,\nbody::after");
+
+    const glass = readSource("src/styles/glass.css");
+
+    expect(glass).toContain("/* iOS-style Liquid Glass web material. */");
+    expect(glass).toContain("backdrop-filter: blur");
+
+    [
+      ".module-block",
+      ".module-output",
+      ".source-links",
+      ".threeblue-source-strip",
+      ".route-card",
+      ".field-grid span",
+      ".hermes-command",
+      ".hermes-form",
+      ".hermes-output",
+      ".tutor-question",
+      ".feedback",
+      ".lesson-complete",
+      ".task-row",
+      ".progress-row",
+      ".status-card",
+      ".micro-question",
+      ".formula-check",
+      ".goodnotes-output-check",
+      ".manim-scene-card",
+      ".manim-video-placeholder",
+      ".empty-state",
+      ".error",
+    ].forEach((selector) => {
+      expect(glass).toContain(selector);
+    });
+  });
 });
