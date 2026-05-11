@@ -12,3 +12,4 @@ server-data/
 output/
 __pycache__/
 *.pyc
+.worktrees/
