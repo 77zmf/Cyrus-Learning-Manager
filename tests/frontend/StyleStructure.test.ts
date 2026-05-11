@@ -67,4 +67,23 @@ describe("style source structure", () => {
     expect(manim).toContain(".guided-manim-card");
     expect(manim).toContain(".guided-manim-stage");
   });
+
+  it("keeps spatial visualization styling in a focused stylesheet", () => {
+    const entry = readSource("src/styles.css");
+    const spatialPath = join(root, "src/styles/spatial.css");
+
+    expect(existsSync(spatialPath)).toBe(true);
+    expect(entry).toContain('@import "./styles/spatial.css";');
+    expect(entry).not.toMatch(/^\.projection-drag-lab\s*\{/m);
+    expect(entry).not.toMatch(/^\.spatial-drag-lab\s*\{/m);
+    expect(entry).not.toMatch(/^\.quaternion-stage\s*\{/m);
+
+    const spatial = readSource("src/styles/spatial.css");
+
+    expect(spatial).toContain(".projection-drag-lab");
+    expect(spatial).toContain(".slam-map-stage");
+    expect(spatial).toContain(".reconstruction-stage");
+    expect(spatial).toContain(".quaternion-stage");
+    expect(spatial).toContain(".spatial-stage-strip");
+  });
 });
