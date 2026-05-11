@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   beginnerFoundations,
@@ -61,6 +62,48 @@ describe("beginner learning workflow", () => {
       )
     ).toBe(true);
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck.goodNotesExpected.length > 0)).toBe(true);
+  });
+
+  it("adds a Manim storyboard to every guided control lesson", () => {
+    expect(guidedControlLessons).toHaveLength(19);
+    expect(
+      guidedControlLessons.every(
+        (lesson) =>
+          lesson.manimScene &&
+          lesson.manimScene.title &&
+          lesson.manimScene.sceneName &&
+          lesson.manimScene.assetPath ===
+            `manim/${lesson.manimScene.sceneName
+              .replace(/^Guided/, "")
+              .replace(/Scene$/, "")
+              .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+              .toLowerCase()
+              .replace(/^/, "guided_")}.mp4` &&
+          lesson.manimScene.command === `npm run manim:render -- ${lesson.manimScene.sceneName}` &&
+          lesson.manimScene.frames.length >= 3 &&
+          lesson.manimScene.goodNotes === lesson.goodNotesPage
+      )
+    ).toBe(true);
+    expect(guidedControlLessons.map((lesson) => lesson.manimScene.sceneName)).toEqual(
+      expect.arrayContaining([
+        "GuidedStateSpaceScene",
+        "GuidedMpcScene",
+        "GuidedWorldSpatialInterfaceScene",
+        "GuidedQuaternionOrientationScene"
+      ])
+    );
+  });
+
+  it("lets the Manim render CLI render every guided lesson scene", () => {
+    const renderScript = readFileSync("scripts/manim/render.mjs", "utf8");
+
+    expect(
+      guidedControlLessons.every(
+        (lesson) =>
+          renderScript.includes(`"${lesson.manimScene.sceneName}"`) &&
+          renderScript.includes(`"${lesson.manimScene.assetPath.replace("manim/", "")}"`)
+      )
+    ).toBe(true);
   });
 
   it("organizes the imported 3Blue1Brown library as a self-paced math bridge", () => {

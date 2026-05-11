@@ -13,7 +13,26 @@ const sceneMap = new Map([
   ["PoseGraphLoopClosureScene", "pose_graph_loop.mp4"],
   ["QuaternionRotationScene", "quaternion_rotation.mp4"],
   ["ReconstructionPipelineScene", "reconstruction_pipeline.mp4"],
-  ["SpatialIntelligenceScene", "spatial_intelligence.mp4"]
+  ["SpatialIntelligenceScene", "spatial_intelligence.mp4"],
+  ["GuidedStateSpaceScene", "guided_state_space.mp4"],
+  ["GuidedControllabilityScene", "guided_controllability.mp4"],
+  ["GuidedStabilityScene", "guided_stability.mp4"],
+  ["GuidedObservabilityScene", "guided_observability.mp4"],
+  ["GuidedLyapunovScene", "guided_lyapunov.mp4"],
+  ["GuidedStateFeedbackScene", "guided_state_feedback.mp4"],
+  ["GuidedLqrScene", "guided_lqr.mp4"],
+  ["GuidedKalmanScene", "guided_kalman.mp4"],
+  ["GuidedLqgScene", "guided_lqg.mp4"],
+  ["GuidedMpcScene", "guided_mpc.mp4"],
+  ["GuidedRobustControlScene", "guided_robust_control.mp4"],
+  ["GuidedNonlinearControlScene", "guided_nonlinear_control.mp4"],
+  ["GuidedStochasticControlScene", "guided_stochastic_control.mp4"],
+  ["GuidedWorldSpatialInterfaceScene", "guided_world_spatial_interface.mp4"],
+  ["GuidedRigidCameraProjectionScene", "guided_rigid_camera_projection.mp4"],
+  ["GuidedEpipolarGeometryScene", "guided_epipolar_geometry.mp4"],
+  ["GuidedSlamBackendPoseGraphScene", "guided_slam_backend_pose_graph.mp4"],
+  ["GuidedReconstructionRepresentationScene", "guided_reconstruction_representation.mp4"],
+  ["GuidedQuaternionOrientationScene", "guided_quaternion_orientation.mp4"]
 ]);
 
 const requestedScenes = process.argv.slice(2);

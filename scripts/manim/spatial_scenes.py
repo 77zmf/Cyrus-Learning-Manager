@@ -233,3 +233,178 @@ class SpatialIntelligenceScene(CyrusScene):
         self.play(Create(world), Write(planner))
         self.formula_tag(r"p(W_{3D}\mid I_{1:n}),\quad \hat{W}_{3D}=G_\theta(c)")
         self.wait(1.2)
+
+
+def make_guided_lesson_scene(title, subtitle, formula, bullets):
+    class GuidedLessonScene(CyrusScene):
+        def construct(self):
+            self.title_bar(title, subtitle)
+
+            nodes = VGroup()
+            labels = ["Concept", "Formula", "GoodNotes"]
+            positions = [LEFT * 3.8 + UP * 0.45, ORIGIN + UP * 0.45, RIGHT * 3.8 + UP * 0.45]
+            for label, position in zip(labels, positions):
+                circle = Circle(radius=0.62, stroke_color=WHITE)
+                text = Text(label, font_size=18)
+                nodes.add(VGroup(circle, text).move_to(position))
+
+            arrows = VGroup(
+                Arrow(positions[0] + RIGHT * 0.7, positions[1] + LEFT * 0.7, buff=0.08),
+                Arrow(positions[1] + RIGHT * 0.7, positions[2] + LEFT * 0.7, buff=0.08),
+            )
+
+            bullet_text = VGroup(
+                *[Text(item, font_size=18, color=GRAY_C) for item in bullets]
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
+            bullet_text.move_to(DOWN * 1.1)
+
+            self.play(LaggedStart(*[FadeIn(node, shift=UP * 0.08) for node in nodes], lag_ratio=0.12))
+            self.play(LaggedStart(*[GrowArrow(arrow) for arrow in arrows], lag_ratio=0.15))
+            self.play(LaggedStart(*[Write(item) for item in bullet_text], lag_ratio=0.12))
+            self.formula_tag(formula)
+            self.wait(1.0)
+
+    return GuidedLessonScene
+
+
+guided_lesson_scenes = [
+    (
+        "GuidedStateSpaceScene",
+        "State space model",
+        "state, input, and dynamics as one animation",
+        r"\dot{x}=Ax+Bu",
+        ["x is the state", "A carries natural dynamics", "B injects control input"],
+    ),
+    (
+        "GuidedControllabilityScene",
+        "Controllability rank test",
+        "input directions propagate through A",
+        r"\mathcal{C}=[B\ AB\ \cdots\ A^{n-1}B]",
+        ["start from B", "propagate to AB", "rank decides reachable directions"],
+    ),
+    (
+        "GuidedStabilityScene",
+        "Stability and eigenvalues",
+        "eigenvalue real parts decide convergence",
+        r"x(t)=e^{At}x(0)",
+        ["negative real part contracts", "positive real part diverges", "matrix A shapes modes"],
+    ),
+    (
+        "GuidedObservabilityScene",
+        "Observability",
+        "outputs reveal or hide state directions",
+        r"\mathcal{O}=\begin{bmatrix}C\\CA\\\cdots\end{bmatrix}",
+        ["sensor sees Cx", "dynamics reveal CAx", "rank decides hidden states"],
+    ),
+    (
+        "GuidedLyapunovScene",
+        "Lyapunov stability",
+        "energy decreases along the trajectory",
+        r"V=x^TPx,\quad \dot{V}<0",
+        ["positive energy", "descending derivative", "stability without solving x(t)"],
+    ),
+    (
+        "GuidedStateFeedbackScene",
+        "State feedback",
+        "feedback moves closed-loop poles",
+        r"u=-Kx,\quad \dot{x}=(A-BK)x",
+        ["measure state", "apply feedback", "move poles left"],
+    ),
+    (
+        "GuidedLqrScene",
+        "LQR",
+        "Q and R trade tracking error against effort",
+        r"J=\int(x^TQx+u^TRu)dt",
+        ["Q penalizes state", "R penalizes control", "Riccati gives K"],
+    ),
+    (
+        "GuidedKalmanScene",
+        "Kalman filter",
+        "prediction and observation fuse by gain",
+        r"K=P^-C^T(CP^-C^T+R)^{-1}",
+        ["predict state", "measure residual", "gain chooses trust"],
+    ),
+    (
+        "GuidedLqgScene",
+        "LQG",
+        "estimation feeds optimal control",
+        r"\hat{x}_{k|k}=\hat{x}^-+K(y-C\hat{x}^-),\quad u=-L\hat{x}",
+        ["Kalman estimates", "LQR controls", "separation has assumptions"],
+    ),
+    (
+        "GuidedMpcScene",
+        "MPC",
+        "optimize a horizon and execute the first action",
+        r"\min_{u_{0:N-1}}\sum x_k^TQx_k+u_k^TRu_k",
+        ["roll out horizon", "respect constraints", "execute first step"],
+    ),
+    (
+        "GuidedRobustControlScene",
+        "Robust control",
+        "uncertainty stays inside a stability envelope",
+        r"\|T_{zw}\|_\infty<\gamma",
+        ["model has uncertainty", "disturbance enters", "gain bound protects output"],
+    ),
+    (
+        "GuidedNonlinearControlScene",
+        "Nonlinear control",
+        "linearize locally and compare with true curved motion",
+        r"\dot{x}=f(x,u),\quad A=\frac{\partial f}{\partial x}",
+        ["nonlinear dynamics", "local Jacobian", "feedback near operating point"],
+    ),
+    (
+        "GuidedStochasticControlScene",
+        "Stochastic control",
+        "dynamic programming backs up value under uncertainty",
+        r"V_t(x)=\min_u \mathbb{E}[c(x,u)+V_{t+1}(x')]",
+        ["state branches by probability", "future value returns", "policy chooses action"],
+    ),
+    (
+        "GuidedWorldSpatialInterfaceScene",
+        "World and spatial model interface",
+        "latent dynamics meet 3D geometry",
+        r"p(z_{t+1}\mid z_t,a_t),\quad p(W_{3D}\mid I_{1:n})",
+        ["encode observation", "predict world", "connect to planning"],
+    ),
+    (
+        "GuidedRigidCameraProjectionScene",
+        "Rigid camera projection",
+        "world points become image pixels",
+        r"s\tilde{u}=K[R\mid t]\tilde{X}",
+        ["pose transforms point", "K projects camera ray", "pixel error drives SLAM"],
+    ),
+    (
+        "GuidedEpipolarGeometryScene",
+        "Epipolar geometry",
+        "two views constrain feature matches",
+        r"\tilde{x}_2^TF\tilde{x}_1=0,\quad E=[t]_\times R",
+        ["match feature", "check epipolar line", "triangulate 3D point"],
+    ),
+    (
+        "GuidedSlamBackendPoseGraphScene",
+        "SLAM backend pose graph",
+        "residuals pull poses and landmarks into agreement",
+        r"\min_{T,X}\sum\|u-\pi(TX)\|^2",
+        ["pose nodes", "measurement edges", "loop closure reduces drift"],
+    ),
+    (
+        "GuidedReconstructionRepresentationScene",
+        "Reconstruction representations",
+        "COLMAP poses feed NeRF and 3DGS assets",
+        r"\hat{C}(r)=\sum_iT_i(1-e^{-\sigma_i\delta_i})c_i",
+        ["SfM recovers poses", "MVS densifies", "3DGS renders asset"],
+    ),
+    (
+        "GuidedQuaternionOrientationScene",
+        "Quaternion orientation",
+        "unit quaternions rotate vectors by sandwich product",
+        r"q\sim -q,\quad v'=qvq^{-1}",
+        ["unit quaternion", "double cover", "rotation sandwich"],
+    ),
+]
+
+for scene_name, title, subtitle, formula, bullets in guided_lesson_scenes:
+    scene_cls = make_guided_lesson_scene(title, subtitle, formula, bullets)
+    scene_cls.__name__ = scene_name
+    scene_cls.__qualname__ = scene_name
+    globals()[scene_name] = scene_cls

@@ -227,22 +227,32 @@ describe("learning workflow views", () => {
     expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(19);
     expect(container.querySelectorAll("details.guided-lesson-card[open]").length).toBe(1);
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
-    expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
+    expect(screen.getAllByText("GoodNotes Page 001：状态空间模型").length).toBeGreaterThan(0);
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
     expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(18);
     expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(18);
     expect(screen.getAllByText("卡住就回到：状态、输入、输出").length).toBeGreaterThan(0);
     expect(screen.getAllByText("卡住就回到：优化目标和约束").length).toBeGreaterThan(0);
-    expect(screen.getByText("先把状态想成一张仪表盘。")).toBeInTheDocument();
-    expect(screen.getByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？")).toBeInTheDocument();
-    expect(screen.getByText("先把世界模型想成会在脑子里预演的模型。")).toBeInTheDocument();
+    expect(screen.getAllByText("先把状态想成一张仪表盘。").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("先把世界模型想成会在脑子里预演的模型。").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(18);
-    expect(screen.getByText("状态向量 x")).toBeInTheDocument();
-    expect(screen.getByText("系统矩阵 A")).toBeInTheDocument();
-    expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
-    expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
-    expect(screen.getByText("特征值实部")).toBeInTheDocument();
+    expect(container.querySelectorAll(".guided-manim-card").length).toBe(19);
+    expect(container.querySelectorAll(".guided-manim-video video").length).toBe(19);
+    expect(screen.getByRole("application", { name: "第 1 课：状态空间模型 Manim storyboard" })).toBeInTheDocument();
+    expect(screen.getByLabelText("第 1 课：状态空间模型 rendered Manim video")).toHaveAttribute(
+      "src",
+      "/Cyrus-Learning-Manager/manim/guided_state_space.mp4"
+    );
+    expect(screen.getByLabelText("第 1 课：状态空间模型 Manim storyboard scrubber")).toBeInTheDocument();
+    expect(screen.getByText("State Space Manim storyboard")).toBeInTheDocument();
+    expect(screen.getByText("npm run manim:render -- GuidedStateSpaceScene")).toBeInTheDocument();
+    expect(screen.getAllByText("状态向量 x").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("系统矩阵 A").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("控制矩阵 B").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("可控性矩阵").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("特征值实部").length).toBeGreaterThan(0);
     expect(screen.getAllByText("旋转夹心 qvq^{-1}").length).toBeGreaterThan(0);
     expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(20);
     expect(container.querySelector(".latex-source")).toBeNull();
@@ -251,6 +261,18 @@ describe("learning workflow views", () => {
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Control -> Controllability")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Interactive Tutor" })).toBeInTheDocument();
+  });
+
+  it("opens a guided lesson when its directory link is clicked", () => {
+    const { container } = render(<LearnView />);
+
+    expect(container.querySelector("#lesson-state-space[open]")).toBeInTheDocument();
+    expect(container.querySelector("#lesson-mpc[open]")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("link", { name: /第 10 课：MPC 模型预测控制/ }));
+
+    expect(container.querySelector("#lesson-mpc[open]")).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: "第 10 课：MPC 模型预测控制 Manim storyboard" })).toBeInTheDocument();
   });
 
   it("lets a beginner use a lesson ready check before writing notes", () => {
