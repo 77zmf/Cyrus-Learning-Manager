@@ -84,9 +84,9 @@ describe("learning workflow views", () => {
       "true"
     );
     expect(screen.getAllByText("单位四元数").length).toBeGreaterThan(0);
-    expect(screen.getByText("双覆盖 q 和 -q")).toBeInTheDocument();
+    expect(screen.getAllByText("双覆盖 q 和 -q").length).toBeGreaterThan(0);
     expect(screen.getAllByText("立体投影").length).toBeGreaterThan(0);
-    expect(screen.getByText("旋转夹心 qvq^{-1}")).toBeInTheDocument();
+    expect(screen.getAllByText("旋转夹心 qvq^{-1}").length).toBeGreaterThan(0);
     expect(screen.getByRole("application", { name: "Drag quaternion rotation lab" })).toBeInTheDocument();
     expect(screen.getByLabelText("Quaternion rotation angle")).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Quaternion rotation angle"), { target: { value: "120" } });
@@ -215,11 +215,16 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "第 16 课：特征匹配与对极几何" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 17 课：SLAM 后端与位姿图优化" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 18 课：SfM/MVS 到 NeRF/3DGS 重建" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 19 课：四元数与三维姿态" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /第 10 课：MPC 模型预测控制/ })).toHaveAttribute(
       "href",
       "#lesson-mpc"
     );
-    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(18);
+    expect(screen.getByRole("link", { name: /第 19 课：四元数与三维姿态/ })).toHaveAttribute(
+      "href",
+      "#lesson-quaternion-orientation"
+    );
+    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(19);
     expect(container.querySelectorAll("details.guided-lesson-card[open]").length).toBe(1);
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes Page 001：状态空间模型")).toBeInTheDocument();
@@ -238,6 +243,7 @@ describe("learning workflow views", () => {
     expect(screen.getByText("控制矩阵 B")).toBeInTheDocument();
     expect(screen.getByText("可控性矩阵")).toBeInTheDocument();
     expect(screen.getByText("特征值实部")).toBeInTheDocument();
+    expect(screen.getAllByText("旋转夹心 qvq^{-1}").length).toBeGreaterThan(0);
     expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(20);
     expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
@@ -277,6 +283,7 @@ describe("learning workflow views", () => {
     expect(screen.getByText("Bundle adjustment and pose graph")).toBeInTheDocument();
     expect(screen.getByText("NeRF and 3DGS rendering equations")).toBeInTheDocument();
     expect(screen.getByText("Reconstruction SLAM pose-prior handoff")).toBeInTheDocument();
+    expect(screen.getByText("Quaternion orientation sandwich")).toBeInTheDocument();
     expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(12);
     expect(screen.getByText("状态转移矩阵")).toBeInTheDocument();
     expect(screen.getByText("Riccati 方程")).toBeInTheDocument();

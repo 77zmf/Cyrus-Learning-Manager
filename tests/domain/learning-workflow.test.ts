@@ -42,13 +42,14 @@ describe("beginner learning workflow", () => {
     const foundationTitles = new Set(beginnerFoundations.map((foundation) => foundation.title));
     const lessonTitles = guidedControlLessons.map((lesson) => lesson.title);
 
-    expect(guidedControlLessons).toHaveLength(18);
+    expect(guidedControlLessons).toHaveLength(19);
     expect(lessonTitles).toEqual(
       expect.arrayContaining([
         "第 15 课：刚体变换与相机投影",
         "第 16 课：特征匹配与对极几何",
         "第 17 课：SLAM 后端与位姿图优化",
-        "第 18 课：SfM/MVS 到 NeRF/3DGS 重建"
+        "第 18 课：SfM/MVS 到 NeRF/3DGS 重建",
+        "第 19 课：四元数与三维姿态"
       ])
     );
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck)).toBe(true);

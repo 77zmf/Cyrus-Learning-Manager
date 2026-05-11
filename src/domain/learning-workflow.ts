@@ -7,6 +7,7 @@ import {
   mpcFormulaTerms,
   nonlinearFormulaTerms,
   observabilityFormulaTerms,
+  quaternionFormulaTerms,
   robustFormulaTerms,
   epipolarFormulaTerms,
   nerfGaussianFormulaTerms,
@@ -508,6 +509,13 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
     example: "COLMAP 先给相机位姿和稀疏点云；NeRF 和 3DGS 通常需要这些位姿作为训练输入。",
     exercise: "画 Images -> SfM -> Sparse Cloud -> MVS Dense -> NeRF/3DGS -> Validation Asset。",
     goodNotes: "把 pipeline 画成一条资产链，并标出哪些能进 CARLA，哪些只是视觉研究层。"
+  },
+  "lesson-quaternion-orientation": {
+    question: "这节课先问：一台相机或机器人转过一个角度，怎么不用欧拉角也能稳定表示？",
+    intuition: "先把四元数想成姿态罗盘，不要先把它当成四维怪公式。",
+    example: "IMU、相机位姿和 SLAM 后端经常用 quaternion 存朝向，因为连续旋转和组合旋转更稳定。",
+    exercise: "画一个单位球上的 q 和 -q，再画一个向量 v 被转成 v'。",
+    goodNotes: "写 q=cos(theta/2)+u sin(theta/2)，再写 v'=qvq^{-1}。"
   }
 };
 
@@ -1205,6 +1213,35 @@ const lessonReadyChecks: Record<string, LessonReadyCheck> = {
     ],
     goodNotesPrompt: "Page SLAM-004 写完了吗？",
     goodNotesExpected: "已记录：Page SLAM-004 至少有 SfM/MVS/COLMAP/NeRF/3DGS 的资产链和边界。"
+  },
+  "lesson-quaternion-orientation": {
+    prerequisite: "位姿和轨迹",
+    conceptQuestion: "四元数在 SLAM 里主要解决什么问题？",
+    conceptAnswer:
+      "答案：它用单位四元数稳定表达三维朝向，避免欧拉角万向节锁，并方便把姿态连续插值和组合。",
+    formulaPrompt: "哪个表达式表示用单位四元数旋转三维向量？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "v'=qvq^{-1}",
+        isCorrect: true,
+        feedback: "正确：把三维向量当成纯虚四元数，夹在 q 和 q^{-1} 中间就得到旋转后的向量。"
+      },
+      {
+        label: "B",
+        value: "rank(\\mathcal{C})=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性满秩条件。"
+      },
+      {
+        label: "C",
+        value: "\\hat{C}(r)=\\sum_iT_i\\alpha_ic_i",
+        isCorrect: false,
+        feedback: "还不对：这是 NeRF/3DGS 相关的渲染累加直觉。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-005 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-005 至少有 q、-q、半角、v'=qvq^{-1} 和一个相机姿态例子。"
   }
 };
 
@@ -1914,6 +1951,46 @@ const guidedControlLessonSeeds: GuidedLessonSeed[] = [
       }
     ],
     selfCheck: ["COLMAP produces poses", "NeRF/3DGS are renderable representations", "CARLA needs physical/semantic assets"]
+  },
+  {
+    id: "lesson-quaternion-orientation",
+    title: "第 19 课：四元数与三维姿态",
+    goal: "把四元数从抽象公式变成 SLAM、IMU 和相机姿态里能用的旋转表示。",
+    formula:
+      "q=\\cos\\frac{\\theta}{2}+\\sin\\frac{\\theta}{2}(u_xi+u_yj+u_zk),\\quad v'=qvq^{-1},\\quad q\\sim -q",
+    formulaTerms: quaternionFormulaTerms,
+    now: "现在做：打开 Manim Studio 的 Quaternion Explorable，再在 GoodNotes 写 Page SLAM-005。",
+    goodNotesPage: "GoodNotes Page SLAM-005：四元数与三维姿态",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Quaternion Orientation",
+    notionRow: "Notion row：Topic=Quaternion orientation, Mastery=1, Evidence=GoodNotes Page SLAM-005",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写单位四元数 q=w+xi+yj+zk, ||q||=1。",
+        output: "明确单位长度表示只保留旋转，不额外缩放向量。"
+      },
+      {
+        label: "Step 2",
+        instruction: "把轴角写成 q=cos(theta/2)+u sin(theta/2)。",
+        output: "解释为什么公式里出现半角，而不是直接用 theta。"
+      },
+      {
+        label: "Step 3",
+        instruction: "画 q 和 -q 的双覆盖。",
+        output: "说明两个对跖点对应同一个三维旋转。"
+      },
+      {
+        label: "Step 4",
+        instruction: "写 v'=qvq^{-1}。",
+        output: "把三维向量当成纯虚四元数，再用旋转夹心得到 v'。"
+      },
+      {
+        label: "Step 5",
+        instruction: "接到 SLAM/IMU 姿态。",
+        output: "写一行：camera/imu orientation can be stored as unit quaternion。"
+      }
+    ],
+    selfCheck: ["单位四元数", "双覆盖 q 和 -q", "旋转夹心 qvq^{-1}", "乘法顺序不可交换"]
   }
 ];
 
@@ -1946,6 +2023,14 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     goodNotes: "GoodNotes: SLAM-001 to SLAM-004",
     obsidian: "Obsidian: World-Spatial -> SLAM and Reconstruction",
     notion: "Notion: Track=World & Spatial Models, Status=Active, Evidence=GoodNotes SLAM page"
+  },
+  {
+    title: "Quaternion orientation sprint",
+    focus: "Use the Manim quaternion explorable before writing SLAM pose notes.",
+    prompt: "Explain unit quaternion, q and -q double cover, and v'=qvq^{-1} without looking at the formula card.",
+    goodNotes: "GoodNotes: SLAM-005 四元数与三维姿态",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Quaternion Orientation",
+    notion: "Notion: Topic=Quaternion orientation, Evidence=GoodNotes SLAM-005"
   },
   {
     title: "3Blue1Brown visual math sprint",
@@ -2095,6 +2180,19 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
       "标注 renderable representation 和 CARLA physical asset 的边界。"
     ],
     output: "one SLAM-004 page connecting COLMAP poses, NeRF, 3DGS, and validation assets"
+  },
+  {
+    title: "Quaternion orientation sandwich",
+    formula:
+      "q=\\cos\\frac{\\theta}{2}+\\sin\\frac{\\theta}{2}(u_xi+u_yj+u_zk),\\quad v'=qvq^{-1},\\quad q\\sim -q",
+    formulaTerms: quaternionFormulaTerms,
+    steps: [
+      "先写单位四元数和轴角形式，标出 theta/2。",
+      "画 q 和 -q 的对跖点，说明它们代表同一个三维旋转。",
+      "把向量 v 当成纯虚四元数，手写 v'=qvq^{-1} 的角色分解。",
+      "写一个相机或 IMU 姿态用 quaternion 存储的工程例子。"
+    ],
+    output: "one SLAM-005 page linking quaternion rotation to camera/IMU orientation"
   },
   {
     title: "Reconstruction SLAM pose-prior handoff",

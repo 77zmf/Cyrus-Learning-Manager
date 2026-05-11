@@ -274,6 +274,39 @@ export const worldSpatialFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const quaternionFormulaTerms: FormulaTerm[] = [
+  {
+    label: "单位四元数",
+    symbol: "q=w+xi+yj+zk,\\quad \\lVert q\\rVert=1",
+    meaning: "只用长度为 1 的四元数表示旋转；它可以理解成 4D 单位球面上的一个点。"
+  },
+  {
+    label: "轴角到四元数",
+    symbol: "q=\\cos\\frac{\\theta}{2}+\\sin\\frac{\\theta}{2}(u_xi+u_yj+u_zk)",
+    meaning: "旋转轴给方向，半角给标量和向量部分；半角也是双覆盖出现的原因。"
+  },
+  {
+    label: "双覆盖 q 和 -q",
+    symbol: "q\\sim -q",
+    meaning: "单位四元数球面上相反的两个点，对应同一个三维旋转。"
+  },
+  {
+    label: "立体投影",
+    symbol: "S^3\\rightarrow \\mathbb{R}^3",
+    meaning: "把 4D 单位球面投到 3D 空间里看，帮助你把抽象旋转变成可拖动的形状。"
+  },
+  {
+    label: "旋转夹心 qvq^{-1}",
+    symbol: "v'=qvq^{-1}",
+    meaning: "把三维向量当成纯虚四元数，左右各乘一次，得到旋转后的向量。"
+  },
+  {
+    label: "乘法规则",
+    symbol: "i^2=j^2=k^2=ijk=-1",
+    meaning: "四元数乘法不满足交换律，所以组合旋转时顺序不能随便换。"
+  }
+];
+
 export const slamTransformFormulaTerms: FormulaTerm[] = [
   {
     label: "齐次位姿",
