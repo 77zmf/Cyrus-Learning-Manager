@@ -7,6 +7,7 @@ import {
   threeBlueOneBrownLearningPath,
   threeBlueOneBrownSources
 } from "../../src/domain/learning-workflow";
+import { deriveGuidedManimAssetPath } from "../../src/domain/guided-manim";
 
 describe("beginner learning workflow", () => {
   it("provides a clear five-step beginner start flow", () => {
@@ -102,6 +103,14 @@ describe("beginner learning workflow", () => {
         (lesson) =>
           renderScript.includes(`"${lesson.manimScene.sceneName}"`) &&
           renderScript.includes(`"${lesson.manimScene.assetPath.replace("manim/", "")}"`)
+      )
+    ).toBe(true);
+  });
+
+  it("derives guided Manim asset paths through a shared helper", () => {
+    expect(
+      guidedControlLessons.every(
+        (lesson) => deriveGuidedManimAssetPath(lesson.manimScene.sceneName) === lesson.manimScene.assetPath
       )
     ).toBe(true);
   });

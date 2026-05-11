@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   createTask,
   getHealth,
@@ -6,13 +6,6 @@ import {
   updateTaskStatus,
   type CreateTaskInput
 } from "./api/client";
-import { CoursesView } from "./components/CoursesView";
-import { HermesConsole } from "./components/HermesConsole";
-import { LearnView } from "./components/LearnView";
-import { MindMapView } from "./components/MindMapView";
-import { NotebookView } from "./components/NotebookView";
-import { ReviewView } from "./components/ReviewView";
-import { SyncCenter } from "./components/SyncCenter";
 import type {
   HealthResponse,
   LearningTask,
@@ -23,6 +16,22 @@ import type {
 
 type Tab = "learn" | "notebook" | "map" | "library" | "review" | "hermes" | "sync";
 const tabs: Tab[] = ["learn", "notebook", "map", "library", "review", "hermes", "sync"];
+
+const LearnView = lazy(() => import("./components/LearnView").then((module) => ({ default: module.LearnView })));
+const NotebookView = lazy(() =>
+  import("./components/NotebookView").then((module) => ({ default: module.NotebookView }))
+);
+const MindMapView = lazy(() =>
+  import("./components/MindMapView").then((module) => ({ default: module.MindMapView }))
+);
+const CoursesView = lazy(() =>
+  import("./components/CoursesView").then((module) => ({ default: module.CoursesView }))
+);
+const ReviewView = lazy(() => import("./components/ReviewView").then((module) => ({ default: module.ReviewView })));
+const HermesConsole = lazy(() =>
+  import("./components/HermesConsole").then((module) => ({ default: module.HermesConsole }))
+);
+const SyncCenter = lazy(() => import("./components/SyncCenter").then((module) => ({ default: module.SyncCenter })));
 
 export function App() {
   const [tab, setTab] = useState<Tab>("learn");
@@ -101,27 +110,29 @@ export function App() {
       </nav>
 
       {error && tab !== "sync" ? <p className="error" role="status">{error}</p> : null}
-      {tab === "learn" ? <LearnView /> : null}
-      {tab === "notebook" ? <NotebookView /> : null}
-      {tab === "map" ? <MindMapView /> : null}
-      {tab === "library" ? <CoursesView /> : null}
-      {tab === "review" ? (
-        <ReviewView
-          tasks={tasks}
-          search={search}
-          track={track}
-          status={status}
-          priority={priority}
-          onSearchChange={setSearch}
-          onTrackChange={setTrack}
-          onStatusChange={setStatus}
-          onPriorityChange={setPriority}
-          onCreateTask={handleCreateTask}
-          onStatusUpdate={handleStatusUpdate}
-        />
-      ) : null}
-      {tab === "hermes" ? <HermesConsole onCreateTask={handleCreateTask} /> : null}
-      {tab === "sync" ? <SyncCenter health={health} error={error} /> : null}
+      <Suspense fallback={<p className="status-message">Loading {tabLabel(tab)}...</p>}>
+        {tab === "learn" ? <LearnView /> : null}
+        {tab === "notebook" ? <NotebookView /> : null}
+        {tab === "map" ? <MindMapView /> : null}
+        {tab === "library" ? <CoursesView /> : null}
+        {tab === "review" ? (
+          <ReviewView
+            tasks={tasks}
+            search={search}
+            track={track}
+            status={status}
+            priority={priority}
+            onSearchChange={setSearch}
+            onTrackChange={setTrack}
+            onStatusChange={setStatus}
+            onPriorityChange={setPriority}
+            onCreateTask={handleCreateTask}
+            onStatusUpdate={handleStatusUpdate}
+          />
+        ) : null}
+        {tab === "hermes" ? <HermesConsole onCreateTask={handleCreateTask} /> : null}
+        {tab === "sync" ? <SyncCenter health={health} error={error} /> : null}
+      </Suspense>
     </main>
   );
 }

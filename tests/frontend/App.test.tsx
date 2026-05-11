@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -52,5 +53,15 @@ describe("App", () => {
     expect(screen.queryByRole("button", { name: "Tasks" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Progress" })).not.toBeInTheDocument();
     expect(await screen.findByText("Local Sync: connected")).toBeInTheDocument();
+  });
+
+  it("keeps tab views behind lazy Suspense boundaries", () => {
+    const appSource = readFileSync("src/App.tsx", "utf8");
+
+    expect(appSource).toContain("lazy(");
+    expect(appSource).toContain("<Suspense");
+    expect(appSource).not.toContain('import { LearnView }');
+    expect(appSource).not.toContain('import { CoursesView }');
+    expect(appSource).not.toContain('import { HermesConsole }');
   });
 });
