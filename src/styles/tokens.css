@@ -1,0 +1,27 @@
+:root {
+  --ink: #08090b;
+  --ink-soft: #24272d;
+  --muted: #656b76;
+  --paper: #f4f6f9;
+  --paper-soft: #ffffff;
+  --paper-tint: #e9edf3;
+  --line: rgba(10, 12, 16, 0.12);
+  --line-strong: rgba(10, 12, 16, 0.26);
+  --glass: rgba(255, 255, 255, 0.48);
+  --glass-strong: rgba(255, 255, 255, 0.7);
+  --glass-muted: rgba(247, 249, 252, 0.34);
+  --glass-dark: rgba(10, 11, 14, 0.78);
+  --glass-edge: rgba(255, 255, 255, 0.82);
+  --glass-hairline: rgba(255, 255, 255, 0.42);
+  --glass-shadow: rgba(31, 38, 54, 0.16);
+  --indigo: #111111;
+  --indigo-deep: #000000;
+  --green: #303030;
+  --gold: #5a5a5a;
+  --rust: #1f1f1f;
+  --shadow: rgba(17, 22, 31, 0.14);
+  color: var(--ink);
+  background: var(--paper);
+  color-scheme: light;
+  font-family: Inter, "Noto Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

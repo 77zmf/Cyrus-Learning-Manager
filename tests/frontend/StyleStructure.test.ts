@@ -1,0 +1,35 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+
+const root = process.cwd();
+
+function readSource(path: string) {
+  return readFileSync(join(root, path), "utf8");
+}
+
+describe("style source structure", () => {
+  it("keeps global design tokens and base shell rules in focused CSS modules", () => {
+    const entry = readSource("src/styles.css");
+    const tokensPath = join(root, "src/styles/tokens.css");
+    const basePath = join(root, "src/styles/base.css");
+
+    expect(existsSync(tokensPath)).toBe(true);
+    expect(existsSync(basePath)).toBe(true);
+    expect(entry).toContain('@import "./styles/tokens.css";');
+    expect(entry).toContain('@import "./styles/base.css";');
+    expect(entry).not.toMatch(/:root\s*\{/);
+    expect(entry).not.toMatch(/^body\s*\{/m);
+  });
+
+  it("keeps liquid glass primitives centralized for reuse across learning surfaces", () => {
+    const tokens = readSource("src/styles/tokens.css");
+    const base = readSource("src/styles/base.css");
+
+    expect(tokens).toContain("--glass:");
+    expect(tokens).toContain("--glass-strong:");
+    expect(tokens).toContain("--glass-edge:");
+    expect(base).toContain(".panel");
+    expect(base).toContain("backdrop-filter: blur(22px) saturate(135%)");
+  });
+});
