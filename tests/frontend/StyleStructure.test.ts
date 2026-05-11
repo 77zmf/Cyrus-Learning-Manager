@@ -86,4 +86,23 @@ describe("style source structure", () => {
     expect(spatial).toContain(".quaternion-stage");
     expect(spatial).toContain(".spatial-stage-strip");
   });
+
+  it("keeps guided lesson workflow styling in a focused stylesheet", () => {
+    const entry = readSource("src/styles.css");
+    const lessonsPath = join(root, "src/styles/lessons.css");
+
+    expect(existsSync(lessonsPath)).toBe(true);
+    expect(entry).toContain('@import "./styles/lessons.css";');
+    expect(entry).not.toMatch(/^\.guided-path\s*\{/m);
+    expect(entry).not.toMatch(/^\.guided-lesson-grid\s*\{/m);
+    expect(entry).not.toMatch(/^\.lesson-ready-check\s*\{/m);
+
+    const lessons = readSource("src/styles/lessons.css");
+
+    expect(lessons).toContain(".guided-path");
+    expect(lessons).toContain(".course-toc");
+    expect(lessons).toContain(".guided-lesson-card");
+    expect(lessons).toContain(".ready-choice-grid");
+    expect(lessons).toContain(".self-check");
+  });
 });
