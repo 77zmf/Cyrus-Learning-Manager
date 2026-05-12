@@ -16,6 +16,10 @@ describe("CoursesView", () => {
     expect(screen.getByText("SLAM zero-to-map first line")).toBeInTheDocument();
     expect(screen.getByText("SfM, MVS, and COLMAP reconstruction lab")).toBeInTheDocument();
     expect(screen.getByText("NeRF and 3DGS validation asset bridge")).toBeInTheDocument();
+    expect(screen.getByText("VIO and IMU preintegration bridge")).toBeInTheDocument();
+    expect(screen.getByText("LiDAR SLAM, ICP, and LIO line")).toBeInTheDocument();
+    expect(screen.getByText("Semantic and neural SLAM map bridge")).toBeInTheDocument();
+    expect(screen.getByText("SLAM datasets and evaluation benchmark line")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown autonomous-driving math intuition")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown first week: linear algebra")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown math-intuition route")).toBeInTheDocument();
@@ -43,6 +47,9 @@ describe("CoursesView", () => {
     expect(screen.getByText("重建 SLAM 技术栈到验证资产")).toBeInTheDocument();
     expect(screen.getByText("SLAM 从定位到建图")).toBeInTheDocument();
     expect(screen.getByText("SfM / MVS / COLMAP 重建实验线")).toBeInTheDocument();
+    expect(screen.getByText("VIO 与 IMU 预积分")).toBeInTheDocument();
+    expect(screen.getByText("LiDAR SLAM、ICP 与 LIO")).toBeInTheDocument();
+    expect(screen.getByText("语义与神经 SLAM 地图")).toBeInTheDocument();
     expect(screen.getByText("MIT 6.006 到 simctl 数据结构")).toBeInTheDocument();
     expect(screen.getAllByText("先补基础").length).toBeGreaterThanOrEqual(12);
     expect(screen.getAllByText("推导入口").length).toBeGreaterThanOrEqual(12);
@@ -53,6 +60,9 @@ describe("CoursesView", () => {
     expect(screen.getByText("GoodNotes: Page 3B1B-M001")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page R001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: PIX Simulation Validation -> Reconstruction SLAM")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian: World-Spatial -> SLAM -> VIO Preintegration")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian: World-Spatial -> SLAM -> LiDAR ICP LIO")).toBeInTheDocument();
+    expect(screen.getByText("Obsidian: World-Spatial -> SLAM -> Semantic Neural Map")).toBeInTheDocument();
     expect(screen.getByText(/先学标量，再学向量，再学矩阵/)).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page M001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Concept Graph -> Linear Algebra")).toBeInTheDocument();

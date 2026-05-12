@@ -243,6 +243,9 @@ describe("learning workflow views", () => {
     expect(screen.getByRole("heading", { name: "第 17 课：SLAM 后端与位姿图优化" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 18 课：SfM/MVS 到 NeRF/3DGS 重建" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "第 19 课：四元数与三维姿态" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 20 课：VIO 与 IMU 预积分" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 21 课：LiDAR SLAM、ICP 与 LIO" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "第 22 课：语义与神经 SLAM 地图" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /第 10 课：MPC 模型预测控制/ })).toHaveAttribute(
       "href",
       "#lesson-mpc"
@@ -251,22 +254,26 @@ describe("learning workflow views", () => {
       "href",
       "#lesson-quaternion-orientation"
     );
-    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(19);
+    expect(screen.getByRole("link", { name: /第 22 课：语义与神经 SLAM 地图/ })).toHaveAttribute(
+      "href",
+      "#lesson-semantic-neural-slam-map"
+    );
+    expect(container.querySelectorAll("details.guided-lesson-card").length).toBe(22);
     expect(container.querySelectorAll("details.guided-lesson-card[open]").length).toBe(1);
     expect(screen.getByText("现在做：先在网页读公式，再在 GoodNotes 写 Page 001。")).toBeInTheDocument();
     expect(screen.getAllByText("GoodNotes Page 001：状态空间模型").length).toBeGreaterThan(0);
     expect(screen.getByText("Obsidian node：Control -> State Space Model")).toBeInTheDocument();
     expect(screen.getByText("Notion row：Topic=State-space model, Mastery=2, Evidence=GoodNotes Page 001")).toBeInTheDocument();
-    expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(18);
-    expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(18);
+    expect(screen.getAllByText("小白入口").length).toBeGreaterThanOrEqual(21);
+    expect(screen.getAllByText("Ready Check").length).toBeGreaterThanOrEqual(21);
     expect(screen.getAllByText("卡住就回到：状态、输入、输出").length).toBeGreaterThan(0);
     expect(screen.getAllByText("卡住就回到：优化目标和约束").length).toBeGreaterThan(0);
     expect(screen.getAllByText("先把状态想成一张仪表盘。").length).toBeGreaterThan(0);
     expect(screen.getAllByText("不用先懂最优控制，先问：我更怕偏离轨迹，还是更怕控制太猛？").length).toBeGreaterThan(0);
     expect(screen.getAllByText("先把世界模型想成会在脑子里预演的模型。").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(18);
-    expect(container.querySelectorAll(".guided-manim-card").length).toBe(19);
-    expect(container.querySelectorAll(".guided-manim-video video").length).toBe(19);
+    expect(screen.getAllByText("Formula Visual").length).toBeGreaterThanOrEqual(21);
+    expect(container.querySelectorAll(".guided-manim-card").length).toBe(22);
+    expect(container.querySelectorAll(".guided-manim-video video").length).toBe(22);
     expect(screen.getByRole("application", { name: "第 1 课：状态空间模型 Manim storyboard" })).toBeInTheDocument();
     expect(screen.getByLabelText("第 1 课：状态空间模型 rendered Manim video")).toHaveAttribute(
       "src",
@@ -281,10 +288,15 @@ describe("learning workflow views", () => {
     expect(screen.getAllByText("可控性矩阵").length).toBeGreaterThan(0);
     expect(screen.getAllByText("特征值实部").length).toBeGreaterThan(0);
     expect(screen.getAllByText("旋转夹心 qvq^{-1}").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("IMU 预积分").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("点到面残差").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("神经场").length).toBeGreaterThan(0);
     expect(screen.getAllByLabelText(/Formula visual line/).length).toBeGreaterThanOrEqual(20);
     expect(container.querySelector(".latex-source")).toBeNull();
     expect(screen.getByRole("heading", { name: "Learning Launch Queue" })).toBeInTheDocument();
     expect(screen.getByText("State-space controllability sprint")).toBeInTheDocument();
+    expect(screen.getByText("VIO and LiDAR SLAM sprint")).toBeInTheDocument();
+    expect(screen.getByText("Semantic neural map sprint")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: 002 可控性")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: Control -> Controllability")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Interactive Tutor" })).toBeInTheDocument();

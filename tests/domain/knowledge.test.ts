@@ -55,10 +55,13 @@ describe("knowledge seeds", () => {
   });
 
   it("keeps deep study cards actionable and sourced", () => {
-    expect(deepStudyCards.length).toBeGreaterThanOrEqual(12);
+    expect(deepStudyCards.length).toBeGreaterThanOrEqual(15);
     expect(deepStudyCards.some((card) => card.id === "deep-reconstruction-slam-handoff")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-slam-state-estimation-map")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-sfm-mvs-colmap-reconstruction")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-vio-imu-preintegration")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-lidar-icp-lio-sam")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-semantic-neural-slam-map")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "IELTS 输出到错误归因")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "哲学论证到工程判断")).toBe(true);
     expect(deepStudyCards.every((card) => card.coreIdeas.length >= 3)).toBe(true);
@@ -86,6 +89,21 @@ describe("knowledge seeds", () => {
           id: "nerf-3dgs-validation-assets",
           track: "world-spatial-models",
           title: "NeRF and 3DGS validation asset bridge"
+        }),
+        expect.objectContaining({
+          id: "vio-imu-preintegration",
+          track: "world-spatial-models",
+          title: "VIO and IMU preintegration bridge"
+        }),
+        expect.objectContaining({
+          id: "lidar-icp-lio-sam",
+          track: "world-spatial-models",
+          title: "LiDAR SLAM, ICP, and LIO line"
+        }),
+        expect.objectContaining({
+          id: "semantic-neural-slam-map",
+          track: "world-spatial-models",
+          title: "Semantic and neural SLAM map bridge"
         })
       ])
     );
@@ -106,8 +124,41 @@ describe("knowledge seeds", () => {
           id: "seed_nerf_3dgs_validation_asset",
           track: "world-spatial-models",
           status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_vio_imu_preintegration",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_lidar_icp_lio_sam",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_semantic_neural_slam_map",
+          track: "world-spatial-models",
+          status: "active"
         })
       ])
     );
+  });
+
+  it("keeps world-spatial modules rich enough for self-paced study", () => {
+    const worldSpatialModules = modulesForTrack("world-spatial-models");
+
+    expect(worldSpatialModules.length).toBeGreaterThanOrEqual(10);
+    expect(worldSpatialModules.every((module) => module.outputs.length >= 3)).toBe(true);
+    expect(worldSpatialModules.every((module) => module.sources.length >= 3)).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("VINS-Mono"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("LIO-SAM"))
+      )
+    ).toBe(true);
   });
 });

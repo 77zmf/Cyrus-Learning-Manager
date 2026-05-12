@@ -379,6 +379,60 @@ export const slamBackendFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const vioImuFormulaTerms: FormulaTerm[] = [
+  {
+    label: "IMU 预积分",
+    symbol: "\\Delta R_{ij},\\Delta v_{ij},\\Delta p_{ij}",
+    meaning: "把 i 到 j 之间很多个 IMU 小测量压缩成一个相对运动约束，避免每次优化都重算全部积分。"
+  },
+  {
+    label: "陀螺/加计偏置",
+    symbol: "b_g,b_a",
+    meaning: "IMU 会慢慢漂，偏置不估计清楚，视觉再准也会被惯性积分拉歪。"
+  },
+  {
+    label: "VIO 残差",
+    symbol: "r_{imu}(x_i,x_j,b_i)",
+    meaning: "比较预积分预测和当前两个关键帧状态是否一致，是视觉惯性融合的核心约束。"
+  }
+];
+
+export const lidarSlamFormulaTerms: FormulaTerm[] = [
+  {
+    label: "点到点 ICP",
+    symbol: "\\min_{R,t}\\sum_i\\lVert Rp_i+t-q_i\\rVert^2",
+    meaning: "找一个刚体变换，让当前点云和目标点云的对应点尽量重合。"
+  },
+  {
+    label: "点到面残差",
+    symbol: "n_i^T(Rp_i+t-q_i)",
+    meaning: "点云配准常用点到局部平面的距离，比点到点更适合 LiDAR scan-to-map。"
+  },
+  {
+    label: "LIO 因子图",
+    symbol: "\\mathcal{G}=\\{r_{lidar},r_{imu},r_{prior},r_{loop}\\}",
+    meaning: "把 LiDAR、IMU、先验和回环都写成因子，共同约束轨迹和地图。"
+  }
+];
+
+export const semanticNeuralSlamFormulaTerms: FormulaTerm[] = [
+  {
+    label: "语义地图",
+    symbol: "\\mathcal{M}_s=(\\mathcal{G},\\mathcal{L})",
+    meaning: "地图不只存几何，还要存物体、类别、可通行区域和场景关系。"
+  },
+  {
+    label: "神经场",
+    symbol: "F_\\theta(x)\\rightarrow (\\sigma,c,s)",
+    meaning: "用连续函数表示空间里某点的密度、颜色和语义标签。"
+  },
+  {
+    label: "跟踪-建图一致性",
+    symbol: "\\min_{T,\\theta}\\sum\\lVert I-\\hat{I}(T,F_\\theta)\\rVert+\\lambda\\mathcal{L}_{sem}",
+    meaning: "同时调整相机轨迹和神经地图，让重渲染结果和语义监督都更一致。"
+  }
+];
+
 export const nerfGaussianFormulaTerms: FormulaTerm[] = [
   {
     label: "体渲染颜色",

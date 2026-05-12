@@ -1006,6 +1006,234 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-vio-imu-preintegration",
+    track: "world-spatial-models",
+    title: "VIO 与 IMU 预积分",
+    layer: "Camera keyframes -> IMU factors -> state estimation",
+    beginnerBridge:
+      "VIO 先不要想成复杂黑箱：相机负责看见外界几何，IMU 负责高频感受运动。预积分就是把两个关键帧之间很多 IMU 小测量压缩成一个约束。",
+    coreIdeas: [
+      "IMU 提供角速度和加速度，但积分会被 bias 慢慢拉歪。",
+      "预积分把 Delta R、Delta v、Delta p 放进图优化，避免每次重线性化都从原始 IMU 重新积分。",
+      "视觉重投影误差和 IMU 预积分残差要一起看，单独一边可靠都不够。"
+    ],
+    derivationEntry:
+      "Write Delta R_ij, Delta v_ij, Delta p_ij from omega_m-b_g and a_m-b_a, then connect them to r_imu(x_i,x_j,b_i).",
+    practice:
+      "在 GoodNotes 画两个 camera keyframes，中间画 IMU 高频箭头，最后压缩成一个 IMU factor。",
+    goodNotes: "GoodNotes: Page SLAM-006",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> VIO Preintegration",
+    notion: "Notion: Track=World & Spatial Models, Topic=VIO preintegration, Evidence=GoodNotes SLAM-006",
+    practiceQuestions: [
+      {
+        prompt: "VIO 为什么要加 IMU？",
+        answer: "答案：IMU 高频、短时连续，能在相机低纹理或快速运动时提供运动约束。"
+      },
+      {
+        prompt: "IMU bias 为什么必须估计？",
+        answer: "答案：角速度和加速度偏置会在积分中不断累积，最后把轨迹慢慢拉歪。"
+      },
+      {
+        prompt: "预积分解决什么工程问题？",
+        answer: "答案：它把关键帧之间很多 IMU 样本压缩成一个可优化因子，减少重复积分成本。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个对象表示两个关键帧之间的 IMU 预积分量？",
+      choices: [
+        {
+          label: "A",
+          value: "Delta R_ij, Delta v_ij, Delta p_ij",
+          isCorrect: true,
+          feedback: "正确：预积分把旋转、速度和位置增量作为关键帧间约束。"
+        },
+        {
+          label: "B",
+          value: "rank(C)=n",
+          isCorrect: false,
+          feedback: "还不对：这是控制可控性检查。"
+        },
+        {
+          label: "C",
+          value: "raw video only",
+          isCorrect: false,
+          feedback: "还不对：VIO 需要状态、测量、bias 和残差，不只是视频。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-006 写完了吗？",
+      expected:
+        "已记录：Page SLAM-006 应包含 camera keyframes、IMU arrows、Delta R/v/p、bias drift、visual+inertial residual。"
+    },
+    sources: [
+      {
+        title: "VINS-Mono",
+        url: "https://arxiv.org/abs/1708.03852"
+      },
+      {
+        title: "ORB-SLAM3",
+        url: "https://arxiv.org/abs/2007.11898"
+      },
+      {
+        title: "GTSAM IMU Factor",
+        url: "https://gtsam.org/notes/IMU-Factor.html"
+      }
+    ]
+  },
+  {
+    id: "deep-lidar-icp-lio-sam",
+    track: "world-spatial-models",
+    title: "LiDAR SLAM、ICP 与 LIO",
+    layer: "Point cloud registration -> lidar-inertial graph",
+    beginnerBridge:
+      "LiDAR SLAM 先从“把两团点云对齐”开始。ICP 给你 R,t，scan-to-map 给你局部地图约束，LIO 再把 IMU 和回环放进同一个因子图。",
+    coreIdeas: [
+      "点到点 ICP 是最小入口，点到面残差更贴近 LiDAR scan-to-map。",
+      "NDT/ICP/LOAM/LIO-SAM 的共同问题都是：当前 scan 应该如何对齐到地图或上一帧。",
+      "LiDAR + IMU 融合时，漂移、时间同步、动态物体和退化场景都要单独记录。"
+    ],
+    derivationEntry:
+      "Start with min_{R,t} sum ||Rp_i+t-q_i||^2, then switch to point-to-plane n_i^T(Rp_i+t-q_i), then add lidar/imu/loop factors.",
+    practice:
+      "画 scan-to-scan、scan-to-map、LIO factor graph 三张图，并写每张图的失败模式。",
+    goodNotes: "GoodNotes: Page SLAM-007",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> LiDAR ICP LIO",
+    notion: "Notion: Track=World & Spatial Models, Topic=LiDAR SLAM/LIO, Evidence=GoodNotes SLAM-007",
+    practiceQuestions: [
+      {
+        prompt: "ICP 在优化什么？",
+        answer: "答案：优化 R,t，让当前点云变换后和目标点云尽量重合。"
+      },
+      {
+        prompt: "点到面残差为什么常用？",
+        answer: "答案：局部平面比单个点更稳定，适合 LiDAR scan-to-map 的几何结构。"
+      },
+      {
+        prompt: "LIO 为什么要加 IMU？",
+        answer: "答案：IMU 提供高频运动先验，能帮助点云配准在快速运动或几何退化时更稳定。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个公式是点到面 ICP 残差？",
+      choices: [
+        {
+          label: "A",
+          value: "n_i^T(Rp_i+t-q_i)",
+          isCorrect: true,
+          feedback: "正确：它衡量变换后的点到目标局部平面的距离。"
+        },
+        {
+          label: "B",
+          value: "v'=qvq^{-1}",
+          isCorrect: false,
+          feedback: "还不对：这是四元数旋转向量。"
+        },
+        {
+          label: "C",
+          value: "raw screenshots",
+          isCorrect: false,
+          feedback: "还不对：截图不能替代点云配准残差和轨迹证据。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-007 写完了吗？",
+      expected:
+        "已记录：Page SLAM-007 应包含 point-to-point ICP、point-to-plane residual、scan-to-map、LIO factor graph、failure modes。"
+    },
+    sources: [
+      {
+        title: "LIO-SAM",
+        url: "https://arxiv.org/abs/2007.00258"
+      },
+      {
+        title: "LOAM",
+        url: "https://www.ri.cmu.edu/pub_files/2014/7/Ji_LidarMapping_RSS2014_v8.pdf"
+      },
+      {
+        title: "FAST-LIO2",
+        url: "https://arxiv.org/abs/2107.06829"
+      }
+    ]
+  },
+  {
+    id: "deep-semantic-neural-slam-map",
+    track: "world-spatial-models",
+    title: "语义与神经 SLAM 地图",
+    layer: "Geometry -> semantics -> neural field -> validation boundary",
+    beginnerBridge:
+      "几何地图只告诉你哪里有东西；语义地图告诉你那些东西是什么；神经地图用连续函数表示空间。自动驾驶验证还要追问：尺度、坐标、语义和物理可用性有没有证据。",
+    coreIdeas: [
+      "语义 SLAM 把类别、物体、区域和可通行性接到几何地图上。",
+      "神经隐式地图把空间写成 F_theta(x)，可用于重建、补全或可视化。",
+      "漂亮的神经渲染不自动等于稳定验证资产，必须单独检查尺度、语义、碰撞和复现性。"
+    ],
+    derivationEntry:
+      "Write M_s=(G,L), F_theta(x)->(sigma,c,s), then add a tracking-mapping consistency loss.",
+    practice:
+      "把同一张街景地图画成三层：几何层、语义层、神经场层，并给每层写一个验证风险。",
+    goodNotes: "GoodNotes: Page SLAM-008",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Semantic Neural Map",
+    notion: "Notion: Track=World & Spatial Models, Topic=Semantic/Neural SLAM, Evidence=GoodNotes SLAM-008",
+    practiceQuestions: [
+      {
+        prompt: "语义地图比几何地图多了什么？",
+        answer: "答案：多了物体、类别、区域关系和可通行性等语义信息。"
+      },
+      {
+        prompt: "神经场 F_theta(x) 在表示什么？",
+        answer: "答案：它把空间坐标映射成密度、颜色、语义或占据等连续值。"
+      },
+      {
+        prompt: "为什么神经 SLAM 要写 validation boundary？",
+        answer: "答案：因为重建好看不等于可用于稳定仿真验证，尺度、碰撞、语义和复现都要另证。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达式最像语义神经地图的入口？",
+      choices: [
+        {
+          label: "A",
+          value: "F_theta(x)->(sigma,c,s)",
+          isCorrect: true,
+          feedback: "正确：它把空间坐标映射到密度、颜色和语义等字段。"
+        },
+        {
+          label: "B",
+          value: "A-BK",
+          isCorrect: false,
+          feedback: "还不对：这是闭环控制矩阵。"
+        },
+        {
+          label: "C",
+          value: "IELTS raw output",
+          isCorrect: false,
+          feedback: "还不对：这是语言学习证据，不是 SLAM 地图。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-008 写完了吗？",
+      expected:
+        "已记录：Page SLAM-008 应包含 semantic map、neural field、tracking-map consistency、validation boundary。"
+    },
+    sources: [
+      {
+        title: "Kimera",
+        url: "https://arxiv.org/abs/1910.02490"
+      },
+      {
+        title: "SemanticFusion",
+        url: "https://arxiv.org/abs/1609.05130"
+      },
+      {
+        title: "NICE-SLAM",
+        url: "https://arxiv.org/abs/2112.12130"
+      }
+    ]
+  },
+  {
     id: "deep-reconstruction-slam-handoff",
     track: "work-validation",
     title: "重建 SLAM 技术栈到验证资产",
@@ -1601,6 +1829,114 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "vio-imu-preintegration",
+    track: "world-spatial-models",
+    title: "VIO and IMU preintegration bridge",
+    stage: "Visual-inertial state estimation",
+    focus:
+      "Learn visual-inertial odometry from camera keyframes, IMU preintegration, gyro/accelerometer bias, factor-graph residuals, and failure modes.",
+    outputs: [
+      "one GoodNotes page for Delta R, Delta v, Delta p and IMU bias",
+      "one VIO factor-graph sketch connecting camera and inertial residuals",
+      "one failure taxonomy for low texture, fast motion, time sync, and bias drift"
+    ],
+    sources: [
+      {
+        title: "VINS-Mono",
+        url: "https://arxiv.org/abs/1708.03852"
+      },
+      {
+        title: "ORB-SLAM3",
+        url: "https://arxiv.org/abs/2007.11898"
+      },
+      {
+        title: "GTSAM IMU Factor",
+        url: "https://gtsam.org/notes/IMU-Factor.html"
+      }
+    ]
+  },
+  {
+    id: "lidar-icp-lio-sam",
+    track: "world-spatial-models",
+    title: "LiDAR SLAM, ICP, and LIO line",
+    stage: "Point-cloud registration to lidar-inertial mapping",
+    focus:
+      "Move from ICP and point-to-plane residuals into scan-to-map LiDAR odometry, LOAM-style features, LIO-SAM factor graphs, and validation metrics.",
+    outputs: [
+      "one ICP and point-to-plane residual derivation page",
+      "one scan-to-map and LIO factor-graph sketch",
+      "one validation note for drift, loop closure, map overlap, and dynamic-object failure"
+    ],
+    sources: [
+      {
+        title: "LIO-SAM",
+        url: "https://arxiv.org/abs/2007.00258"
+      },
+      {
+        title: "LOAM",
+        url: "https://www.ri.cmu.edu/pub_files/2014/7/Ji_LidarMapping_RSS2014_v8.pdf"
+      },
+      {
+        title: "FAST-LIO2",
+        url: "https://arxiv.org/abs/2107.06829"
+      }
+    ]
+  },
+  {
+    id: "semantic-neural-slam-map",
+    track: "world-spatial-models",
+    title: "Semantic and neural SLAM map bridge",
+    stage: "Geometry to semantic and neural maps",
+    focus:
+      "Extend geometry-only maps into semantic labels, object/region relations, neural implicit fields, and the validation boundary between pretty reconstruction and usable simulation assets.",
+    outputs: [
+      "one semantic-map layer sketch for geometry, labels, and traversability",
+      "one neural-field formula page for F_theta(x) to density, color, and semantics",
+      "one validation-boundary note for scale, coordinates, semantics, collision, and reproducibility"
+    ],
+    sources: [
+      {
+        title: "Kimera",
+        url: "https://arxiv.org/abs/1910.02490"
+      },
+      {
+        title: "SemanticFusion",
+        url: "https://arxiv.org/abs/1609.05130"
+      },
+      {
+        title: "NICE-SLAM",
+        url: "https://arxiv.org/abs/2112.12130"
+      }
+    ]
+  },
+  {
+    id: "slam-datasets-evaluation-benchmark",
+    track: "world-spatial-models",
+    title: "SLAM datasets and evaluation benchmark line",
+    stage: "Evidence and regression",
+    focus:
+      "Keep the SLAM learning line testable by comparing TUM RGB-D, KITTI odometry, EuRoC MAV, absolute trajectory error, relative pose error, and validation handoff evidence.",
+    outputs: [
+      "one benchmark note comparing TUM, KITTI, and EuRoC assumptions",
+      "one ATE/RPE formula and interpretation page",
+      "one evidence checklist for trajectory, map, calibration, timestamp, and reprojection diagnostics"
+    ],
+    sources: [
+      {
+        title: "TUM RGB-D SLAM Dataset",
+        url: "https://cvg.cit.tum.de/data/datasets/rgbd-dataset"
+      },
+      {
+        title: "KITTI Odometry Benchmark",
+        url: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php"
+      },
+      {
+        title: "EuRoC MAV Dataset",
+        url: "https://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets"
+      }
+    ]
+  },
+  {
     id: "world-spatial-paper-reproduction-map",
     track: "world-spatial-models",
     title: "World and spatial paper reproduction ladder",
@@ -1920,6 +2256,54 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/",
     notes:
       "Derive one NeRF rendering equation, one 3DGS projection equation, then mark what is renderable, physical, semantic, and stable-validation ready."
+  },
+  {
+    id: "seed_vio_imu_preintegration",
+    title: "Derive VIO IMU preintegration from camera keyframes",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/1708.03852",
+    notes:
+      "Write Delta R/v/p, gyro and accelerometer bias, one visual residual, one IMU residual, and a failure note for low texture or time sync."
+  },
+  {
+    id: "seed_lidar_icp_lio_sam",
+    title: "Build a LiDAR SLAM ICP and LIO-SAM note",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/2007.00258",
+    notes:
+      "Derive point-to-point ICP, point-to-plane residual, scan-to-map intuition, and one LIO factor-graph sketch."
+  },
+  {
+    id: "seed_semantic_neural_slam_map",
+    title: "Compare semantic SLAM and neural SLAM maps",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/2112.12130",
+    notes:
+      "Write a three-layer map note: geometry, semantics, neural field, then mark scale, coordinates, semantic quality, and validation boundary."
+  },
+  {
+    id: "seed_slam_dataset_evaluation_benchmark",
+    title: "Create a SLAM dataset and evaluation benchmark note",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php",
+    notes:
+      "Compare TUM, KITTI, and EuRoC assumptions, then write how ATE/RPE evidence should be stored before using a map or trajectory downstream."
   },
   {
     id: "seed_world_spatial_paper_ladder",

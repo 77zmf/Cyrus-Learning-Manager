@@ -32,7 +32,10 @@ const sceneMap = new Map([
   ["GuidedEpipolarGeometryScene", "guided_epipolar_geometry.mp4"],
   ["GuidedSlamBackendPoseGraphScene", "guided_slam_backend_pose_graph.mp4"],
   ["GuidedReconstructionRepresentationScene", "guided_reconstruction_representation.mp4"],
-  ["GuidedQuaternionOrientationScene", "guided_quaternion_orientation.mp4"]
+  ["GuidedQuaternionOrientationScene", "guided_quaternion_orientation.mp4"],
+  ["GuidedVioImuPreintegrationScene", "guided_vio_imu_preintegration.mp4"],
+  ["GuidedLidarSlamIcpScene", "guided_lidar_slam_icp.mp4"],
+  ["GuidedSemanticNeuralSlamScene", "guided_semantic_neural_slam.mp4"]
 ]);
 
 const requestedScenes = process.argv.slice(2);

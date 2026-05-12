@@ -401,6 +401,27 @@ guided_lesson_scenes = [
         r"q\sim -q,\quad v'=qvq^{-1}",
         ["unit quaternion", "double cover", "rotation sandwich"],
     ),
+    (
+        "GuidedVioImuPreintegrationScene",
+        "VIO and IMU preintegration",
+        "camera keyframes fuse with high-rate inertial motion",
+        r"\Delta R_{ij},\Delta v_{ij},\Delta p_{ij}",
+        ["camera keyframes", "IMU preintegration", "bias drift"],
+    ),
+    (
+        "GuidedLidarSlamIcpScene",
+        "LiDAR SLAM and ICP",
+        "point clouds align through rigid transforms and residuals",
+        r"\min_{R,t}\sum_i\|Rp_i+t-q_i\|^2",
+        ["scan-to-map", "point-to-plane residual", "LIO factor graph"],
+    ),
+    (
+        "GuidedSemanticNeuralSlamScene",
+        "Semantic and neural SLAM maps",
+        "geometry gains labels and continuous neural fields",
+        r"F_\theta(x)\rightarrow(\sigma,c,s)",
+        ["semantic map", "neural field", "validation boundary"],
+    ),
 ]
 
 for scene_name, title, subtitle, formula, bullets in guided_lesson_scenes:

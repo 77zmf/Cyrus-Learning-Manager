@@ -50,7 +50,10 @@ const guidedLessonSceneNames: Record<string, string> = {
   "lesson-feature-epipolar-geometry": "GuidedEpipolarGeometryScene",
   "lesson-slam-backend-pose-graph": "GuidedSlamBackendPoseGraphScene",
   "lesson-sfm-mvs-nerf-3dgs": "GuidedReconstructionRepresentationScene",
-  "lesson-quaternion-orientation": "GuidedQuaternionOrientationScene"
+  "lesson-quaternion-orientation": "GuidedQuaternionOrientationScene",
+  "lesson-vio-imu-preintegration": "GuidedVioImuPreintegrationScene",
+  "lesson-lidar-icp-lio-sam": "GuidedLidarSlamIcpScene",
+  "lesson-semantic-neural-slam-map": "GuidedSemanticNeuralSlamScene"
 };
 
 const guidedLessonSceneTitles: Record<string, string> = {
@@ -72,7 +75,10 @@ const guidedLessonSceneTitles: Record<string, string> = {
   "lesson-feature-epipolar-geometry": "Epipolar Geometry Manim storyboard",
   "lesson-slam-backend-pose-graph": "SLAM Backend Manim storyboard",
   "lesson-sfm-mvs-nerf-3dgs": "Reconstruction Representation Manim storyboard",
-  "lesson-quaternion-orientation": "Quaternion Orientation Manim storyboard"
+  "lesson-quaternion-orientation": "Quaternion Orientation Manim storyboard",
+  "lesson-vio-imu-preintegration": "VIO IMU Preintegration Manim storyboard",
+  "lesson-lidar-icp-lio-sam": "LiDAR SLAM ICP Manim storyboard",
+  "lesson-semantic-neural-slam-map": "Semantic Neural SLAM Manim storyboard"
 };
 
 const guidedLessonVisualModels: Record<string, string> = {
@@ -94,7 +100,10 @@ const guidedLessonVisualModels: Record<string, string> = {
   "lesson-feature-epipolar-geometry": "两台相机、同一地标、对极线和错误匹配逐帧对比。",
   "lesson-slam-backend-pose-graph": "位姿节点、观测边、回环边和残差收缩做成优化动画。",
   "lesson-sfm-mvs-nerf-3dgs": "Images -> COLMAP -> MVS -> NeRF/3DGS -> validation asset 逐段流动。",
-  "lesson-quaternion-orientation": "q 与 -q 对跖点、半角和 v'=qvq^{-1} 旋转夹心同步变化。"
+  "lesson-quaternion-orientation": "q 与 -q 对跖点、半角和 v'=qvq^{-1} 旋转夹心同步变化。",
+  "lesson-vio-imu-preintegration": "相机关键帧之间塞入高频 IMU 箭头，再压缩成 Delta R/v/p 预积分因子。",
+  "lesson-lidar-icp-lio-sam": "两团点云通过 R,t 对齐，点到面残差逐步变短，再接入 IMU 和回环因子。",
+  "lesson-semantic-neural-slam-map": "几何地图先出现，再叠加语义标签和神经场采样点，最后标出验证边界。"
 };
 
 export function deriveGuidedManimAssetPath(sceneName: string) {

@@ -8,9 +8,11 @@ import {
   nonlinearFormulaTerms,
   observabilityFormulaTerms,
   quaternionFormulaTerms,
+  lidarSlamFormulaTerms,
   robustFormulaTerms,
   epipolarFormulaTerms,
   nerfGaussianFormulaTerms,
+  semanticNeuralSlamFormulaTerms,
   slamBackendFormulaTerms,
   slamProjectionFormulaTerms,
   slamTransformFormulaTerms,
@@ -26,6 +28,7 @@ import {
   threeBlueOneBrownNeuralNetworkTerms,
   threeBlueOneBrownProbabilityTerms,
   threeBlueOneBrownSignalsTerms,
+  vioImuFormulaTerms,
   worldSpatialFormulaTerms
 } from "./formula-visuals";
 import type { FormulaTerm } from "./formula-visuals";
@@ -518,6 +521,27 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
     example: "IMU、相机位姿和 SLAM 后端经常用 quaternion 存朝向，因为连续旋转和组合旋转更稳定。",
     exercise: "画一个单位球上的 q 和 -q，再画一个向量 v 被转成 v'。",
     goodNotes: "写 q=cos(theta/2)+u sin(theta/2)，再写 v'=qvq^{-1}。"
+  },
+  "lesson-vio-imu-preintegration": {
+    question: "这节课先问：相机帧率不高，机器人为什么还要用 IMU？",
+    intuition: "IMU 像高频身体感觉，相机像低频外界纠偏；VIO 是把两者放进同一个估计问题。",
+    example: "相机短暂看不清纹理时，IMU 还能提供角速度和加速度约束，帮轨迹不中断。",
+    exercise: "画 camera keyframe i、j，中间塞很多 IMU 小箭头，再把它们压成一个 Delta 约束。",
+    goodNotes: "写 Delta R、Delta v、Delta p 和 b_g、b_a，旁边写“高频积分会漂，必须估偏置”。"
+  },
+  "lesson-lidar-icp-lio-sam": {
+    question: "这节课先问：LiDAR 没有像素特征，怎么知道两帧点云对齐了？",
+    intuition: "LiDAR SLAM 先把点云当成几何形状，用 ICP 或 scan-to-map 找刚体变换，再用 IMU/回环稳定长期轨迹。",
+    example: "车辆转弯时，一帧点云里的路沿、墙面和杆状物会和地图里的局部平面匹配。",
+    exercise: "画两团点云，一团用 R,t 移到另一团；再写点到面残差。",
+    goodNotes: "把 ICP、point-to-plane、LIO factor graph 分三块写，不要只背算法名。"
+  },
+  "lesson-semantic-neural-slam-map": {
+    question: "这节课先问：地图只有几何够不够给机器人用？",
+    intuition: "语义 SLAM 给几何地图加标签，神经 SLAM 用连续场表示空间；两者都要回到定位、建图和验证资产是否可靠。",
+    example: "同一块空间里，路面、路沿、可通行区域、动态障碍和静态建筑对 planner 的意义完全不同。",
+    exercise: "画一张几何地图，再给每块区域加语义标签，最后标出一个神经场 F_theta(x)。",
+    goodNotes: "写 M_s=(G,L)、F_theta(x)->(sigma,c,s)，再写“语义/神经地图不能自动等于稳定验证资产”。"
   }
 };
 
@@ -1244,6 +1268,93 @@ const lessonReadyChecks: Record<string, LessonReadyCheck> = {
     ],
     goodNotesPrompt: "Page SLAM-005 写完了吗？",
     goodNotesExpected: "已记录：Page SLAM-005 至少有 q、-q、半角、v'=qvq^{-1} 和一个相机姿态例子。"
+  },
+  "lesson-vio-imu-preintegration": {
+    prerequisite: "位姿和轨迹",
+    conceptQuestion: "VIO 为什么要把相机和 IMU 放在一起？",
+    conceptAnswer:
+      "答案：相机提供外界几何纠偏，IMU 提供高频运动约束；二者融合后能在低纹理、快速运动和短时遮挡中保持轨迹连续。",
+    formulaPrompt: "哪个对象最像 IMU 预积分的压缩测量？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "\\Delta R_{ij},\\Delta v_{ij},\\Delta p_{ij}",
+        isCorrect: true,
+        feedback: "正确：预积分把关键帧之间的 IMU 测量压缩成旋转、速度和位置增量。"
+      },
+      {
+        label: "B",
+        value: "rank(\\mathcal{O})=n",
+        isCorrect: false,
+        feedback: "还不对：这是可观性检查，不是 IMU 预积分。"
+      },
+      {
+        label: "C",
+        value: "q\\sim -q",
+        isCorrect: false,
+        feedback: "还不对：这是四元数双覆盖，不是视觉惯性约束。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-006 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-006 至少有 camera keyframes、IMU arrows、Delta R/v/p、bias drift。"
+  },
+  "lesson-lidar-icp-lio-sam": {
+    prerequisite: "坐标系和单位",
+    conceptQuestion: "LiDAR SLAM 的配准在比较什么？",
+    conceptAnswer:
+      "答案：它比较当前点云经过 R,t 变换后，和目标 scan 或 map 的点、线、面是否对齐。",
+    formulaPrompt: "哪个表达式表示点到面 ICP 残差？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "n_i^T(Rp_i+t-q_i)",
+        isCorrect: true,
+        feedback: "正确：点到面残差衡量变换后的点到局部平面的距离。"
+      },
+      {
+        label: "B",
+        value: "p(z_{t+1}|z_t,a_t)",
+        isCorrect: false,
+        feedback: "还不对：这是世界模型 latent dynamics。"
+      },
+      {
+        label: "C",
+        value: "x_2^TFx_1=0",
+        isCorrect: false,
+        feedback: "还不对：这是视觉两视图的对极约束。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-007 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-007 至少有 ICP、point-to-plane、scan-to-map、LIO factor graph。"
+  },
+  "lesson-semantic-neural-slam-map": {
+    prerequisite: "论文阅读四件套",
+    conceptQuestion: "语义和神经 SLAM 地图比几何地图多了什么？",
+    conceptAnswer:
+      "答案：它们多了物体/区域语义、可通行关系或连续神经场表示，但仍要接受定位误差、漂移和验证资产边界检查。",
+    formulaPrompt: "哪个表达式最像神经场地图？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "F_\\theta(x)\\rightarrow(\\sigma,c,s)",
+        isCorrect: true,
+        feedback: "正确：神经场用连续函数把空间点映射到密度、颜色和语义。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是状态反馈控制。"
+      },
+      {
+        label: "C",
+        value: "\\min_{R,t}\\sum_i\\lVert Rp_i+t-q_i\\rVert^2",
+        isCorrect: false,
+        feedback: "还不对：这是 ICP 配准，不是神经场地图。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-008 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-008 至少有 semantic map、neural field、tracking/map consistency、validation boundary。"
   }
 };
 
@@ -1993,6 +2104,126 @@ const guidedControlLessonSeeds: GuidedLessonSeed[] = [
       }
     ],
     selfCheck: ["单位四元数", "双覆盖 q 和 -q", "旋转夹心 qvq^{-1}", "乘法顺序不可交换"]
+  },
+  {
+    id: "lesson-vio-imu-preintegration",
+    title: "第 20 课：VIO 与 IMU 预积分",
+    goal: "理解视觉惯性里程计如何把相机关键帧和高频 IMU 测量放进同一个状态估计问题。",
+    formula:
+      "\\Delta R_{ij},\\Delta v_{ij},\\Delta p_{ij}=\\int_i^j(\\omega_m-b_g,a_m-b_a),\\quad r_{imu}(x_i,x_j,b_i)",
+    formulaTerms: vioImuFormulaTerms,
+    now: "现在做：画两个相机关键帧，中间画很多 IMU 小测量，并压缩成一个预积分因子。",
+    goodNotesPage: "GoodNotes Page SLAM-006：VIO 与 IMU 预积分",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> VIO Preintegration",
+    notionRow: "Notion row：Topic=VIO preintegration, Mastery=1, Evidence=GoodNotes Page SLAM-006",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "区分 camera keyframe 和 IMU sample。",
+        output: "相机低频但看见外界，IMU 高频但会漂。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 Delta R、Delta v、Delta p。",
+        output: "关键帧之间的很多 IMU 测量被压缩成一个相对运动约束。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写 b_g 和 b_a。",
+        output: "陀螺和加计偏置必须估计，否则积分会持续漂移。"
+      },
+      {
+        label: "Step 4",
+        instruction: "把 IMU 因子接到 SLAM 后端。",
+        output: "VIO 后端同时最小化视觉重投影误差和 IMU 预积分残差。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写一个失败模式。",
+        output: "快速运动、低纹理、时间同步错误或 IMU bias 都会让 VIO 变差。"
+      }
+    ],
+    selfCheck: ["camera keyframe", "IMU sample", "preintegration", "bias drift", "visual + inertial residual"]
+  },
+  {
+    id: "lesson-lidar-icp-lio-sam",
+    title: "第 21 课：LiDAR SLAM、ICP 与 LIO",
+    goal: "把 LiDAR 点云配准、ICP/NDT、scan-to-map 和 LIO 因子图串成一条可验证的定位建图线。",
+    formula:
+      "\\min_{R,t}\\sum_i\\lVert Rp_i+t-q_i\\rVert^2,\\quad n_i^T(Rp_i+t-q_i),\\quad \\mathcal{G}=\\{r_{lidar},r_{imu},r_{loop}\\}",
+    formulaTerms: lidarSlamFormulaTerms,
+    now: "现在做：画两帧点云，一帧用 R,t 对齐到另一帧，再写 point-to-plane residual。",
+    goodNotesPage: "GoodNotes Page SLAM-007：LiDAR SLAM、ICP 与 LIO",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> LiDAR ICP LIO",
+    notionRow: "Notion row：Topic=LiDAR SLAM and LIO, Mastery=1, Evidence=GoodNotes Page SLAM-007",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写 scan、map、transform。",
+        output: "LiDAR SLAM 的核心是把当前 scan 对齐到上一帧或局部地图。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写点到点 ICP。",
+        output: "先理解 R,t 如何让两团点云重合。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写点到面残差。",
+        output: "真实 LiDAR scan-to-map 更常用局部平面约束。"
+      },
+      {
+        label: "Step 4",
+        instruction: "接入 IMU 和回环。",
+        output: "LIO 因子图把 LiDAR、IMU、先验和回环放进同一个优化问题。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写验证指标。",
+        output: "漂移、地图重叠、回环一致性、定位跳变都要成为证据。"
+      }
+    ],
+    selfCheck: ["ICP", "point-to-plane residual", "scan-to-map", "IMU factor", "loop closure"]
+  },
+  {
+    id: "lesson-semantic-neural-slam-map",
+    title: "第 22 课：语义与神经 SLAM 地图",
+    goal: "把几何地图升级到语义地图和神经场地图，同时保留验证资产边界，不把漂亮渲染误认为稳定可用。",
+    formula:
+      "\\mathcal{M}_s=(\\mathcal{G},\\mathcal{L}),\\quad F_\\theta(x)\\rightarrow(\\sigma,c,s),\\quad \\min_{T,\\theta}\\mathcal{L}_{photo}+\\lambda\\mathcal{L}_{sem}",
+    formulaTerms: semanticNeuralSlamFormulaTerms,
+    now: "现在做：画一张几何地图，给区域加语义标签，再画一个神经场 F_theta(x)。",
+    goodNotesPage: "GoodNotes Page SLAM-008：语义与神经 SLAM 地图",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Semantic Neural Map",
+    notionRow: "Notion row：Topic=Semantic and neural SLAM map, Mastery=1, Evidence=GoodNotes Page SLAM-008",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写几何地图。",
+        output: "几何回答哪里有点、面、障碍和自由空间。"
+      },
+      {
+        label: "Step 2",
+        instruction: "加语义标签。",
+        output: "语义告诉 planner 这是车道、路沿、建筑、动态物体还是可通行区域。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写神经场。",
+        output: "F_theta 用连续函数表示空间里的颜色、密度和语义。"
+      },
+      {
+        label: "Step 4",
+        instruction: "写跟踪-建图一致性。",
+        output: "轨迹和地图要一起解释观测，否则重渲染和定位都会偏。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写验证边界。",
+        output: "语义/神经地图要进入稳定验证，还需要尺度、坐标、语义质量和物理可用证据。"
+      }
+    ],
+    selfCheck: ["semantic map", "neural field", "photo loss", "semantic loss", "validation boundary"]
   }
 ];
 
@@ -2037,6 +2268,22 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     goodNotes: "GoodNotes: SLAM-005 四元数与三维姿态",
     obsidian: "Obsidian: World-Spatial -> SLAM -> Quaternion Orientation",
     notion: "Notion: Topic=Quaternion orientation, Evidence=GoodNotes SLAM-005"
+  },
+  {
+    title: "VIO and LiDAR SLAM sprint",
+    focus: "After quaternion orientation, move into sensor-fusion SLAM before semantic/neural maps.",
+    prompt: "Explain IMU preintegration, point-to-plane ICP, and one failure mode for VIO or LIO in your own words.",
+    goodNotes: "GoodNotes: SLAM-006 to SLAM-007",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Sensor Fusion",
+    notion: "Notion: Topic=VIO/LiDAR SLAM, Evidence=GoodNotes SLAM-006/007"
+  },
+  {
+    title: "Semantic neural map sprint",
+    focus: "Use semantic and neural SLAM as the bridge from geometry to spatial intelligence.",
+    prompt: "Draw geometry, semantic labels, and neural field F_theta(x), then mark why it is not automatically a stable validation asset.",
+    goodNotes: "GoodNotes: SLAM-008 语义与神经 SLAM 地图",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Semantic Neural Map",
+    notion: "Notion: Topic=Semantic/Neural SLAM, Evidence=GoodNotes SLAM-008"
   },
   {
     title: "3Blue1Brown visual math sprint",
