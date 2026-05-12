@@ -9,6 +9,13 @@ function readSource(path: string) {
 }
 
 describe("style source structure", () => {
+  it("declares a local favicon so browser checks do not produce a missing icon request", () => {
+    const html = readSource("index.html");
+
+    expect(html).toContain('rel="icon"');
+    expect(html).toContain("data:image/svg+xml");
+  });
+
   it("keeps global design tokens and base shell rules in focused CSS modules", () => {
     const entry = readSource("src/styles.css");
     const tokensPath = join(root, "src/styles/tokens.css");
@@ -127,6 +134,7 @@ describe("style source structure", () => {
       ".module-output",
       ".source-links",
       ".threeblue-source-strip",
+      ".threeblue-source-strip article",
       ".route-card",
       ".field-grid span",
       ".hermes-command",
@@ -137,12 +145,37 @@ describe("style source structure", () => {
       ".lesson-complete",
       ".task-row",
       ".progress-row",
+      ".progress-summary",
       ".status-card",
       ".micro-question",
       ".formula-check",
       ".goodnotes-output-check",
+      ".directory-grid a",
+      ".route-output-list li",
+      ".beginner-dl div",
+      ".compact-dl div",
+      ".map-board",
+      ".deep-study-dl div",
+      ".projection-drag-lab",
+      ".projection-control-row",
+      ".projection-equation",
+      ".quaternion-stage",
+      ".quaternion-readout article",
+      ".spatial-focus-copy",
+      ".spatial-source-row a",
+      ".manim-topic-tabs",
+      ".manim-studio-shell",
+      ".manim-preview-stage",
+      ".manim-preview-copy",
+      ".guided-manim-frame",
+      ".guided-manim-controls",
       ".manim-scene-card",
       ".manim-video-placeholder",
+      ".feedback.is-correct",
+      ".feedback.is-wrong",
+      ".choice-grid button.is-wrong",
+      ".formula-choice-grid button.is-wrong",
+      ".ready-choice-grid button.is-wrong",
       ".empty-state",
       ".error",
     ].forEach((selector) => {

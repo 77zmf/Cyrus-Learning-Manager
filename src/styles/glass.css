@@ -144,18 +144,25 @@ h1 {
   .subsection-block,
   .workflow-strip article,
   .learning-directory a,
+  .directory-grid a,
   .beginner-start-list li,
+  .beginner-dl div,
+  .compact-dl div,
+  .map-board,
   .foundation-card,
   .course-toc,
   .threeblue-source-strip,
+  .threeblue-source-strip article,
   .threeblue-route-card,
   .route-card,
   .route-source-link,
   .route-topic,
+  .route-output-list li,
   .guided-lesson-card,
   .guided-manim-card,
   .guided-manim-stage,
   .guided-manim-frame,
+  .guided-manim-controls,
   .guided-manim-video,
   .lesson-ready-check,
   .guided-step-list li,
@@ -167,6 +174,7 @@ h1 {
   .node-card,
   .edge-list article,
   .deep-study-card,
+  .deep-study-dl div,
   .micro-question,
   .formula-check,
   .goodnotes-output-check,
@@ -187,8 +195,12 @@ h1 {
   .feedback,
   .lesson-complete,
   .manim-reference-strip,
+  .manim-topic-tabs,
+  .manim-studio-shell,
   .manim-explorable-focus,
   .manim-explorable-preview,
+  .manim-preview-stage,
+  .manim-preview-copy,
   .manim-studio,
   .manim-source-row,
   .manim-scene-card,
@@ -196,15 +208,22 @@ h1 {
   .formula-visual,
   .formula-render,
   .formula-term-grid div,
+  .projection-drag-lab,
   .projection-world,
   .projection-image-plane,
+  .projection-control-row,
+  .projection-equation,
   .projection-readout-grid article,
   .projection-step-card,
+  .spatial-focus-copy,
   .spatial-drag-lab,
   .slam-map-stage,
   .slam-observation-panel,
   .reconstruction-stage,
+  .quaternion-stage,
+  .quaternion-readout article,
   .spatial-source-row a,
+  .progress-summary,
   .empty-state,
   .error
 ) {
@@ -226,12 +245,24 @@ h1 {
   .filters,
   .create-task,
   .subsection-block,
+  .directory-grid a,
+  .beginner-dl div,
+  .compact-dl div,
+  .map-board,
+  .threeblue-source-strip article,
+  .route-output-list li,
   .guided-step-list li,
   .self-check,
+  .guided-manim-frame,
+  .guided-manim-controls,
   .deep-study-card,
+  .deep-study-dl div,
   .readiness-card,
   .template-card pre,
   .hermes-command code,
+  .projection-control-row,
+  .projection-equation,
+  .quaternion-readout article,
   .tutor-question pre,
   .tutor-notes pre,
   .tutor-closeout pre,
@@ -253,6 +284,7 @@ h1 {
 .workflow-strip article,
 .foundation-card,
 .status-card,
+.progress-summary,
 .review-overview,
 .action-card,
 .threeblue-route-card,
@@ -273,7 +305,8 @@ h1 {
 .hermes-presets,
 .hermes-form,
 .hermes-output,
-.hermes-closeout {
+.hermes-closeout,
+.manim-preview-copy {
   border-left-width: 1px;
   border-left-color: rgba(255, 255, 255, 0.7);
   border-top-width: 1px;
@@ -334,7 +367,12 @@ h1 {
 
 .spatial-topic-tabs button,
 .spatial-stage-strip button,
+.manim-topic-tabs,
+.manim-studio-shell,
+.manim-preview-stage,
+.projection-drag-lab,
 .spatial-drag-lab,
+.quaternion-stage,
 .spatial-stage-detail {
   -webkit-backdrop-filter: blur(30px) saturate(175%);
   backdrop-filter: blur(30px) saturate(175%);
@@ -354,6 +392,7 @@ h1 {
 }
 
 .spatial-topic-tabs button::before,
+.projection-drag-lab::before,
 .spatial-drag-lab::before,
 .spatial-stage-detail::before {
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.74), transparent 34%, rgba(255, 255, 255, 0.22) 68%, transparent);
@@ -365,6 +404,7 @@ h1 {
 }
 
 .spatial-topic-tabs button > *,
+.projection-drag-lab > *,
 .spatial-drag-lab > *,
 .spatial-stage-detail > * {
   position: relative;
@@ -418,9 +458,13 @@ textarea {
 
 .lesson-complete,
 .choice-grid button.is-correct,
+.feedback.is-correct,
+.formula-choice-grid button.is-correct,
+.ready-choice-grid button.is-correct,
 .spatial-topic-tabs button.active,
 .spatial-stage-strip button.active,
-.manim-topic-tabs button.active {
+.manim-topic-tabs button.active,
+.guided-manim-frame-buttons button.active {
   background:
     linear-gradient(145deg, rgba(11, 12, 15, 0.86), rgba(42, 45, 52, 0.72)),
     rgba(9, 10, 12, 0.72);
@@ -430,6 +474,22 @@ textarea {
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
     inset 0 -1px 0 rgba(0, 0, 0, 0.22);
   color: var(--paper-soft);
+}
+
+.feedback.is-wrong,
+.choice-grid button.is-wrong,
+.formula-choice-grid button.is-wrong,
+.ready-choice-grid button.is-wrong {
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(255, 238, 238, 0.46)),
+    rgba(132, 34, 28, 0.12);
+  border-color: rgba(132, 34, 28, 0.26);
+  box-shadow:
+    0 12px 30px rgba(132, 34, 28, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+  color: #5f1712;
 }
 
 .is-ready,
