@@ -861,6 +861,78 @@ textarea {
   margin-bottom: 16px;
 }
 
+.sync-recovery {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  padding: 18px;
+}
+
+.sync-recovery h2 {
+  font-size: 1.55rem;
+  margin-bottom: 8px;
+}
+
+.sync-recovery p {
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sync-command-list {
+  counter-reset: none;
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sync-command-list li {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 12px;
+}
+
+.sync-command-list li > span {
+  align-items: center;
+  background: var(--ink);
+  border-radius: 999px;
+  color: var(--paper-soft);
+  display: flex;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.sync-command-list strong,
+.sync-command-list code,
+.sync-command-list p {
+  grid-column: 2;
+}
+
+.sync-command-list strong {
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.sync-command-list code {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  padding: 10px;
+}
+
 .action-surface {
   display: grid;
   gap: 18px;

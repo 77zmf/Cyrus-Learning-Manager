@@ -147,6 +147,8 @@ describe("style source structure", () => {
       ".progress-row",
       ".progress-summary",
       ".status-card",
+      ".sync-recovery",
+      ".sync-command-list li",
       ".micro-question",
       ".formula-check",
       ".goodnotes-output-check",

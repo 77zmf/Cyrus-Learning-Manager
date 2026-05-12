@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { LearnView } from "../../src/components/LearnView";
 import { MindMapView } from "../../src/components/MindMapView";
@@ -429,5 +429,22 @@ describe("learning workflow views", () => {
     expect(screen.getByText("http://127.0.0.1:5173/Cyrus-Learning-Manager/")).toBeInTheDocument();
     expect(screen.getByText("curl -fsS http://127.0.0.1:8787/health")).toBeInTheDocument();
     expect(screen.getByText("cyrus status")).toBeInTheDocument();
+  });
+
+  it("shows a local recovery checklist when the sync service is disconnected", () => {
+    render(
+      <SyncCenter
+        health={null}
+        error="Local sync service unavailable. Obsidian and Notion writes are paused."
+      />
+    );
+
+    const recovery = screen.getByRole("region", { name: "Local Recovery" });
+
+    expect(within(recovery).getByRole("heading", { name: "Local Recovery" })).toBeInTheDocument();
+    expect(within(recovery).getByText("网页可以继续学习；只有 Obsidian / Notion 写入会暂停。")).toBeInTheDocument();
+    expect(within(recovery).getByText("npm run dev:sync")).toBeInTheDocument();
+    expect(within(recovery).getByText("curl -fsS http://127.0.0.1:8787/health")).toBeInTheDocument();
+    expect(within(recovery).getByText("刷新 Sync 页面，看到 Local service = connected 后再写入。")).toBeInTheDocument();
   });
 });

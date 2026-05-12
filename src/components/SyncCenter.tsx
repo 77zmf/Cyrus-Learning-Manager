@@ -46,6 +46,7 @@ export function SyncCenter({ health, error }: SyncCenterProps) {
           active={Boolean(health?.hermesConfigured)}
         />
       </div>
+      {!connected ? <LocalRecovery /> : null}
       <section className="subsection-block">
         <div className="section-heading">
           <h2>Sync Readiness</h2>
@@ -61,6 +62,34 @@ export function SyncCenter({ health, error }: SyncCenterProps) {
           ))}
         </div>
       </section>
+    </section>
+  );
+}
+
+function LocalRecovery() {
+  return (
+    <section className="sync-recovery" aria-labelledby="local-recovery-heading">
+      <div>
+        <h2 id="local-recovery-heading">Local Recovery</h2>
+        <p>网页可以继续学习；只有 Obsidian / Notion 写入会暂停。</p>
+      </div>
+      <ol className="sync-command-list">
+        <li>
+          <span>1</span>
+          <strong>在项目目录启动同步服务</strong>
+          <code>npm run dev:sync</code>
+        </li>
+        <li>
+          <span>2</span>
+          <strong>确认 8787 端口可用</strong>
+          <code>curl -fsS http://127.0.0.1:8787/health</code>
+        </li>
+        <li>
+          <span>3</span>
+          <strong>回到网页确认状态</strong>
+          <p>刷新 Sync 页面，看到 Local service = connected 后再写入。</p>
+        </li>
+      </ol>
     </section>
   );
 }
