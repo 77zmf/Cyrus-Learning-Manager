@@ -1082,6 +1082,83 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-loop-closure-place-recognition",
+    track: "world-spatial-models",
+    title: "回环检测、地点识别与重定位",
+    layer: "Place descriptor -> geometric verification -> loop edge -> pose recovery",
+    beginnerBridge:
+      "回环检测先不要想成“系统突然知道自己回来了”。更准确地说：当前画面或点云先去历史数据库里找候选地点，再用几何关系验证，最后才把这条边交给后端优化。",
+    coreIdeas: [
+      "候选地点来自地点描述子：DBoW2 把局部特征变成词袋向量，NetVLAD 用神经网络学全局图像描述子，Scan Context 把 LiDAR 扫描变成可比较的空间矩阵。",
+      "相似度高只说明“像”，还不能说明“真是同一处”；必须再做 PnP、ICP、相对位姿或投影一致性检查。",
+      "几何验证通过后，回环边会约束 pose graph，长期漂移被拉回；如果跟踪丢失，重定位就是用旧地图重新恢复当前位置。"
+    ],
+    derivationEntry:
+      "Write i*=argmax_i s(q,i), then verify the loop edge with r_loop=log(Z_qi^{-1}T_q^{-1}T_i) before adding it to the graph.",
+    practice:
+      "在 GoodNotes 画四格：当前帧、候选数据库、几何验证、回环边收紧轨迹；最后写出错误回环会造成什么灾难。",
+    goodNotes: "GoodNotes: Page SLAM-003C",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Loop Closure Relocalization",
+    notion:
+      "Notion: Track=World & Spatial Models, Topic=Loop closure/place recognition/relocalization, Evidence=GoodNotes SLAM-003C",
+    practiceQuestions: [
+      {
+        prompt: "地点识别和回环检测是一回事吗？",
+        answer: "答案：不是。地点识别先找候选旧地点，回环检测还要验证并决定是否把它作为约束加入后端。"
+      },
+      {
+        prompt: "为什么相似度高还需要几何验证？",
+        answer: "答案：长得像可能是误匹配，例如相似路口、重复纹理或动态遮挡；几何验证检查相对位姿是否真的一致。"
+      },
+      {
+        prompt: "重定位解决什么问题？",
+        answer: "答案：当跟踪丢失或启动时不知道自己在哪，重定位用当前观测匹配已有地图，恢复 map 到 camera 或 base 的位姿。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪条流程最像安全的回环检测？",
+      choices: [
+        {
+          label: "A",
+          value: "retrieve candidate -> geometric verification -> add loop edge",
+          isCorrect: true,
+          feedback: "正确：候选、验证、加边是降低坏回环风险的基本顺序。"
+        },
+        {
+          label: "B",
+          value: "similarity high -> immediately trust it",
+          isCorrect: false,
+          feedback: "还不对：相似地点太多，直接相信会把整张图拉歪。"
+        },
+        {
+          label: "C",
+          value: "only optimize without retrieval",
+          isCorrect: false,
+          feedback: "还不对：后端优化需要先知道哪两个地点可能是同一处。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-003C 写完了吗？",
+      expected:
+        "已记录：Page SLAM-003C 应包含候选地点、相似度得分、几何验证、回环边、重定位和坏回环风险。"
+    },
+    sources: [
+      {
+        title: "DBoW2",
+        url: "https://github.com/dorian3d/DBoW2"
+      },
+      {
+        title: "NetVLAD",
+        url: "https://arxiv.org/abs/1511.07247"
+      },
+      {
+        title: "Scan Context",
+        url: "https://ieeexplore.ieee.org/document/8593953"
+      }
+    ]
+  },
+  {
     id: "deep-vio-imu-preintegration",
     track: "world-spatial-models",
     title: "VIO 与 IMU 预积分",
@@ -2209,6 +2286,33 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "loop-closure-place-recognition-relocalization",
+    track: "world-spatial-models",
+    title: "Loop closure, place recognition, and relocalization bridge",
+    stage: "Drift recovery and map-based pose recovery",
+    focus:
+      "Connect DBoW2 bag-of-words, NetVLAD learned global descriptors, Scan Context LiDAR descriptors, geometric verification, loop-edge insertion, and relocalization after tracking loss.",
+    outputs: [
+      "one candidate-retrieval sketch from query frame to historical keyframes",
+      "one formula page for descriptor similarity and loop-edge residual verification",
+      "one failure checklist for perceptual aliasing, dynamic objects, bad loop edges, and relocalization jumps"
+    ],
+    sources: [
+      {
+        title: "DBoW2",
+        url: "https://github.com/dorian3d/DBoW2"
+      },
+      {
+        title: "NetVLAD",
+        url: "https://arxiv.org/abs/1511.07247"
+      },
+      {
+        title: "Scan Context",
+        url: "https://ieeexplore.ieee.org/document/8593953"
+      }
+    ]
+  },
+  {
     id: "nerf-3dgs-validation-assets",
     track: "world-spatial-models",
     title: "NeRF and 3DGS validation asset bridge",
@@ -2771,6 +2875,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://gtsam.org/docs/",
     notes:
       "Write variable nodes, residual factors, information weights, robust kernels, Jacobians, J^TWJ update, and a comparison of BA, pose graph, GTSAM, Ceres, and g2o."
+  },
+  {
+    id: "seed_loop_closure_place_recognition",
+    title: "Build loop closure place recognition and relocalization card",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://github.com/dorian3d/DBoW2",
+    notes:
+      "Compare DBoW2, NetVLAD, and Scan Context; write candidate similarity, geometric verification, loop-edge residual, relocalization recovery, and bad-loop failure modes."
   },
   {
     id: "seed_nerf_3dgs_validation_asset",

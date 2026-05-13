@@ -7,7 +7,7 @@ import { NotebookView } from "../../src/components/NotebookView";
 import { StudyLab } from "../../src/components/StudyLab";
 
 const rawFormulaPatterns = [
-  /\\(?:dot|mathcal|lambda|begin|end|int|infty|cdots)/,
+  /\\(?:dot|mathcal|lambda|begin|end|int|infty|cdots|frac|lVert|rVert|arg|max|sum|rho|Delta|Omega|leftarrow|log)/,
   /x_dot\s*=/,
   /rank\(C\)\s*[<=>]/,
   /C=\[B AB/,
@@ -58,6 +58,10 @@ describe("formula visibility", () => {
     expectNoRawFormulaText(studyLab.container);
 
     fireEvent.click(screen.getByRole("button", { name: "Formula" }));
+
+    expectNoRawFormulaText(studyLab.container);
+
+    fireEvent.click(screen.getByRole("button", { name: "Loop Closure" }));
 
     expectNoRawFormulaText(studyLab.container);
   });

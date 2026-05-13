@@ -19,8 +19,8 @@ describe("math text parsing", () => {
 
     expect(findNextFormula("坐标链 T_{map\\leftarrow base}T_{base\\leftarrow lidar}", 0)).toEqual({
       index: 4,
-      text: "T_{map\\leftarrow base}",
-      latex: "T_{map\\leftarrow base}"
+      text: "T_{map\\leftarrow base}T_{base\\leftarrow lidar}",
+      latex: "T_{map\\leftarrow base}T_{base\\leftarrow lidar}"
     });
   });
 
@@ -52,6 +52,20 @@ describe("math text parsing", () => {
       index: 3,
       text: "J^TWJ\\Delta x=-J^TWr",
       latex: "J^TWJ\\Delta x=-J^TWr"
+    });
+  });
+
+  it("detects loop closure candidate and verification formulas", () => {
+    expect(findNextFormula("候选分数 s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert}", 0)).toEqual({
+      index: 5,
+      text: "s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert}",
+      latex: "s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert}"
+    });
+
+    expect(findNextFormula("回环残差 r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)", 0)).toEqual({
+      index: 5,
+      text: "r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)",
+      latex: "r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)"
     });
   });
 

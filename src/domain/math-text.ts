@@ -219,6 +219,9 @@ export const formulaMatchers: FormulaMatcher[] = [
     pattern: /T_\{map\\leftarrow base\}/
   },
   {
+    pattern: /T_\{map\\leftarrow base\}T_\{base\\leftarrow lidar\}/
+  },
+  {
     pattern: /\\tilde\{x\}_2\^TF\\tilde\{x\}_1=0/
   },
   {
@@ -235,6 +238,24 @@ export const formulaMatchers: FormulaMatcher[] = [
     pattern: /\\log\(Z_\{ij\}\^-1T_i\^-1T_j\)/
   },
   {
+    pattern: /i\^\*=\\arg\\max_i s\(q,i\)/
+  },
+  {
+    pattern: /s\(q,i\)=\\frac\{v_q\^Tv_i\}\{\\lVert v_q\\rVert\\lVert v_i\\rVert\}/
+  },
+  {
+    pattern: /r_\{loop\}=\\log\(Z_\{qi\}\^\{-1\}T_q\^\{-1\}T_i\)/
+  },
+  {
+    pattern: /r_\{loop\}=\\log\(Z_\{qi\}\^-1T_q\^-1T_i\)/
+  },
+  {
+    pattern: /\\mathbf\{[A-Za-z]+\}\([^)]*\)/
+  },
+  {
+    pattern: /\\Delta t/
+  },
+  {
     pattern: /\\min_x\s*\\sum_k\s*\\rho\(\\lVert r_k\(x\)\\rVert\^2_\{\\Omega_k\}\)/
   },
   {
@@ -248,6 +269,10 @@ export const formulaMatchers: FormulaMatcher[] = [
   },
   {
     pattern: /qvq\^\{-1\}/
+  },
+  {
+    pattern:
+      /[A-Za-z0-9_{}^()+\-*/=,.[\]|<>\\][A-Za-z0-9_{}^()+\-*/=,.[\]|<>\\\s]*(?:\\(?:frac|lVert|rVert|arg|max|sum|rho|Delta|Omega|leftarrow|log|theta|nabla|mathbb|mathbf|hat|min|tilde|pi|Sigma|lambda|int|cdots))[A-Za-z0-9_{}^()+\-*/=,.[\]|<>\\\s]*/
   },
   {
     pattern: /f\(x,y,z\)/

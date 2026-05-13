@@ -5,6 +5,7 @@ import {
   kalmanFormulaTerms,
   lqrFormulaTerms,
   lqgFormulaTerms,
+  loopClosureFormulaTerms,
   lyapunovFormulaTerms,
   mpcFormulaTerms,
   nonlinearFormulaTerms,
@@ -2578,6 +2579,15 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     notion: "Notion: Topic=Factor graph/BA/GTSAM, Evidence=GoodNotes SLAM-003B"
   },
   {
+    title: "Loop closure relocalization sprint",
+    focus: "Make drift recovery concrete before moving deeper into sensor fusion.",
+    prompt:
+      "Explain DBoW2, NetVLAD, Scan Context, candidate retrieval, geometric verification, and relocalization as one SLAM recovery loop.",
+    goodNotes: "GoodNotes: SLAM-003C 回环检测与重定位",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Loop Closure Relocalization",
+    notion: "Notion: Topic=Loop closure/place recognition/relocalization, Evidence=GoodNotes SLAM-003C"
+  },
+  {
     title: "Quaternion orientation sprint",
     focus: "Use the Manim quaternion explorable before writing SLAM pose notes.",
     prompt: "Explain unit quaternion, q and -q double cover, and v'=qvq^{-1} without looking at the formula card.",
@@ -2767,6 +2777,19 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
       "给错误匹配或动态物体残差加鲁棒核，再求正规方程的更新量。"
     ],
     output: "one SLAM-003B page connecting BA, pose graph, GTSAM, Ceres, and g2o"
+  },
+  {
+    title: "Loop closure candidate and verification edge",
+    formula:
+      "i^*=\\arg\\max_i s(q,i),\\quad s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert},\\quad r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)",
+    formulaTerms: loopClosureFormulaTerms,
+    steps: [
+      "先把当前帧 q 编码成描述子 v_q，再和历史关键帧描述子 v_i 比较。",
+      "用相似度分数选出候选地点 i^*，但不要直接相信它。",
+      "用 PnP、ICP 或相对位姿残差 r_loop 做几何验证。",
+      "验证通过后再把回环边加进 pose graph；跟踪丢失时用匹配地图恢复重定位。"
+    ],
+    output: "one SLAM-003C page linking DBoW2, NetVLAD, Scan Context, loop edge, and relocalization"
   },
   {
     title: "NeRF and 3DGS rendering equations",

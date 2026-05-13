@@ -111,6 +111,24 @@ describe("StudyLab", () => {
     );
   });
 
+  it("offers a loop closure and relocalization session under world and spatial models", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "world-spatial-models" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Loop Closure" }));
+
+    expect(screen.getByText("Loop closure and relocalization session")).toBeInTheDocument();
+    expect(screen.getByText(/DBoW2, NetVLAD, Scan Context, geometric verification/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Formula visual: Loop closure candidate score and verification edge")).toBeInTheDocument();
+    expect(screen.getByText("候选地点")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "DBoW2" })).toHaveAttribute(
+      "href",
+      "https://github.com/dorian3d/DBoW2"
+    );
+  });
+
   it("renders the first 3Blue1Brown video formula cue as visual math", () => {
     const { container } = render(<StudyLab onCreateTask={vi.fn()} />);
 

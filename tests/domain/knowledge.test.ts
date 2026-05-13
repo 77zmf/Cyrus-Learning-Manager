@@ -63,6 +63,7 @@ describe("knowledge seeds", () => {
     expect(deepStudyCards.some((card) => card.id === "deep-lidar-icp-lio-sam")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-semantic-neural-slam-map")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-factor-graph-ba-gtsam-optimizer")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-loop-closure-place-recognition")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-sensor-calibration-chain")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-stereo-depth-dense-mvs")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-dynamic-reconstruction-scene-flow")).toBe(true);
@@ -114,6 +115,11 @@ describe("knowledge seeds", () => {
           id: "factor-graph-ba-gtsam-optimizer",
           track: "world-spatial-models",
           title: "Factor graphs, bundle adjustment, and GTSAM optimizer bridge"
+        }),
+        expect.objectContaining({
+          id: "loop-closure-place-recognition-relocalization",
+          track: "world-spatial-models",
+          title: "Loop closure, place recognition, and relocalization bridge"
         }),
         expect.objectContaining({
           id: "sensor-calibration-chain",
@@ -172,6 +178,11 @@ describe("knowledge seeds", () => {
         }),
         expect.objectContaining({
           id: "seed_factor_graph_ba_gtsam_optimizer",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_loop_closure_place_recognition",
           track: "world-spatial-models",
           status: "active"
         }),
@@ -235,6 +246,21 @@ describe("knowledge seeds", () => {
         module.sources.some((source) => source.title.includes("Ceres Solver"))
       )
     ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("DBoW2"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("NetVLAD"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("Scan Context"))
+      )
+    ).toBe(true);
   });
 
   it("adds a beginner-friendly factor graph optimizer card", () => {
@@ -251,6 +277,23 @@ describe("knowledge seeds", () => {
     );
     expect(card?.sources.map((source) => source.title)).toEqual(
       expect.arrayContaining(["GTSAM Docs", "Ceres Solver Non-linear Least Squares", "g2o paper"])
+    );
+  });
+
+  it("adds a beginner-friendly loop closure and relocalization card", () => {
+    const card = deepStudyCards.find((item) => item.id === "deep-loop-closure-place-recognition");
+
+    expect(card).toBeDefined();
+    expect(card?.title).toBe("回环检测、地点识别与重定位");
+    expect(card?.coreIdeas).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("候选地点"),
+        expect.stringContaining("几何验证"),
+        expect.stringContaining("重定位")
+      ])
+    );
+    expect(card?.sources.map((source) => source.title)).toEqual(
+      expect.arrayContaining(["DBoW2", "NetVLAD", "Scan Context"])
     );
   });
 });

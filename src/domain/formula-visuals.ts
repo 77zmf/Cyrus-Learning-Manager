@@ -407,6 +407,29 @@ export const factorGraphOptimizerFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const loopClosureFormulaTerms: FormulaTerm[] = [
+  {
+    label: "候选地点",
+    symbol: "i^*=\\arg\\max_i s(q,i)",
+    meaning: "当前帧 q 先在历史关键帧里找最像的地点，只是候选，不是最终回环。"
+  },
+  {
+    label: "相似度得分",
+    symbol: "s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert}",
+    meaning: "DBoW2、NetVLAD 或 Scan Context 都会把地点变成描述子，再比较当前地点和历史地点像不像。"
+  },
+  {
+    label: "几何验证",
+    symbol: "r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)",
+    meaning: "相似只是第一关，还要用 PnP、ICP 或相对位姿残差检查这条回环边是否真的成立。"
+  },
+  {
+    label: "重定位",
+    symbol: "T_{map\\leftarrow camera}",
+    meaning: "跟踪丢失后，根据匹配到的地图位置恢复当前相机或车体在地图中的位姿。"
+  }
+];
+
 export const vioImuFormulaTerms: FormulaTerm[] = [
   {
     label: "IMU 预积分",

@@ -1,5 +1,5 @@
 import type { TaskPriority, TrackId } from "./types";
-import { factorGraphOptimizerFormulaTerms, type FormulaTerm } from "./formula-visuals";
+import { factorGraphOptimizerFormulaTerms, loopClosureFormulaTerms, type FormulaTerm } from "./formula-visuals";
 
 export type StudyMode =
   | "formula"
@@ -8,6 +8,7 @@ export type StudyMode =
   | "ielts-output"
   | "argument"
   | "closure"
+  | "loop-closure"
   | "reconstruction";
 
 export interface StudySource {
@@ -41,6 +42,7 @@ export const studyModeLabels: Record<StudyMode, string> = {
   "ielts-output": "IELTS Output",
   argument: "Argument",
   closure: "Closure",
+  "loop-closure": "Loop Closure",
   reconstruction: "Reconstruction"
 };
 
@@ -275,6 +277,45 @@ export const studyPlans: StudyPlan[] = [
       }
     ],
     taskTitle: "Factor graph optimizer: BA/GTSAM/Ceres derivation",
+    priority: "high"
+  },
+  {
+    id: "loop-closure-relocalization-session",
+    track: "world-spatial-models",
+    mode: "loop-closure",
+    title: "Loop closure and relocalization session",
+    question: "Can you explain how SLAM decides that the current place is an old place, then uses that claim safely?",
+    prompt:
+      "Connect DBoW2, NetVLAD, Scan Context, geometric verification, and relocalization into one loop: retrieve a candidate, verify it geometrically, add a loop edge, then recover pose when tracking is lost.",
+    checklist: [
+      "Separate visual or LiDAR place recognition from geometric verification.",
+      "Write the descriptor similarity score and explain why it only creates a candidate.",
+      "Draw the loop-closure edge as a factor-graph constraint, then mark what happens if the edge is wrong.",
+      "Explain relocalization as recovering T_map_camera from a known map after tracking is lost."
+    ],
+    template:
+      "Query frame:\nCandidate database:\nDescriptor:\n$$\ns(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert}\n$$\nCandidate:\nGeometric verification:\n$$\nr_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)\n$$\nFailure mode:\nRelocalization result:\nGoodNotes page:",
+    formulaCue: {
+      label: "Loop closure candidate score and verification edge",
+      latex:
+        "i^*=\\arg\\max_i s(q,i),\\quad s(q,i)=\\frac{v_q^Tv_i}{\\lVert v_q\\rVert\\lVert v_i\\rVert},\\quad r_{loop}=\\log(Z_{qi}^{-1}T_q^{-1}T_i)",
+      terms: loopClosureFormulaTerms
+    },
+    sources: [
+      {
+        title: "DBoW2",
+        url: "https://github.com/dorian3d/DBoW2"
+      },
+      {
+        title: "NetVLAD",
+        url: "https://arxiv.org/abs/1511.07247"
+      },
+      {
+        title: "Scan Context",
+        url: "https://ieeexplore.ieee.org/document/8593953"
+      }
+    ],
+    taskTitle: "Loop closure and relocalization: candidate, verification, recovery",
     priority: "high"
   },
   {

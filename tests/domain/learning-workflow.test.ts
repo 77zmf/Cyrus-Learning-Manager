@@ -181,6 +181,10 @@ describe("beginner learning workflow", () => {
         expect.objectContaining({
           title: "Factor graph optimizer sprint",
           prompt: expect.stringContaining("residual")
+        }),
+        expect.objectContaining({
+          title: "Loop closure relocalization sprint",
+          prompt: expect.stringContaining("DBoW2")
         })
       ])
     );
@@ -194,6 +198,15 @@ describe("beginner learning workflow", () => {
             expect.objectContaining({ label: "变量节点" }),
             expect.objectContaining({ label: "残差因子" }),
             expect.objectContaining({ label: "正规方程" })
+          ])
+        }),
+        expect.objectContaining({
+          title: "Loop closure candidate and verification edge",
+          formula: expect.stringContaining("s(q,i)"),
+          formulaTerms: expect.arrayContaining([
+            expect.objectContaining({ label: "候选地点" }),
+            expect.objectContaining({ label: "相似度得分" }),
+            expect.objectContaining({ label: "几何验证" })
           ])
         })
       ])
