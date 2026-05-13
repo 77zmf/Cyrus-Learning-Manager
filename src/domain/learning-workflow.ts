@@ -1,5 +1,6 @@
 import {
   controllabilityFormulaTerms,
+  dynamicReconstructionFormulaTerms,
   kalmanFormulaTerms,
   lqrFormulaTerms,
   lqgFormulaTerms,
@@ -8,10 +9,12 @@ import {
   nonlinearFormulaTerms,
   observabilityFormulaTerms,
   quaternionFormulaTerms,
+  reconstructionQualityFormulaTerms,
   lidarSlamFormulaTerms,
   robustFormulaTerms,
   epipolarFormulaTerms,
   nerfGaussianFormulaTerms,
+  sensorCalibrationFormulaTerms,
   semanticNeuralSlamFormulaTerms,
   slamBackendFormulaTerms,
   slamProjectionFormulaTerms,
@@ -28,6 +31,7 @@ import {
   threeBlueOneBrownNeuralNetworkTerms,
   threeBlueOneBrownProbabilityTerms,
   threeBlueOneBrownSignalsTerms,
+  stereoDepthMvsFormulaTerms,
   vioImuFormulaTerms,
   worldSpatialFormulaTerms
 } from "./formula-visuals";
@@ -542,6 +546,34 @@ export const beginnerLessonBridges: Record<string, BeginnerLessonBridge> = {
     example: "同一块空间里，路面、路沿、可通行区域、动态障碍和静态建筑对 planner 的意义完全不同。",
     exercise: "画一张几何地图，再给每块区域加语义标签，最后标出一个神经场 F_theta(x)。",
     goodNotes: "写 M_s=(G,L)、F_theta(x)->(sigma,c,s)，再写“语义/神经地图不能自动等于稳定验证资产”。"
+  },
+  "lesson-sensor-calibration-chain": {
+    question: "这节课先问：相机、LiDAR、IMU 看到的是同一个世界，为什么数字却对不上？",
+    intuition: "标定就是给传感器建立共同语言：内参管相机怎么成像，外参管传感器之间怎么相互变换，时间同步管同一瞬间。",
+    example: "如果 LiDAR 点云投到图像上总是偏一截，可能不是检测错了，而是外参或时间戳错了。",
+    exercise: "画 camera、lidar、imu 三个坐标系，用箭头写 T_camera<-lidar 和 Delta t。",
+    goodNotes: "写 s u~=K[R|t]X、T_camera<-lidar、Delta t，并标出误差来源。"
+  },
+  "lesson-stereo-depth-dense-mvs": {
+    question: "这节课先问：两张图为什么能算深度，一堆图为什么能补出稠密表面？",
+    intuition: "双目用视差变深度，MVS 用多视角一致性把稀疏点补成更密的几何。",
+    example: "远处物体在左右图里移动很少，所以视差小、深度大；近处物体移动明显，深度小。",
+    exercise: "画左右相机、基线 b、视差 d，再把深度图 D(u,v) 变成点云。",
+    goodNotes: "写 Z=fb/d，再画 sparse -> depth map -> dense cloud。"
+  },
+  "lesson-dynamic-reconstruction-scene-flow": {
+    question: "这节课先问：如果场景里有人和车在动，静态重建会犯什么错？",
+    intuition: "动态重建要把静态背景和运动物体分开，场景流描述三维点随时间怎么移动。",
+    example: "一辆车开过，如果把它当静态建筑烤进地图，之后定位和仿真都会出错。",
+    exercise: "画背景点不动、前景物体移动，再给移动点画 scene flow 箭头。",
+    goodNotes: "写 v(x,t)、F_theta(x,t)，再写 static/dynamic separation。"
+  },
+  "lesson-reconstruction-quality-metrics": {
+    question: "这节课先问：重建结果好不好，不能只靠看起来漂亮，那要看什么？",
+    intuition: "质量评估要分四类：轨迹准不准、几何像不像、渲染好不好、能不能进入验证资产。",
+    example: "PSNR 很高的渲染也可能尺度不对；尺度不对就不能直接给 CARLA 或地图刷新使用。",
+    exercise: "画一个四格表：ATE/RPE、Chamfer、PSNR/SSIM/LPIPS、validation gate。",
+    goodNotes: "写 ATE/RPE、d_Chamfer、PSNR/SSIM/LPIPS，并标出准入条件。"
   }
 };
 
@@ -1355,6 +1387,122 @@ const lessonReadyChecks: Record<string, LessonReadyCheck> = {
     ],
     goodNotesPrompt: "Page SLAM-008 写完了吗？",
     goodNotesExpected: "已记录：Page SLAM-008 至少有 semantic map、neural field、tracking/map consistency、validation boundary。"
+  },
+  "lesson-sensor-calibration-chain": {
+    prerequisite: "坐标系和单位",
+    conceptQuestion: "标定链最少要同时检查哪三类东西？",
+    conceptAnswer:
+      "答案：相机内参和畸变、传感器之间的外参、以及不同传感器的时间同步。",
+    formulaPrompt: "哪个对象表示 LiDAR 点到相机坐标系的外参？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "T_{camera\\leftarrow lidar}",
+        isCorrect: true,
+        feedback: "正确：它把 LiDAR 坐标里的点转换到相机坐标里。"
+      },
+      {
+        label: "B",
+        value: "rank(\\mathcal{C})=n",
+        isCorrect: false,
+        feedback: "还不对：这是可控性满秩条件。"
+      },
+      {
+        label: "C",
+        value: "PSNR",
+        isCorrect: false,
+        feedback: "还不对：PSNR 是图像渲染质量指标，不是传感器外参。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-009 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-009 至少有 K、畸变、T_camera<-lidar、T_imu<-camera、Delta t。"
+  },
+  "lesson-stereo-depth-dense-mvs": {
+    prerequisite: "像素和相机内参",
+    conceptQuestion: "双目深度里视差 d 变小意味着什么？",
+    conceptAnswer:
+      "答案：在焦距 f 和基线 b 固定时，Z=fb/d，所以视差越小，深度越远。",
+    formulaPrompt: "哪个公式表示最基本的双目深度？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "Z=fb/d",
+        isCorrect: true,
+        feedback: "正确：双目深度从焦距、基线和视差开始。"
+      },
+      {
+        label: "B",
+        value: "u=-Kx",
+        isCorrect: false,
+        feedback: "还不对：这是状态反馈控制律。"
+      },
+      {
+        label: "C",
+        value: "F_\\theta(x)\\rightarrow(\\sigma,c,s)",
+        isCorrect: false,
+        feedback: "还不对：这是神经场，不是双目几何入口。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-010 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-010 至少有 baseline、disparity、depth map、MVS consistency、dense cloud。"
+  },
+  "lesson-dynamic-reconstruction-scene-flow": {
+    prerequisite: "位姿和轨迹",
+    conceptQuestion: "动态重建为什么不能直接套静态 SfM/MVS？",
+    conceptAnswer:
+      "答案：静态方法默认场景点不动；动态物体会把运动误差伪装成几何误差，必须分解背景、前景和时间变化。",
+    formulaPrompt: "哪个对象最像三维场景流？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "\\mathbf{v}(x,t)",
+        isCorrect: true,
+        feedback: "正确：它描述空间点在时间上的三维运动。"
+      },
+      {
+        label: "B",
+        value: "K[R|t]",
+        isCorrect: false,
+        feedback: "还不对：这是相机投影链，不直接描述动态运动。"
+      },
+      {
+        label: "C",
+        value: "ATE",
+        isCorrect: false,
+        feedback: "还不对：ATE 是轨迹误差指标，不是动态场本身。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-011 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-011 至少有 static/dynamic separation、scene flow、F_theta(x,t)、motion decomposition。"
+  },
+  "lesson-reconstruction-quality-metrics": {
+    prerequisite: "论文阅读四件套",
+    conceptQuestion: "为什么重建质量不能只看 PSNR？",
+    conceptAnswer:
+      "答案：PSNR 只看渲染图像差异，不能证明轨迹、尺度、几何、碰撞和仿真可用性都正确。",
+    formulaPrompt: "哪个指标更适合比较两组点云几何距离？",
+    formulaChoices: [
+      {
+        label: "A",
+        value: "d_{Chamfer}(P,Q)",
+        isCorrect: true,
+        feedback: "正确：Chamfer 距离用双向最近邻比较重建点云和参考几何。"
+      },
+      {
+        label: "B",
+        value: "\\Delta t",
+        isCorrect: false,
+        feedback: "还不对：Delta t 是时间偏移，不是几何质量指标。"
+      },
+      {
+        label: "C",
+        value: "q\\sim -q",
+        isCorrect: false,
+        feedback: "还不对：这是四元数双覆盖。"
+      }
+    ],
+    goodNotesPrompt: "Page SLAM-012 写完了吗？",
+    goodNotesExpected: "已记录：Page SLAM-012 至少有 ATE/RPE、Chamfer、PSNR/SSIM/LPIPS、validation gate。"
   }
 };
 
@@ -2224,6 +2372,164 @@ const guidedControlLessonSeeds: GuidedLessonSeed[] = [
       }
     ],
     selfCheck: ["semantic map", "neural field", "photo loss", "semantic loss", "validation boundary"]
+  },
+  {
+    id: "lesson-sensor-calibration-chain",
+    title: "第 23 课：相机、LiDAR 与 IMU 标定",
+    goal: "把相机内参、传感器外参和时间同步连成一条能检查的标定链。",
+    formula:
+      "s\\tilde{u}=K[R\\mid t]\\tilde{X},\\quad T_{camera\\leftarrow lidar},\\quad \\Delta t",
+    formulaTerms: sensorCalibrationFormulaTerms,
+    now: "现在做：先画 camera/lidar/imu 三个坐标系，再写外参和时间偏移。",
+    goodNotesPage: "GoodNotes Page SLAM-009：传感器标定链",
+    obsidianNode: "Obsidian node：World-Spatial -> SLAM -> Sensor Calibration",
+    notionRow: "Notion row：Topic=Sensor calibration chain, Mastery=1, Evidence=GoodNotes Page SLAM-009",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写相机内参。",
+        output: "K 和畸变决定三维光线如何变成像素。"
+      },
+      {
+        label: "Step 2",
+        instruction: "再写外参链。",
+        output: "T_camera<-lidar 和 T_imu<-camera 把不同传感器放进同一坐标语言。"
+      },
+      {
+        label: "Step 3",
+        instruction: "标出时间偏移。",
+        output: "Delta t 会把运动物体和高速自车运动伪装成空间误差。"
+      },
+      {
+        label: "Step 4",
+        instruction: "写投影检查。",
+        output: "把 LiDAR 点投到图像上，看边缘、角点和动态目标是否对齐。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写验证准入。",
+        output: "记录标定数据、残差、时间同步和复现实验，而不是只保留一组 YAML。"
+      }
+    ],
+    selfCheck: ["camera intrinsic", "extrinsic chain", "time offset", "projection check", "calibration evidence"]
+  },
+  {
+    id: "lesson-stereo-depth-dense-mvs",
+    title: "第 24 课：双目、深度估计与稠密 MVS",
+    goal: "从视差推深度，再理解 MVS 如何用多视角一致性补出稠密几何。",
+    formula: "Z=\\frac{fb}{d},\\quad D(u,v),\\quad \\rho(I_i(u),I_j(\\pi(T_{ji},D_i(u))))",
+    formulaTerms: stereoDepthMvsFormulaTerms,
+    now: "现在做：画左右相机、视差 d、深度 Z，再把深度图转成点云。",
+    goodNotesPage: "GoodNotes Page SLAM-010：双目与稠密 MVS",
+    obsidianNode: "Obsidian node：World-Spatial -> Reconstruction -> Stereo MVS",
+    notionRow: "Notion row：Topic=Stereo depth and dense MVS, Mastery=1, Evidence=GoodNotes Page SLAM-010",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先画左右相机。",
+        output: "基线 b 和焦距 f 固定后，视差 d 决定深度。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写深度图。",
+        output: "D(u,v) 是每个像素的三维入口，可以反投影成点云。"
+      },
+      {
+        label: "Step 3",
+        instruction: "连接 MVS。",
+        output: "多张图用光度和几何一致性补出更稠密的表面。"
+      },
+      {
+        label: "Step 4",
+        instruction: "标出误差源。",
+        output: "弱纹理、反光、遮挡、基线太小和标定误差都会破坏深度。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写验证输出。",
+        output: "把 depth map、dense cloud、重投影和覆盖率作为学习证据。"
+      }
+    ],
+    selfCheck: ["baseline", "disparity", "depth map", "multi-view consistency", "dense cloud"]
+  },
+  {
+    id: "lesson-dynamic-reconstruction-scene-flow",
+    title: "第 25 课：动态三维重建与 Scene Flow",
+    goal: "把动态场景拆成静态背景、运动物体和随时间变化的三维场。",
+    formula:
+      "\\mathbf{v}(x,t),\\quad F_\\theta(x,t)\\rightarrow(\\sigma,c),\\quad X_t=T_k(t)X_0+\\epsilon",
+    formulaTerms: dynamicReconstructionFormulaTerms,
+    now: "现在做：画静态背景和移动物体，给移动物体的三维点加 scene flow 箭头。",
+    goodNotesPage: "GoodNotes Page SLAM-011：动态重建与 Scene Flow",
+    obsidianNode: "Obsidian node：World-Spatial -> Reconstruction -> Dynamic Scene Flow",
+    notionRow: "Notion row：Topic=Dynamic reconstruction and scene flow, Mastery=1, Evidence=GoodNotes Page SLAM-011",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先区分静态和动态。",
+        output: "静态背景能入地图，动态物体需要单独建模或剔除。"
+      },
+      {
+        label: "Step 2",
+        instruction: "写 scene flow。",
+        output: "v(x,t) 描述三维点在时间里的运动，而不是像素里的 optical flow。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写动态神经场。",
+        output: "F_theta(x,t) 让几何和外观都可以随时间变化。"
+      },
+      {
+        label: "Step 4",
+        instruction: "做运动分解。",
+        output: "把物体级刚体运动和非刚体残差分开，避免污染静态地图。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写验证风险。",
+        output: "动态物体、遮挡、时间同步和轨迹漂移都要成为验证问题。"
+      }
+    ],
+    selfCheck: ["static background", "dynamic object", "scene flow", "F_theta(x,t)", "motion decomposition"]
+  },
+  {
+    id: "lesson-reconstruction-quality-metrics",
+    title: "第 26 课：重建质量评估与验证准入",
+    goal: "把轨迹、几何、渲染和仿真准入拆开评估，不用单一分数判断重建结果。",
+    formula: "ATE,\\ RPE,\\quad d_{Chamfer}(P,Q),\\quad PSNR,\\ SSIM,\\ LPIPS",
+    formulaTerms: reconstructionQualityFormulaTerms,
+    now: "现在做：画一个四格表，把轨迹误差、几何距离、渲染质量和验证准入分开。",
+    goodNotesPage: "GoodNotes Page SLAM-012：重建质量评估",
+    obsidianNode: "Obsidian node：World-Spatial -> Reconstruction -> Quality Gate",
+    notionRow: "Notion row：Topic=Reconstruction quality gate, Mastery=1, Evidence=GoodNotes Page SLAM-012",
+    steps: [
+      {
+        label: "Step 1",
+        instruction: "先写轨迹误差。",
+        output: "ATE 看全局偏差，RPE 看相邻片段的相对运动误差。"
+      },
+      {
+        label: "Step 2",
+        instruction: "再写几何距离。",
+        output: "Chamfer 比较两组点云或表面的双向最近邻距离。"
+      },
+      {
+        label: "Step 3",
+        instruction: "写渲染指标。",
+        output: "PSNR/SSIM/LPIPS 看图像相似度，但不能替代物理可用性。"
+      },
+      {
+        label: "Step 4",
+        instruction: "加仿真准入。",
+        output: "尺度、坐标、碰撞、语义、复现和来源资产都要过 gate。"
+      },
+      {
+        label: "Step 5",
+        instruction: "写决策。",
+        output: "把结果分成 research visual、map refresh candidate、stable validation asset。"
+      }
+    ],
+    selfCheck: ["ATE", "RPE", "Chamfer", "PSNR/SSIM/LPIPS", "validation gate"]
   }
 ];
 
@@ -2284,6 +2590,22 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     goodNotes: "GoodNotes: SLAM-008 语义与神经 SLAM 地图",
     obsidian: "Obsidian: World-Spatial -> SLAM -> Semantic Neural Map",
     notion: "Notion: Topic=Semantic/Neural SLAM, Evidence=GoodNotes SLAM-008"
+  },
+  {
+    title: "Calibration and dense depth sprint",
+    focus: "Before dynamic reconstruction, lock down sensor calibration and depth geometry.",
+    prompt: "Explain K, extrinsic chain, Delta t, Z=fb/d, and why MVS needs multi-view consistency.",
+    goodNotes: "GoodNotes: SLAM-009 to SLAM-010",
+    obsidian: "Obsidian: World-Spatial -> Calibration and MVS",
+    notion: "Notion: Topic=Calibration/MVS, Evidence=GoodNotes SLAM-009/010"
+  },
+  {
+    title: "Dynamic reconstruction and quality gate sprint",
+    focus: "Separate moving geometry from static maps, then judge reconstruction with metrics instead of screenshots.",
+    prompt: "Explain scene flow, F_theta(x,t), ATE/RPE, Chamfer, and the stable-validation gate.",
+    goodNotes: "GoodNotes: SLAM-011 to SLAM-012",
+    obsidian: "Obsidian: World-Spatial -> Dynamic Reconstruction -> Quality Gate",
+    notion: "Notion: Topic=Dynamic reconstruction/quality gate, Evidence=GoodNotes SLAM-011/012"
   },
   {
     title: "3Blue1Brown visual math sprint",

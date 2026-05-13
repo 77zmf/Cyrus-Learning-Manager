@@ -35,7 +35,11 @@ const sceneMap = new Map([
   ["GuidedQuaternionOrientationScene", "guided_quaternion_orientation.mp4"],
   ["GuidedVioImuPreintegrationScene", "guided_vio_imu_preintegration.mp4"],
   ["GuidedLidarSlamIcpScene", "guided_lidar_slam_icp.mp4"],
-  ["GuidedSemanticNeuralSlamScene", "guided_semantic_neural_slam.mp4"]
+  ["GuidedSemanticNeuralSlamScene", "guided_semantic_neural_slam.mp4"],
+  ["GuidedSensorCalibrationScene", "guided_sensor_calibration.mp4"],
+  ["GuidedStereoDepthMvsScene", "guided_stereo_depth_mvs.mp4"],
+  ["GuidedDynamicReconstructionScene", "guided_dynamic_reconstruction.mp4"],
+  ["GuidedReconstructionEvaluationScene", "guided_reconstruction_evaluation.mp4"]
 ]);
 
 const requestedScenes = process.argv.slice(2);

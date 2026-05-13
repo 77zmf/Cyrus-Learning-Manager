@@ -422,6 +422,34 @@ guided_lesson_scenes = [
         r"F_\theta(x)\rightarrow(\sigma,c,s)",
         ["semantic map", "neural field", "validation boundary"],
     ),
+    (
+        "GuidedSensorCalibrationScene",
+        "Sensor calibration chain",
+        "camera, LiDAR, and IMU agree through transforms and time",
+        r"s\tilde{u}=K[R\mid t]\tilde{X},\quad T_{camera\leftarrow lidar},\quad \Delta t",
+        ["camera intrinsics", "extrinsic chain", "time offset"],
+    ),
+    (
+        "GuidedStereoDepthMvsScene",
+        "Stereo depth and dense MVS",
+        "disparity becomes depth, then multi-view consistency densifies geometry",
+        r"Z=\frac{fb}{d},\quad D(u,v)",
+        ["baseline and disparity", "depth map", "dense MVS"],
+    ),
+    (
+        "GuidedDynamicReconstructionScene",
+        "Dynamic reconstruction",
+        "static background separates from moving scene flow",
+        r"\mathbf{v}(x,t),\quad F_\theta(x,t)\rightarrow(\sigma,c)",
+        ["static background", "scene flow", "motion decomposition"],
+    ),
+    (
+        "GuidedReconstructionEvaluationScene",
+        "Reconstruction evaluation",
+        "trajectory, geometry, and rendering metrics feed a validation gate",
+        r"ATE,\ RPE,\quad d_{Chamfer}(P,Q),\quad PSNR",
+        ["trajectory error", "geometry distance", "validation gate"],
+    ),
 ]
 
 for scene_name, title, subtitle, formula, bullets in guided_lesson_scenes:

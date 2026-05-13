@@ -53,7 +53,11 @@ const guidedLessonSceneNames: Record<string, string> = {
   "lesson-quaternion-orientation": "GuidedQuaternionOrientationScene",
   "lesson-vio-imu-preintegration": "GuidedVioImuPreintegrationScene",
   "lesson-lidar-icp-lio-sam": "GuidedLidarSlamIcpScene",
-  "lesson-semantic-neural-slam-map": "GuidedSemanticNeuralSlamScene"
+  "lesson-semantic-neural-slam-map": "GuidedSemanticNeuralSlamScene",
+  "lesson-sensor-calibration-chain": "GuidedSensorCalibrationScene",
+  "lesson-stereo-depth-dense-mvs": "GuidedStereoDepthMvsScene",
+  "lesson-dynamic-reconstruction-scene-flow": "GuidedDynamicReconstructionScene",
+  "lesson-reconstruction-quality-metrics": "GuidedReconstructionEvaluationScene"
 };
 
 const guidedLessonSceneTitles: Record<string, string> = {
@@ -78,7 +82,11 @@ const guidedLessonSceneTitles: Record<string, string> = {
   "lesson-quaternion-orientation": "Quaternion Orientation Manim storyboard",
   "lesson-vio-imu-preintegration": "VIO IMU Preintegration Manim storyboard",
   "lesson-lidar-icp-lio-sam": "LiDAR SLAM ICP Manim storyboard",
-  "lesson-semantic-neural-slam-map": "Semantic Neural SLAM Manim storyboard"
+  "lesson-semantic-neural-slam-map": "Semantic Neural SLAM Manim storyboard",
+  "lesson-sensor-calibration-chain": "Sensor Calibration Manim storyboard",
+  "lesson-stereo-depth-dense-mvs": "Stereo Depth MVS Manim storyboard",
+  "lesson-dynamic-reconstruction-scene-flow": "Dynamic Reconstruction Manim storyboard",
+  "lesson-reconstruction-quality-metrics": "Reconstruction Evaluation Manim storyboard"
 };
 
 const guidedLessonVisualModels: Record<string, string> = {
@@ -103,7 +111,11 @@ const guidedLessonVisualModels: Record<string, string> = {
   "lesson-quaternion-orientation": "q 与 -q 对跖点、半角和 v'=qvq^{-1} 旋转夹心同步变化。",
   "lesson-vio-imu-preintegration": "相机关键帧之间塞入高频 IMU 箭头，再压缩成 Delta R/v/p 预积分因子。",
   "lesson-lidar-icp-lio-sam": "两团点云通过 R,t 对齐，点到面残差逐步变短，再接入 IMU 和回环因子。",
-  "lesson-semantic-neural-slam-map": "几何地图先出现，再叠加语义标签和神经场采样点，最后标出验证边界。"
+  "lesson-semantic-neural-slam-map": "几何地图先出现，再叠加语义标签和神经场采样点，最后标出验证边界。",
+  "lesson-sensor-calibration-chain": "棋盘格、LiDAR 点云、IMU 时间轴通过外参和时间偏移对齐。",
+  "lesson-stereo-depth-dense-mvs": "左右相机视差变成深度图，再由多视图一致性稠密化。",
+  "lesson-dynamic-reconstruction-scene-flow": "静态背景和动态物体分离，scene flow 箭头随时间移动。",
+  "lesson-reconstruction-quality-metrics": "轨迹误差、Chamfer 距离和渲染指标进入验证准入门。"
 };
 
 export function deriveGuidedManimAssetPath(sceneName: string) {

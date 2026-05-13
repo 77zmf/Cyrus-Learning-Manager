@@ -1234,6 +1234,310 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-sensor-calibration-chain",
+    track: "world-spatial-models",
+    title: "传感器标定：相机、LiDAR、IMU",
+    layer: "Camera intrinsics -> extrinsics -> time synchronization -> projection validation",
+    beginnerBridge:
+      "标定不是配置文件，而是让不同传感器说同一种空间语言。先理解相机怎么成像，再理解 LiDAR 点怎么转进相机，最后检查时间戳是否指向同一瞬间。",
+    coreIdeas: [
+      "相机内参 K 和畸变模型决定像素射线，外参 T 决定传感器之间的刚体关系。",
+      "LiDAR-camera 投影检查是最直观的 sanity check：点云边缘要和图像边缘对齐。",
+      "时间偏移 Delta t 会把运动误差伪装成空间误差，自动驾驶数据尤其不能忽略。"
+    ],
+    derivationEntry:
+      "Write s u~=K[R|t]X, then chain T_camera<-lidar and T_imu<-camera, then add Delta t as a separate error source.",
+    practice:
+      "用三层图画 camera/lidar/imu 坐标系，把同一个路锥从 LiDAR 点变成图像像素，并标出外参和时间偏移可能造成的偏差。",
+    goodNotes: "GoodNotes: Page SLAM-009",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Sensor Calibration",
+    notion: "Notion: Track=World & Spatial Models, Topic=Sensor Calibration Chain, Evidence=GoodNotes SLAM-009",
+    practiceQuestions: [
+      {
+        prompt: "相机内参 K 主要描述什么？",
+        answer: "答案：描述相机坐标中的光线如何映射到像素，包括焦距和主点等参数。"
+      },
+      {
+        prompt: "外参 T_camera<-lidar 在做什么？",
+        answer: "答案：把 LiDAR 坐标系里的点转换到相机坐标系里，才能继续投影到图像。"
+      },
+      {
+        prompt: "为什么时间同步也属于标定链？",
+        answer: "答案：如果传感器不是同一时刻观测，运动目标和自车运动会造成看似空间不对齐的误差。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个对象表示 LiDAR 到相机的外参变换？",
+      choices: [
+        {
+          label: "A",
+          value: "T_camera<-lidar",
+          isCorrect: true,
+          feedback: "正确：它定义 LiDAR 点怎样进入相机坐标系。"
+        },
+        {
+          label: "B",
+          value: "Z=fb/d",
+          isCorrect: false,
+          feedback: "还不对：这是双目深度，不是传感器外参。"
+        },
+        {
+          label: "C",
+          value: "ATE",
+          isCorrect: false,
+          feedback: "还不对：ATE 是轨迹误差指标。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-009 写完了吗？",
+      expected:
+        "已记录：Page SLAM-009 应包含 K、distortion、T_camera<-lidar、T_imu<-camera、Delta t、projection sanity check。"
+    },
+    sources: [
+      {
+        title: "Kalibr",
+        url: "https://github.com/ethz-asl/kalibr"
+      },
+      {
+        title: "OpenCV Camera Calibration",
+        url: "https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html"
+      },
+      {
+        title: "ROS camera_calibration",
+        url: "https://docs.ros.org/en/rolling/p/camera_calibration/"
+      }
+    ]
+  },
+  {
+    id: "deep-stereo-depth-dense-mvs",
+    track: "world-spatial-models",
+    title: "双目深度与稠密 MVS",
+    layer: "Stereo disparity -> depth map -> dense multi-view geometry",
+    beginnerBridge:
+      "先把双目想成两只眼睛：同一个点在左右眼里偏移多少，就告诉你它有多远。MVS 再把多张图的这种约束组合起来，让稀疏点变成稠密表面。",
+    coreIdeas: [
+      "双目深度的入口是 Z=fb/d，视差越小表示物体越远。",
+      "深度图 D(u,v) 可以反投影成点云，是从图像走向三维几何的关键桥。",
+      "MVS 需要多视图光度一致、几何一致和遮挡处理，弱纹理/反光会明显破坏结果。"
+    ],
+    derivationEntry:
+      "Write Z=fb/d, then back-project pixel depth to 3D, then add a multi-view consistency residual.",
+    practice:
+      "画左右相机、基线 b、视差 d、深度 Z，再画 depth map 到 dense cloud 的转换链。",
+    goodNotes: "GoodNotes: Page SLAM-010",
+    obsidian: "Obsidian: World-Spatial -> Reconstruction -> Stereo MVS",
+    notion: "Notion: Track=World & Spatial Models, Topic=Stereo Depth and MVS, Evidence=GoodNotes SLAM-010",
+    practiceQuestions: [
+      {
+        prompt: "视差 d 变小，深度 Z 会怎样？",
+        answer: "答案：Z=fb/d，所以 d 变小，Z 变大，点更远。"
+      },
+      {
+        prompt: "深度图 D(u,v) 为什么重要？",
+        answer: "答案：它给每个像素一个深度，可以把二维像素反投影成三维点。"
+      },
+      {
+        prompt: "MVS 为什么比单张图更可靠？",
+        answer: "答案：多视角能互相约束同一表面的位置和外观，但仍会受遮挡和反光影响。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个公式是双目深度的最小入口？",
+      choices: [
+        {
+          label: "A",
+          value: "Z=fb/d",
+          isCorrect: true,
+          feedback: "正确：焦距、基线和视差共同决定深度。"
+        },
+        {
+          label: "B",
+          value: "u=-Kx",
+          isCorrect: false,
+          feedback: "还不对：这是控制里的状态反馈。"
+        },
+        {
+          label: "C",
+          value: "qvq^{-1}",
+          isCorrect: false,
+          feedback: "还不对：这是四元数旋转。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-010 写完了吗？",
+      expected:
+        "已记录：Page SLAM-010 应包含 baseline、disparity、Z=fb/d、depth map、MVS consistency、dense cloud failure modes。"
+    },
+    sources: [
+      {
+        title: "ETH3D",
+        url: "https://www.eth3d.net/"
+      },
+      {
+        title: "DTU MVS Dataset",
+        url: "https://roboimagedata.compute.dtu.dk/"
+      },
+      {
+        title: "OpenCV Depth Map from Stereo Images",
+        url: "https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html"
+      }
+    ]
+  },
+  {
+    id: "deep-dynamic-reconstruction-scene-flow",
+    track: "world-spatial-models",
+    title: "动态三维重建与 Scene Flow",
+    layer: "Static background -> dynamic object motion -> temporal neural field",
+    beginnerBridge:
+      "静态重建假设世界不动。真实道路里车、人、骑行者都在动，所以要把背景、动态物体和时间变化拆开，否则动态物体会污染地图。",
+    coreIdeas: [
+      "Scene flow v(x,t) 描述三维点如何随时间移动，不只是图像上的二维 optical flow。",
+      "动态神经场把位置 x 和时间 t 一起输入，表达随时间变化的密度和颜色。",
+      "动态重建必须区分静态资产、动态 actor 和研究可视化，不能直接进入稳定验证线。"
+    ],
+    derivationEntry:
+      "Write v(x,t), F_theta(x,t)->(sigma,c), and X_t=T_k(t)X_0+epsilon as three levels of dynamic modeling.",
+    practice:
+      "画一段车辆驶过场景：背景点保持，车辆点随时间移动，给车辆点画三维 scene-flow 箭头。",
+    goodNotes: "GoodNotes: Page SLAM-011",
+    obsidian: "Obsidian: World-Spatial -> Reconstruction -> Dynamic Scene Flow",
+    notion: "Notion: Track=World & Spatial Models, Topic=Dynamic Reconstruction, Evidence=GoodNotes SLAM-011",
+    practiceQuestions: [
+      {
+        prompt: "Scene flow 和 optical flow 的区别是什么？",
+        answer: "答案：optical flow 是图像平面上的二维运动，scene flow 是三维空间点的运动。"
+      },
+      {
+        prompt: "为什么动态物体会污染静态地图？",
+        answer: "答案：如果把运动物体当静态点融合进去，地图会出现幽影、重叠和错误占据。"
+      },
+      {
+        prompt: "F_theta(x,t) 比 F_theta(x) 多了什么？",
+        answer: "答案：多了时间输入，可以表示几何和外观随时间变化。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个表达式最像动态神经场？",
+      choices: [
+        {
+          label: "A",
+          value: "F_theta(x,t)->(sigma,c)",
+          isCorrect: true,
+          feedback: "正确：位置和时间一起决定动态场景的密度与颜色。"
+        },
+        {
+          label: "B",
+          value: "rank(O)=n",
+          isCorrect: false,
+          feedback: "还不对：这是可观性满秩。"
+        },
+        {
+          label: "C",
+          value: "PSNR",
+          isCorrect: false,
+          feedback: "还不对：PSNR 是渲染质量指标，不是动态表示。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-011 写完了吗？",
+      expected:
+        "已记录：Page SLAM-011 应包含 static/dynamic split、scene flow v(x,t)、F_theta(x,t)、motion decomposition、validation risk。"
+    },
+    sources: [
+      {
+        title: "D-NeRF",
+        url: "https://arxiv.org/abs/2011.13961"
+      },
+      {
+        title: "4D Gaussian Splatting",
+        url: "https://arxiv.org/abs/2310.08528"
+      },
+      {
+        title: "Scene Flow Fields",
+        url: "https://lmb.informatik.uni-freiburg.de/Publications/2015/MIFDB15/"
+      }
+    ]
+  },
+  {
+    id: "deep-reconstruction-quality-metrics",
+    track: "world-spatial-models",
+    title: "重建质量评估：轨迹、几何、渲染、验证",
+    layer: "Trajectory metrics -> geometry metrics -> rendering metrics -> validation gate",
+    beginnerBridge:
+      "看起来像真的，不代表可以用于验证。先分开看轨迹准不准、几何像不像、渲染好不好，再决定它只是研究可视化，还是能进入地图刷新或仿真验证。",
+    coreIdeas: [
+      "ATE/RPE 评估轨迹，Chamfer/F-score 评估几何，PSNR/SSIM/LPIPS 评估渲染。",
+      "渲染指标高不能证明尺度、坐标、碰撞和语义正确，必须有验证准入门。",
+      "输出要分级：research visual、map refresh candidate、stable validation asset。"
+    ],
+    derivationEntry:
+      "Write ATE/RPE for pose, Chamfer(P,Q) for geometry, PSNR/SSIM/LPIPS for rendering, then add an acceptance gate.",
+    practice:
+      "做一页四格表：轨迹误差、几何距离、渲染指标、验证准入，每格写一个失败例子。",
+    goodNotes: "GoodNotes: Page SLAM-012",
+    obsidian: "Obsidian: World-Spatial -> Reconstruction -> Quality Gate",
+    notion: "Notion: Track=World & Spatial Models, Topic=Reconstruction Quality Gate, Evidence=GoodNotes SLAM-012",
+    practiceQuestions: [
+      {
+        prompt: "ATE 和 RPE 分别看什么？",
+        answer: "答案：ATE 看全局轨迹误差，RPE 看相邻时间段的相对运动误差。"
+      },
+      {
+        prompt: "Chamfer 距离在比较什么？",
+        answer: "答案：比较重建点云和参考几何之间的双向最近邻距离。"
+      },
+      {
+        prompt: "为什么 PSNR 不能决定资产可用？",
+        answer: "答案：它只评价图像相似度，不能证明尺度、碰撞、语义和复现满足仿真验证要求。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个指标最直接用于点云几何比较？",
+      choices: [
+        {
+          label: "A",
+          value: "d_Chamfer(P,Q)",
+          isCorrect: true,
+          feedback: "正确：它比较两组几何点之间的双向最近邻距离。"
+        },
+        {
+          label: "B",
+          value: "Delta t",
+          isCorrect: false,
+          feedback: "还不对：这是时间同步偏移。"
+        },
+        {
+          label: "C",
+          value: "Z=fb/d",
+          isCorrect: false,
+          feedback: "还不对：这是双目深度公式。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-012 写完了吗？",
+      expected:
+        "已记录：Page SLAM-012 应包含 ATE/RPE、Chamfer/F-score、PSNR/SSIM/LPIPS、scale/collision/semantic/reproducibility gate。"
+    },
+    sources: [
+      {
+        title: "KITTI Odometry Benchmark",
+        url: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php"
+      },
+      {
+        title: "ETH3D",
+        url: "https://www.eth3d.net/"
+      },
+      {
+        title: "TUM RGB-D SLAM Dataset",
+        url: "https://cvg.cit.tum.de/data/datasets/rgbd-dataset"
+      }
+    ]
+  },
+  {
     id: "deep-reconstruction-slam-handoff",
     track: "work-validation",
     title: "重建 SLAM 技术栈到验证资产",
@@ -1937,6 +2241,114 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "sensor-calibration-chain",
+    track: "world-spatial-models",
+    title: "Camera, LiDAR, and IMU calibration chain",
+    stage: "Calibration and synchronization",
+    focus:
+      "Build the beginner-to-engineering bridge for camera intrinsics, distortion, LiDAR-camera extrinsics, IMU-camera extrinsics, timestamp offset, and projection sanity checks.",
+    outputs: [
+      "one calibration diagram for K, distortion, extrinsic chain, and Delta t",
+      "one LiDAR-to-image projection sanity-check note",
+      "one evidence checklist for calibration dataset, residuals, timestamps, and reproducibility"
+    ],
+    sources: [
+      {
+        title: "Kalibr",
+        url: "https://github.com/ethz-asl/kalibr"
+      },
+      {
+        title: "OpenCV Camera Calibration",
+        url: "https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html"
+      },
+      {
+        title: "ROS camera_calibration",
+        url: "https://docs.ros.org/en/rolling/p/camera_calibration/"
+      }
+    ]
+  },
+  {
+    id: "stereo-depth-dense-mvs",
+    track: "world-spatial-models",
+    title: "Stereo depth and dense MVS bridge",
+    stage: "Depth to dense geometry",
+    focus:
+      "Move from the stereo formula Z=fb/d into depth maps, point-cloud back-projection, multi-view consistency, and dense reconstruction failure modes.",
+    outputs: [
+      "one stereo-depth derivation page for baseline, disparity, and depth",
+      "one depth-map to point-cloud sketch",
+      "one MVS failure note for weak texture, reflections, occlusion, and calibration drift"
+    ],
+    sources: [
+      {
+        title: "ETH3D",
+        url: "https://www.eth3d.net/"
+      },
+      {
+        title: "DTU MVS Dataset",
+        url: "https://roboimagedata.compute.dtu.dk/"
+      },
+      {
+        title: "OpenCV Depth Map from Stereo Images",
+        url: "https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html"
+      }
+    ]
+  },
+  {
+    id: "dynamic-reconstruction-scene-flow",
+    track: "world-spatial-models",
+    title: "Dynamic reconstruction and scene flow line",
+    stage: "Dynamic geometry and temporal fields",
+    focus:
+      "Separate static background, dynamic actors, scene flow, temporal neural fields, and the boundary between research visuals and stable validation assets.",
+    outputs: [
+      "one static-versus-dynamic scene sketch",
+      "one scene-flow and F_theta(x,t) formula page",
+      "one validation note for dynamic-object ghosting, occlusion, timestamp drift, and actor-aware replay"
+    ],
+    sources: [
+      {
+        title: "D-NeRF",
+        url: "https://arxiv.org/abs/2011.13961"
+      },
+      {
+        title: "4D Gaussian Splatting",
+        url: "https://arxiv.org/abs/2310.08528"
+      },
+      {
+        title: "Scene Flow Fields",
+        url: "https://lmb.informatik.uni-freiburg.de/Publications/2015/MIFDB15/"
+      }
+    ]
+  },
+  {
+    id: "reconstruction-quality-metrics",
+    track: "world-spatial-models",
+    title: "Reconstruction quality metrics and validation gate",
+    stage: "Metrics to stable validation gate",
+    focus:
+      "Judge reconstruction with trajectory metrics, geometry metrics, rendering metrics, and a stable-validation acceptance gate instead of visual inspection alone.",
+    outputs: [
+      "one ATE/RPE trajectory error explanation page",
+      "one Chamfer/F-score geometry quality page",
+      "one gate checklist for scale, coordinates, collision, semantic quality, provenance, and reproducibility"
+    ],
+    sources: [
+      {
+        title: "KITTI Odometry Benchmark",
+        url: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php"
+      },
+      {
+        title: "ETH3D",
+        url: "https://www.eth3d.net/"
+      },
+      {
+        title: "TUM RGB-D SLAM Dataset",
+        url: "https://cvg.cit.tum.de/data/datasets/rgbd-dataset"
+      }
+    ]
+  },
+  {
     id: "world-spatial-paper-reproduction-map",
     track: "world-spatial-models",
     title: "World and spatial paper reproduction ladder",
@@ -2304,6 +2716,54 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php",
     notes:
       "Compare TUM, KITTI, and EuRoC assumptions, then write how ATE/RPE evidence should be stored before using a map or trajectory downstream."
+  },
+  {
+    id: "seed_sensor_calibration_chain",
+    title: "Build a camera-LiDAR-IMU calibration chain note",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://github.com/ethz-asl/kalibr",
+    notes:
+      "Write K, distortion, T_camera<-lidar, T_imu<-camera, Delta t, and one LiDAR-to-image projection sanity check."
+  },
+  {
+    id: "seed_stereo_depth_dense_mvs",
+    title: "Derive stereo depth and dense MVS from first principles",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.eth3d.net/",
+    notes:
+      "Derive Z=fb/d, draw a depth map D(u,v), back-project it into a point cloud, and list MVS failure modes."
+  },
+  {
+    id: "seed_dynamic_reconstruction_scene_flow",
+    title: "Separate static maps from dynamic reconstruction",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "medium",
+    dueDate: null,
+    progress: 0,
+    source: "https://arxiv.org/abs/2310.08528",
+    notes:
+      "Write scene flow v(x,t), F_theta(x,t), static/dynamic separation, and one validation risk for dynamic actors."
+  },
+  {
+    id: "seed_reconstruction_quality_metrics",
+    title: "Create a reconstruction quality gate checklist",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.cvlibs.net/datasets/kitti/eval_odometry.php",
+    notes:
+      "Compare ATE/RPE, Chamfer/F-score, PSNR/SSIM/LPIPS, and define when an output is research visual, map-refresh candidate, or stable validation asset."
   },
   {
     id: "seed_world_spatial_paper_ladder",

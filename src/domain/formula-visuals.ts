@@ -433,6 +433,78 @@ export const semanticNeuralSlamFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const sensorCalibrationFormulaTerms: FormulaTerm[] = [
+  {
+    label: "相机内参标定",
+    symbol: "s\\tilde{u}=K[R\\mid t]\\tilde{X}",
+    meaning: "用已知三维/平面标定板点和像素点反求相机内参、畸变和外参。"
+  },
+  {
+    label: "外参链",
+    symbol: "T_{camera\\leftarrow lidar},\\ T_{imu\\leftarrow camera}",
+    meaning: "传感器之间的刚体变换，决定点云、图像和惯性测量能否对到同一坐标系。"
+  },
+  {
+    label: "时间偏移",
+    symbol: "\\Delta t",
+    meaning: "相机、LiDAR、IMU 时间戳不同步时，同一运动会被错误解释为空间误差。"
+  }
+];
+
+export const stereoDepthMvsFormulaTerms: FormulaTerm[] = [
+  {
+    label: "双目深度",
+    symbol: "Z=\\frac{fb}{d}",
+    meaning: "焦距 f 和基线 b 已知时，视差 d 越小，深度 Z 越远。"
+  },
+  {
+    label: "深度图",
+    symbol: "D(u,v)",
+    meaning: "给每个像素一个距离或深度值，是稠密重建和点云生成的入口。"
+  },
+  {
+    label: "多视图一致性",
+    symbol: "\\rho(I_i(u),I_j(\\pi(T_{ji},D_i(u))))",
+    meaning: "同一个三维表面投到多张图时，外观和几何应该相互一致。"
+  }
+];
+
+export const dynamicReconstructionFormulaTerms: FormulaTerm[] = [
+  {
+    label: "场景流",
+    symbol: "\\mathbf{v}(x,t)",
+    meaning: "描述三维空间点随时间如何移动，是动态重建和运动分解的核心。"
+  },
+  {
+    label: "动态神经场",
+    symbol: "F_\\theta(x,t)\\rightarrow(\\sigma,c)",
+    meaning: "把位置和时间一起输入，表示会随时间变化的几何和外观。"
+  },
+  {
+    label: "运动分解",
+    symbol: "X_t=T_k(t)X_0+\\epsilon",
+    meaning: "把动态场景分成若干刚体/非刚体运动，避免把动态物体烤进静态地图。"
+  }
+];
+
+export const reconstructionQualityFormulaTerms: FormulaTerm[] = [
+  {
+    label: "轨迹误差",
+    symbol: "ATE,\\ RPE",
+    meaning: "ATE 看全局轨迹偏差，RPE 看相邻时间段的相对运动误差。"
+  },
+  {
+    label: "几何距离",
+    symbol: "d_{Chamfer}(P,Q)",
+    meaning: "比较重建点云 P 和参考几何 Q 的双向最近邻距离。"
+  },
+  {
+    label: "渲染质量",
+    symbol: "PSNR,\\ SSIM,\\ LPIPS",
+    meaning: "比较渲染图和真实图像，但它们不能替代尺度、碰撞和语义验证。"
+  }
+];
+
 export const nerfGaussianFormulaTerms: FormulaTerm[] = [
   {
     label: "体渲染颜色",

@@ -55,13 +55,17 @@ describe("knowledge seeds", () => {
   });
 
   it("keeps deep study cards actionable and sourced", () => {
-    expect(deepStudyCards.length).toBeGreaterThanOrEqual(15);
+    expect(deepStudyCards.length).toBeGreaterThanOrEqual(19);
     expect(deepStudyCards.some((card) => card.id === "deep-reconstruction-slam-handoff")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-slam-state-estimation-map")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-sfm-mvs-colmap-reconstruction")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-vio-imu-preintegration")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-lidar-icp-lio-sam")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-semantic-neural-slam-map")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-sensor-calibration-chain")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-stereo-depth-dense-mvs")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-dynamic-reconstruction-scene-flow")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-reconstruction-quality-metrics")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "IELTS 输出到错误归因")).toBe(true);
     expect(deepStudyCards.some((card) => card.title === "哲学论证到工程判断")).toBe(true);
     expect(deepStudyCards.every((card) => card.coreIdeas.length >= 3)).toBe(true);
@@ -104,6 +108,26 @@ describe("knowledge seeds", () => {
           id: "semantic-neural-slam-map",
           track: "world-spatial-models",
           title: "Semantic and neural SLAM map bridge"
+        }),
+        expect.objectContaining({
+          id: "sensor-calibration-chain",
+          track: "world-spatial-models",
+          title: "Camera, LiDAR, and IMU calibration chain"
+        }),
+        expect.objectContaining({
+          id: "stereo-depth-dense-mvs",
+          track: "world-spatial-models",
+          title: "Stereo depth and dense MVS bridge"
+        }),
+        expect.objectContaining({
+          id: "dynamic-reconstruction-scene-flow",
+          track: "world-spatial-models",
+          title: "Dynamic reconstruction and scene flow line"
+        }),
+        expect.objectContaining({
+          id: "reconstruction-quality-metrics",
+          track: "world-spatial-models",
+          title: "Reconstruction quality metrics and validation gate"
         })
       ])
     );
@@ -139,6 +163,26 @@ describe("knowledge seeds", () => {
           id: "seed_semantic_neural_slam_map",
           track: "world-spatial-models",
           status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_sensor_calibration_chain",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_stereo_depth_dense_mvs",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_dynamic_reconstruction_scene_flow",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_reconstruction_quality_metrics",
+          track: "world-spatial-models",
+          status: "active"
         })
       ])
     );
@@ -147,7 +191,7 @@ describe("knowledge seeds", () => {
   it("keeps world-spatial modules rich enough for self-paced study", () => {
     const worldSpatialModules = modulesForTrack("world-spatial-models");
 
-    expect(worldSpatialModules.length).toBeGreaterThanOrEqual(10);
+    expect(worldSpatialModules.length).toBeGreaterThanOrEqual(14);
     expect(worldSpatialModules.every((module) => module.outputs.length >= 3)).toBe(true);
     expect(worldSpatialModules.every((module) => module.sources.length >= 3)).toBe(true);
     expect(
@@ -158,6 +202,16 @@ describe("knowledge seeds", () => {
     expect(
       worldSpatialModules.some((module) =>
         module.sources.some((source) => source.title.includes("LIO-SAM"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("Kalibr"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("ETH3D"))
       )
     ).toBe(true);
   });
