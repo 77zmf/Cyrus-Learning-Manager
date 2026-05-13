@@ -41,6 +41,20 @@ describe("math text parsing", () => {
     ]);
   });
 
+  it("detects factor-graph optimizer formulas from study templates", () => {
+    expect(findNextFormula("\\min_x \\sum_k \\rho(\\lVert r_k(x)\\rVert^2_{\\Omega_k})", 0)).toEqual({
+      index: 0,
+      text: "\\min_x \\sum_k \\rho(\\lVert r_k(x)\\rVert^2_{\\Omega_k})",
+      latex: "\\min_x \\sum_k \\rho(\\lVert r_k(x)\\rVert^2_{\\Omega_k})"
+    });
+
+    expect(findNextFormula("更新 J^TWJ\\Delta x=-J^TWr", 0)).toEqual({
+      index: 3,
+      text: "J^TWJ\\Delta x=-J^TWr",
+      latex: "J^TWJ\\Delta x=-J^TWr"
+    });
+  });
+
   it("keeps ordinary Chinese text unchanged", () => {
     expect(splitMathText("先看图，再写一句自己的解释。")).toEqual([
       { kind: "text", text: "先看图，再写一句自己的解释。" }

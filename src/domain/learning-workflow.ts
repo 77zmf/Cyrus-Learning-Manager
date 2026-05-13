@@ -1,6 +1,7 @@
 import {
   controllabilityFormulaTerms,
   dynamicReconstructionFormulaTerms,
+  factorGraphOptimizerFormulaTerms,
   kalmanFormulaTerms,
   lqrFormulaTerms,
   lqgFormulaTerms,
@@ -2568,6 +2569,15 @@ export const learningLaunchQueue: LearningLaunchItem[] = [
     notion: "Notion: Track=World & Spatial Models, Status=Active, Evidence=GoodNotes SLAM page"
   },
   {
+    title: "Factor graph optimizer sprint",
+    focus: "Turn backend optimization into variables, factors, residuals, Jacobians, robust kernels, and one update equation.",
+    prompt:
+      "Explain factor graph, residual, Jacobian, robust kernel, and J^TWJ update before reading GTSAM/Ceres code.",
+    goodNotes: "GoodNotes: SLAM-003B 因子图与 BA 优化",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Factor Graph Optimizer",
+    notion: "Notion: Topic=Factor graph/BA/GTSAM, Evidence=GoodNotes SLAM-003B"
+  },
+  {
     title: "Quaternion orientation sprint",
     focus: "Use the Manim quaternion explorable before writing SLAM pose notes.",
     prompt: "Explain unit quaternion, q and -q double cover, and v'=qvq^{-1} without looking at the formula card.",
@@ -2744,6 +2754,19 @@ export const goodNotesDerivationCards: GoodNotesDerivationCard[] = [
       "用 loop closure 解释为什么回到旧地点能减少漂移。"
     ],
     output: "one SLAM-003 page comparing visual BA and pose graph optimization"
+  },
+  {
+    title: "Factor graph least-squares optimizer",
+    formula:
+      "\\min_{\\Delta x}\\sum_k\\rho(\\lVert r_k(x+\\Delta x)\\rVert^2_{\\Omega_k}),\\quad J^TWJ\\Delta x=-J^TWr",
+    formulaTerms: factorGraphOptimizerFormulaTerms,
+    steps: [
+      "先把关键帧位姿、三维点、速度或 bias 写成变量节点。",
+      "把重投影、IMU、LiDAR、回环都写成残差因子 r_k(x)。",
+      "用雅可比 J_k 把非线性残差在当前估计附近线性化。",
+      "给错误匹配或动态物体残差加鲁棒核，再求正规方程的更新量。"
+    ],
+    output: "one SLAM-003B page connecting BA, pose graph, GTSAM, Ceres, and g2o"
   },
   {
     title: "NeRF and 3DGS rendering equations",

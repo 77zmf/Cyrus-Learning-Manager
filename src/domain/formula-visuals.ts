@@ -379,6 +379,34 @@ export const slamBackendFormulaTerms: FormulaTerm[] = [
   }
 ];
 
+export const factorGraphOptimizerFormulaTerms: FormulaTerm[] = [
+  {
+    label: "变量节点",
+    symbol: "x_i,T_i,X_j",
+    meaning: "要一起估计的未知量；SLAM 里常见的是关键帧位姿、路标点、速度和 IMU bias。"
+  },
+  {
+    label: "残差因子",
+    symbol: "r_k(x)",
+    meaning: "每条测量或模型约束都变成一个误差项，告诉优化器当前估计和观测差多少。"
+  },
+  {
+    label: "雅可比",
+    symbol: "J_k=\\frac{\\partial r_k}{\\partial x}",
+    meaning: "把非线性残差在当前估计附近线性化，说明每个变量小改动会怎样改变残差。"
+  },
+  {
+    label: "鲁棒核",
+    symbol: "\\rho(\\lVert r_k\\rVert^2_{\\Omega_k})",
+    meaning: "遇到错误匹配或动态物体时，下调离群残差的破坏力，而不是让一条坏边拖垮整张图。"
+  },
+  {
+    label: "正规方程",
+    symbol: "J^TWJ\\Delta x=-J^TWr",
+    meaning: "Gauss-Newton 或 LM 每轮要求解的线性系统，求出本轮应该怎样更新所有变量。"
+  }
+];
+
 export const vioImuFormulaTerms: FormulaTerm[] = [
   {
     label: "IMU 预积分",

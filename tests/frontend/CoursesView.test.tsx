@@ -19,6 +19,7 @@ describe("CoursesView", () => {
     expect(screen.getByText("VIO and IMU preintegration bridge")).toBeInTheDocument();
     expect(screen.getByText("LiDAR SLAM, ICP, and LIO line")).toBeInTheDocument();
     expect(screen.getByText("Semantic and neural SLAM map bridge")).toBeInTheDocument();
+    expect(screen.getByText("Factor graphs, bundle adjustment, and GTSAM optimizer bridge")).toBeInTheDocument();
     expect(screen.getByText("SLAM datasets and evaluation benchmark line")).toBeInTheDocument();
     expect(screen.getByText("Camera, LiDAR, and IMU calibration chain")).toBeInTheDocument();
     expect(screen.getByText("Stereo depth and dense MVS bridge")).toBeInTheDocument();
@@ -54,6 +55,7 @@ describe("CoursesView", () => {
     expect(screen.getByText("VIO 与 IMU 预积分")).toBeInTheDocument();
     expect(screen.getByText("LiDAR SLAM、ICP 与 LIO")).toBeInTheDocument();
     expect(screen.getByText("语义与神经 SLAM 地图")).toBeInTheDocument();
+    expect(screen.getByText("因子图、BA 与 GTSAM 优化")).toBeInTheDocument();
     expect(screen.getByText("传感器标定：相机、LiDAR、IMU")).toBeInTheDocument();
     expect(screen.getByText("双目深度与稠密 MVS")).toBeInTheDocument();
     expect(screen.getByText("动态三维重建与 Scene Flow")).toBeInTheDocument();
@@ -65,6 +67,8 @@ describe("CoursesView", () => {
     expect(screen.getAllByText("小白题").length).toBeGreaterThanOrEqual(48);
     expect(screen.getAllByText("公式选择").length).toBeGreaterThanOrEqual(16);
     expect(screen.getAllByText("GoodNotes 输出检查").length).toBeGreaterThanOrEqual(16);
+    expect(screen.getAllByText("GTSAM Docs").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Ceres Solver Non-linear Least Squares").length).toBeGreaterThan(0);
     expect(screen.getByText("GoodNotes: Page 3B1B-M001")).toBeInTheDocument();
     expect(screen.getByText("GoodNotes: Page R001")).toBeInTheDocument();
     expect(screen.getByText("Obsidian: PIX Simulation Validation -> Reconstruction SLAM")).toBeInTheDocument();

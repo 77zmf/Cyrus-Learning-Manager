@@ -1006,6 +1006,82 @@ export const deepStudyCards: DeepStudyCard[] = [
     ]
   },
   {
+    id: "deep-factor-graph-ba-gtsam-optimizer",
+    track: "world-spatial-models",
+    title: "因子图、BA 与 GTSAM 优化",
+    layer: "Backend graph -> nonlinear least squares -> robust update",
+    beginnerBridge:
+      "因子图先不要想成高深算法：圆点是要估计的未知量，边或方块是测量约束。优化就是反复问：这些变量怎样改一点，所有残差会一起变小？",
+    coreIdeas: [
+      "变量节点包括相机位姿、三维点、速度、IMU bias 或地图状态；它们不是分开猜，而是放在同一张图里一起估计。",
+      "残差把观测和当前预测的差写成可计算的误差，BA、pose graph、VIO、LIO 都是在堆不同残差。",
+      "雅可比把非线性问题临时变成线性问题，鲁棒核防止错误匹配、动态物体或坏回环把整张图拉歪。"
+    ],
+    derivationEntry:
+      "Write min_x sum_k rho(||r_k(x)||^2_{Omega_k}), linearize r_k(x+Delta x)≈r_k+J_k Delta x, then solve J^T W J Delta x=-J^T W r.",
+    practice:
+      "在 GoodNotes 画一张三层图：变量节点、残差因子、求解更新；再把 BA、pose graph、GTSAM/Ceres/g2o 分别贴到对应位置。",
+    goodNotes: "GoodNotes: Page SLAM-003B",
+    obsidian: "Obsidian: World-Spatial -> SLAM -> Factor Graph Optimizer",
+    notion: "Notion: Track=World & Spatial Models, Topic=Factor graph/BA/GTSAM, Evidence=GoodNotes SLAM-003B",
+    practiceQuestions: [
+      {
+        prompt: "因子图里的变量节点是什么？",
+        answer: "答案：变量节点就是要估计的未知量，例如相机位姿 T_i、三维点 X_j、速度、IMU bias 或地图状态。"
+      },
+      {
+        prompt: "残差因子在做什么？",
+        answer: "答案：它把一次观测或一个模型约束变成误差，告诉优化器当前估计和真实测量差多少。"
+      },
+      {
+        prompt: "鲁棒核为什么重要？",
+        answer: "答案：真实数据会有错匹配、动态物体和坏回环，鲁棒核可以降低离群残差的权重，避免它拖垮整张图。"
+      }
+    ],
+    formulaCheck: {
+      prompt: "哪个对象最像因子图后端每轮要求解的更新方程？",
+      choices: [
+        {
+          label: "A",
+          value: "J^T W J Delta x = -J^T W r",
+          isCorrect: true,
+          feedback: "正确：这是 Gauss-Newton/LM 线性化后求变量更新量的核心结构。"
+        },
+        {
+          label: "B",
+          value: "Z=fb/d",
+          isCorrect: false,
+          feedback: "还不对：这是双目深度公式，不是后端优化更新。"
+        },
+        {
+          label: "C",
+          value: "only screenshot quality",
+          isCorrect: false,
+          feedback: "还不对：SLAM 后端要看残差、权重、轨迹和图结构，不能只看截图。"
+        }
+      ]
+    },
+    goodNotesCheck: {
+      prompt: "Page SLAM-003B 写完了吗？",
+      expected:
+        "已记录：Page SLAM-003B 应包含变量节点、残差因子、雅可比、鲁棒核、J^TWJ 更新、GTSAM/Ceres/g2o 对照。"
+    },
+    sources: [
+      {
+        title: "GTSAM Docs",
+        url: "https://gtsam.org/docs/"
+      },
+      {
+        title: "Ceres Solver Non-linear Least Squares",
+        url: "https://ceres-solver.org/nnls_tutorial.html"
+      },
+      {
+        title: "g2o paper",
+        url: "https://ais.informatik.uni-freiburg.de/publications/papers/kuemmerle11icra.pdf"
+      }
+    ]
+  },
+  {
     id: "deep-vio-imu-preintegration",
     track: "world-spatial-models",
     title: "VIO 与 IMU 预积分",
@@ -2106,6 +2182,33 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   },
   {
+    id: "factor-graph-ba-gtsam-optimizer",
+    track: "world-spatial-models",
+    title: "Factor graphs, bundle adjustment, and GTSAM optimizer bridge",
+    stage: "SLAM backend optimization",
+    focus:
+      "Make SLAM backend optimization explicit: variable nodes, residual factors, Jacobians, robust kernels, Gauss-Newton/LM updates, and how BA, VIO, LIO, GTSAM, Ceres, and g2o reuse the same graph shape.",
+    outputs: [
+      "one factor-graph sketch with variables, factors, and weights",
+      "one nonlinear least-squares derivation from residuals to J^TWJ update",
+      "one backend comparison note for BA, pose graph, GTSAM, Ceres, and g2o"
+    ],
+    sources: [
+      {
+        title: "GTSAM Docs",
+        url: "https://gtsam.org/docs/"
+      },
+      {
+        title: "Ceres Solver Non-linear Least Squares",
+        url: "https://ceres-solver.org/nnls_tutorial.html"
+      },
+      {
+        title: "g2o paper",
+        url: "https://ais.informatik.uni-freiburg.de/publications/papers/kuemmerle11icra.pdf"
+      }
+    ]
+  },
+  {
     id: "nerf-3dgs-validation-assets",
     track: "world-spatial-models",
     title: "NeRF and 3DGS validation asset bridge",
@@ -2656,6 +2759,18 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://colmap.org/",
     notes:
       "Write the pipeline: images, feature extraction, matching, incremental SfM, bundle adjustment, sparse cloud, dense MVS, and asset-readiness checks."
+  },
+  {
+    id: "seed_factor_graph_ba_gtsam_optimizer",
+    title: "Derive factor graph BA and GTSAM optimizer update",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://gtsam.org/docs/",
+    notes:
+      "Write variable nodes, residual factors, information weights, robust kernels, Jacobians, J^TWJ update, and a comparison of BA, pose graph, GTSAM, Ceres, and g2o."
   },
   {
     id: "seed_nerf_3dgs_validation_asset",

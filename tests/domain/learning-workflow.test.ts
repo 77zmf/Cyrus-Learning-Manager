@@ -170,4 +170,33 @@ describe("beginner learning workflow", () => {
       )
     ).toBe(true);
   });
+
+  it("adds a self-paced factor graph optimizer launch and GoodNotes derivation card", async () => {
+    const { learningLaunchQueue, goodNotesDerivationCards } = await import(
+      "../../src/domain/learning-workflow"
+    );
+
+    expect(learningLaunchQueue).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: "Factor graph optimizer sprint",
+          prompt: expect.stringContaining("residual")
+        })
+      ])
+    );
+
+    expect(goodNotesDerivationCards).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: "Factor graph least-squares optimizer",
+          formula: expect.stringContaining("J^TWJ"),
+          formulaTerms: expect.arrayContaining([
+            expect.objectContaining({ label: "变量节点" }),
+            expect.objectContaining({ label: "残差因子" }),
+            expect.objectContaining({ label: "正规方程" })
+          ])
+        })
+      ])
+    );
+  });
 });

@@ -1,5 +1,5 @@
 import type { TaskPriority, TrackId } from "./types";
-import type { FormulaTerm } from "./formula-visuals";
+import { factorGraphOptimizerFormulaTerms, type FormulaTerm } from "./formula-visuals";
 
 export type StudyMode =
   | "formula"
@@ -236,6 +236,45 @@ export const studyPlans: StudyPlan[] = [
       }
     ],
     taskTitle: "SLAM and 3D reconstruction first-line study session",
+    priority: "high"
+  },
+  {
+    id: "factor-graph-optimizer-session",
+    track: "world-spatial-models",
+    mode: "formula",
+    title: "Factor graph optimizer session",
+    question: "Can you explain one SLAM backend update from variable nodes to residuals to a solved update step?",
+    prompt:
+      "Use factor graph, residual, Jacobian, robust kernel, and normal-equation update as the bridge from BA/pose graph theory into GTSAM, Ceres, and g2o practice.",
+    checklist: [
+      "Name every variable node: camera pose, landmark, velocity, bias, or map state.",
+      "Turn every measurement into a residual factor and define its information weight.",
+      "Write the Jacobian and the J^TWJ update once, even if the algebra feels heavy.",
+      "Mark which residuals need a robust kernel because of outliers, dynamic objects, or wrong matches."
+    ],
+    template:
+      "Graph object:\nVariable nodes:\nResidual factors:\nObjective:\n$$\n\\min_x \\sum_k \\rho(\\lVert r_k(x)\\rVert^2_{\\Omega_k})\n$$\nJacobian:\nUpdate equation:\nRobust-kernel reason:\nGTSAM/Ceres/g2o connection:\nGoodNotes page:",
+    formulaCue: {
+      label: "Factor graph least-squares objective",
+      latex:
+        "\\min_x\\sum_k\\rho(\\lVert r_k(x)\\rVert^2_{\\Omega_k}),\\quad J^TWJ\\Delta x=-J^TWr",
+      terms: factorGraphOptimizerFormulaTerms
+    },
+    sources: [
+      {
+        title: "GTSAM Docs",
+        url: "https://gtsam.org/docs/"
+      },
+      {
+        title: "Ceres Solver Non-linear Least Squares",
+        url: "https://ceres-solver.org/nnls_tutorial.html"
+      },
+      {
+        title: "g2o paper",
+        url: "https://ais.informatik.uni-freiburg.de/publications/papers/kuemmerle11icra.pdf"
+      }
+    ],
+    taskTitle: "Factor graph optimizer: BA/GTSAM/Ceres derivation",
     priority: "high"
   },
   {

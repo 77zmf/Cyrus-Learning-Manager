@@ -235,6 +235,12 @@ export const formulaMatchers: FormulaMatcher[] = [
     pattern: /\\log\(Z_\{ij\}\^-1T_i\^-1T_j\)/
   },
   {
+    pattern: /\\min_x\s*\\sum_k\s*\\rho\(\\lVert r_k\(x\)\\rVert\^2_\{\\Omega_k\}\)/
+  },
+  {
+    pattern: /J\^TWJ\\Delta x=-J\^TWr/
+  },
+  {
     pattern: /\\hat\{C\}\(r\)/
   },
   {

@@ -56,6 +56,10 @@ describe("formula visibility", () => {
     fireEvent.click(screen.getByRole("button", { name: "Paper" }));
 
     expectNoRawFormulaText(studyLab.container);
+
+    fireEvent.click(screen.getByRole("button", { name: "Formula" }));
+
+    expectNoRawFormulaText(studyLab.container);
   });
 });
 

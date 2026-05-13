@@ -62,6 +62,7 @@ describe("knowledge seeds", () => {
     expect(deepStudyCards.some((card) => card.id === "deep-vio-imu-preintegration")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-lidar-icp-lio-sam")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-semantic-neural-slam-map")).toBe(true);
+    expect(deepStudyCards.some((card) => card.id === "deep-factor-graph-ba-gtsam-optimizer")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-sensor-calibration-chain")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-stereo-depth-dense-mvs")).toBe(true);
     expect(deepStudyCards.some((card) => card.id === "deep-dynamic-reconstruction-scene-flow")).toBe(true);
@@ -108,6 +109,11 @@ describe("knowledge seeds", () => {
           id: "semantic-neural-slam-map",
           track: "world-spatial-models",
           title: "Semantic and neural SLAM map bridge"
+        }),
+        expect.objectContaining({
+          id: "factor-graph-ba-gtsam-optimizer",
+          track: "world-spatial-models",
+          title: "Factor graphs, bundle adjustment, and GTSAM optimizer bridge"
         }),
         expect.objectContaining({
           id: "sensor-calibration-chain",
@@ -165,6 +171,11 @@ describe("knowledge seeds", () => {
           status: "active"
         }),
         expect.objectContaining({
+          id: "seed_factor_graph_ba_gtsam_optimizer",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
           id: "seed_sensor_calibration_chain",
           track: "world-spatial-models",
           status: "active"
@@ -214,5 +225,32 @@ describe("knowledge seeds", () => {
         module.sources.some((source) => source.title.includes("ETH3D"))
       )
     ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("GTSAM"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("Ceres Solver"))
+      )
+    ).toBe(true);
+  });
+
+  it("adds a beginner-friendly factor graph optimizer card", () => {
+    const card = deepStudyCards.find((item) => item.id === "deep-factor-graph-ba-gtsam-optimizer");
+
+    expect(card).toBeDefined();
+    expect(card?.title).toBe("因子图、BA 与 GTSAM 优化");
+    expect(card?.coreIdeas).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("变量节点"),
+        expect.stringContaining("残差"),
+        expect.stringContaining("鲁棒核")
+      ])
+    );
+    expect(card?.sources.map((source) => source.title)).toEqual(
+      expect.arrayContaining(["GTSAM Docs", "Ceres Solver Non-linear Least Squares", "g2o paper"])
+    );
   });
 });

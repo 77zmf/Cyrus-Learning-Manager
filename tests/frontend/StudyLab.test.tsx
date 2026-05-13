@@ -93,6 +93,24 @@ describe("StudyLab", () => {
     expect(screen.getByRole("link", { name: "COLMAP" })).toHaveAttribute("href", "https://colmap.org/");
   });
 
+  it("offers a factor graph optimizer formula session under world and spatial models", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    fireEvent.change(screen.getByLabelText("Track"), {
+      target: { value: "world-spatial-models" }
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Formula" }));
+
+    expect(screen.getByText("Factor graph optimizer session")).toBeInTheDocument();
+    expect(screen.getByText(/factor graph, residual, Jacobian, robust kernel/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("Formula visual: Factor graph least-squares objective")).toBeInTheDocument();
+    expect(screen.getByText("残差因子")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "GTSAM Docs" })).toHaveAttribute(
+      "href",
+      "https://gtsam.org/docs/"
+    );
+  });
+
   it("renders the first 3Blue1Brown video formula cue as visual math", () => {
     const { container } = render(<StudyLab onCreateTask={vi.fn()} />);
 
