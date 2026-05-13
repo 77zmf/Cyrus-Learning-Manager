@@ -39,6 +39,7 @@ import {
 } from "./formula-visuals";
 import type { FormulaTerm } from "./formula-visuals";
 import { buildGuidedLessonManimScene, type GuidedLessonManimScene } from "./guided-manim";
+import { type KnowledgeSource, videoSourcesForLearningItem } from "./knowledge";
 
 export interface ToolRole {
   tool: string;
@@ -113,6 +114,7 @@ export interface GuidedLesson {
   formula: string;
   formulaTerms: FormulaTerm[];
   manimScene: GuidedLessonManimScene;
+  videoSources: KnowledgeSource[];
   now: string;
   goodNotesPage: string;
   obsidianNode: string;
@@ -122,7 +124,7 @@ export interface GuidedLesson {
   readyCheck: LessonReadyCheck;
 }
 
-type GuidedLessonSeed = Omit<GuidedLesson, "readyCheck" | "manimScene">;
+type GuidedLessonSeed = Omit<GuidedLesson, "readyCheck" | "manimScene" | "videoSources">;
 
 export interface GoodNotesDerivationCard {
   title: string;
@@ -2541,8 +2543,19 @@ export const guidedControlLessons: GuidedLesson[] = guidedControlLessonSeeds.map
     ...lesson,
     bridgeIntuition: beginnerLessonBridges[lesson.id]?.intuition
   }),
+  videoSources: videoSourcesForLearningItem({
+    id: lesson.id,
+    title: lesson.title,
+    track: guidedLessonTrack(lesson)
+  }),
   readyCheck: lessonReadyChecks[lesson.id]
 }));
+
+function guidedLessonTrack(lesson: GuidedLessonSeed) {
+  const lessonNumber = Number(lesson.title.match(/第\s*(\d+)\s*课/)?.[1] ?? 0);
+
+  return lessonNumber >= 14 ? "world-spatial-models" : "tsinghua-automation";
+}
 
 export const learningLaunchQueue: LearningLaunchItem[] = [
   {

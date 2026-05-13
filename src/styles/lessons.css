@@ -104,6 +104,22 @@
   padding: 12px;
 }
 
+.lesson-video-links {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.lesson-video-links h4 {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 .ready-check-heading {
   display: flex;
   flex-wrap: wrap;

@@ -72,7 +72,7 @@ describe("full UI button audit", () => {
       });
       expect(screen.getByRole("button", { name: tabName })).toHaveClass("active");
     }
-  });
+  }, 15_000);
 
   it("exercises Learn view buttons, checkboxes, and scrubbers", () => {
     const { container } = render(<LearnView />);

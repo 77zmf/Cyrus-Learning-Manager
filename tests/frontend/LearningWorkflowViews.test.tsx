@@ -290,6 +290,11 @@ describe("learning workflow views", () => {
     expect(screen.getByLabelText("第 1 课：状态空间模型 Manim storyboard scrubber")).toBeInTheDocument();
     expect(screen.getByText("State Space Manim storyboard")).toBeInTheDocument();
     expect(screen.getByText("npm run manim:render -- GuidedStateSpaceScene")).toBeInTheDocument();
+    expect(screen.getAllByText("Video links").length).toBeGreaterThanOrEqual(26);
+    expect(screen.getAllByText("MIT 6.003 lecture videos").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Underactuated Robotics lecture videos").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Cyrill Stachniss SLAM course").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Cyrill Stachniss photogrammetry videos").length).toBeGreaterThan(0);
     expect(screen.getAllByText("状态向量 x").length).toBeGreaterThan(0);
     expect(screen.getAllByText("系统矩阵 A").length).toBeGreaterThan(0);
     expect(screen.getAllByText("控制矩阵 B").length).toBeGreaterThan(0);

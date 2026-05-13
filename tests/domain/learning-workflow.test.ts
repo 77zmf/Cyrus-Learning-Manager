@@ -72,6 +72,22 @@ describe("beginner learning workflow", () => {
     expect(guidedControlLessons.every((lesson) => lesson.readyCheck.goodNotesExpected.length > 0)).toBe(true);
   });
 
+  it("adds video entry points to every guided lesson", () => {
+    const controlLesson = guidedControlLessons.find((lesson) => lesson.id === "lesson-lqr");
+    const slamLesson = guidedControlLessons.find((lesson) => lesson.id === "lesson-lidar-icp-lio-sam");
+
+    expect(guidedControlLessons.every((lesson) => lesson.videoSources.length > 0)).toBe(true);
+    expect(guidedControlLessons.every((lesson) => lesson.videoSources.every((source) => source.url.startsWith("https://")))).toBe(
+      true
+    );
+    expect(controlLesson?.videoSources.map((source) => source.title)).toEqual(
+      expect.arrayContaining(["MIT 6.003 lecture videos", "Underactuated Robotics lecture videos"])
+    );
+    expect(slamLesson?.videoSources.map((source) => source.title)).toEqual(
+      expect.arrayContaining(["Cyrill Stachniss SLAM course", "Cyrill Stachniss photogrammetry videos"])
+    );
+  });
+
   it("adds a Manim storyboard to every guided control lesson", () => {
     expect(guidedControlLessons).toHaveLength(26);
     expect(

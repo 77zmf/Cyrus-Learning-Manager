@@ -66,6 +66,16 @@ export function GuidedLessonCard({ lesson, isOpen, onToggle }: GuidedLessonCardP
         ) : null}
         <FormulaVisual label={lesson.title} latex={lesson.formula} terms={lesson.formulaTerms} />
         <GuidedLessonManimStoryboard lesson={lesson} />
+        <section className="lesson-video-links" aria-label={`${lesson.title} video links`}>
+          <h4>Video links</h4>
+          <div className="source-links">
+            {lesson.videoSources.map((source) => (
+              <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
+                {source.title}
+              </a>
+            ))}
+          </div>
+        </section>
         <LessonReadyCheck lesson={lesson} />
         <strong>
           <MathText text={lesson.now} />
