@@ -13,6 +13,7 @@ export interface KnowledgeModule {
   focus: string;
   outputs: string[];
   sources: KnowledgeSource[];
+  videoSources: KnowledgeSource[];
 }
 
 export interface DeepStudyPracticeQuestion {
@@ -53,7 +54,16 @@ export interface DeepStudyCard {
   formulaCheck: DeepStudyFormulaCheck;
   goodNotesCheck: DeepStudyGoodNotesCheck;
   sources: KnowledgeSource[];
+  videoSources: KnowledgeSource[];
 }
+
+type KnowledgeModuleSeed = Omit<KnowledgeModule, "videoSources"> & {
+  videoSources?: KnowledgeSource[];
+};
+
+type DeepStudyCardSeed = Omit<DeepStudyCard, "videoSources"> & {
+  videoSources?: KnowledgeSource[];
+};
 
 export interface KnowledgeSeedTask {
   id: string;
@@ -67,7 +77,169 @@ export interface KnowledgeSeedTask {
   notes: string;
 }
 
-export const deepStudyCards: DeepStudyCard[] = [
+export const videoCatalog = {
+  tsinghuaControl: {
+    title: "Tsinghua automatic control video set",
+    url: "https://www.xuetangx.com/search?query=%E8%87%AA%E5%8A%A8%E6%8E%A7%E5%88%B6%E5%8E%9F%E7%90%86%20%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6"
+  },
+  mit6003: {
+    title: "MIT 6.003 lecture videos",
+    url: "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/resources/lecture-videos/"
+  },
+  mitRes6007: {
+    title: "MIT RES.6-007 video lectures",
+    url: "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/resources/lecture-videos/"
+  },
+  mit6006: {
+    title: "MIT 6.006 lecture videos",
+    url: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/resources/lecture-videos/"
+  },
+  mit6006Recitations: {
+    title: "MIT 6.006 problem-solving videos",
+    url: "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/resources/problem-solving-videos/"
+  },
+  underactuated: {
+    title: "Underactuated Robotics lecture videos",
+    url: "https://ocw.mit.edu/courses/6-832-underactuated-robotics-spring-2009/resources/lecture-videos/"
+  },
+  underactuatedNotes: {
+    title: "Underactuated Robotics current video notes",
+    url: "https://underactuated.mit.edu/intro.html"
+  },
+  threeBlueOneBrown: {
+    title: "3Blue1Brown YouTube playlists",
+    url: "https://www.youtube.com/c/3blue1brown/playlists"
+  },
+  threeBlueOneBrownLinearAlgebra: {
+    title: "3Blue1Brown Essence of Linear Algebra videos",
+    url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"
+  },
+  stachnissSlam: {
+    title: "Cyrill Stachniss SLAM course",
+    url: "https://www.ipb.uni-bonn.de/online-training-robotics/index.html"
+  },
+  stachnissPhotogrammetry: {
+    title: "Cyrill Stachniss photogrammetry videos",
+    url: "https://www.ipb.uni-bonn.de/photogrammetry-i-ii/index.html"
+  },
+  nerfDemo: {
+    title: "NeRF project video demo",
+    url: "https://www.matthewtancik.com/nerf"
+  },
+  berkeleyCs285: {
+    title: "Berkeley CS 285 lecture videos",
+    url: "https://rail.eecs.berkeley.edu/deeprlcourse/"
+  },
+  ieltsBritishCouncil: {
+    title: "British Council IELTS preparation videos",
+    url: "https://takeielts.britishcouncil.org/take-ielts/prepare/videos"
+  },
+  yalePhilosophy: {
+    title: "Open Yale Philosophy video lectures",
+    url: "https://oyc.yale.edu/philosophy/phil-176"
+  },
+  mitPhilosophy: {
+    title: "MITx Philosophy course videos",
+    url: "https://philosophy.mit.edu/mitx"
+  },
+  mitEthicsComputing: {
+    title: "MIT Ethics and Computing lecture series",
+    url: "https://philosophy.mit.edu/ethicsandcomputing/"
+  },
+  missingSemester: {
+    title: "MIT Missing Semester lecture videos",
+    url: "https://missing.csail.mit.edu/"
+  }
+} satisfies Record<string, KnowledgeSource>;
+
+function uniqueSources(sources: KnowledgeSource[]) {
+  const seen = new Set<string>();
+
+  return sources.filter((source) => {
+    if (seen.has(source.url)) {
+      return false;
+    }
+    seen.add(source.url);
+    return true;
+  });
+}
+
+function trackVideoSources(track: TrackId): KnowledgeSource[] {
+  switch (track) {
+    case "tsinghua-automation":
+      return [videoCatalog.tsinghuaControl, videoCatalog.mit6003, videoCatalog.mitRes6007];
+    case "mit-eecs":
+      return [videoCatalog.mit6006, videoCatalog.mit6003, videoCatalog.underactuated];
+    case "3blue1brown":
+      return [videoCatalog.threeBlueOneBrown, videoCatalog.threeBlueOneBrownLinearAlgebra];
+    case "world-spatial-models":
+      return [videoCatalog.stachnissSlam, videoCatalog.stachnissPhotogrammetry];
+    case "ielts":
+      return [videoCatalog.ieltsBritishCouncil];
+    case "philosophy":
+      return [videoCatalog.yalePhilosophy, videoCatalog.mitPhilosophy];
+    case "work-validation":
+      return [videoCatalog.missingSemester];
+  }
+}
+
+function topicVideoSources(item: { id: string; title: string; track: TrackId }): KnowledgeSource[] {
+  const text = `${item.id} ${item.title}`.toLowerCase();
+  const sources: KnowledgeSource[] = [];
+
+  if (/algorithm|6\.006|data-structure|数据结构/.test(text)) {
+    sources.push(videoCatalog.mit6006, videoCatalog.mit6006Recitations);
+  }
+  if (
+    /signal|system|control|lqr|kalman|mpc|robust|nonlinear|stability|state-space|controllability|feedback|自动控制|状态空间|稳定|可控/.test(
+      text
+    )
+  ) {
+    sources.push(videoCatalog.mit6003, videoCatalog.mitRes6007, videoCatalog.underactuated);
+  }
+  if (/underactuated|robotic|robotics|机器人/.test(text)) {
+    sources.push(videoCatalog.underactuated, videoCatalog.underactuatedNotes);
+  }
+  if (/3blue1brown|linear algebra|线性代数/.test(text)) {
+    sources.push(videoCatalog.threeBlueOneBrown, videoCatalog.threeBlueOneBrownLinearAlgebra);
+  }
+  if (
+    /slam|sfm|mvs|colmap|factor|bundle|gtsam|loop-closure|loop closure|vio|imu|lidar|icp|lio|semantic|calibration|stereo|depth|reconstruction|scene flow|重建|回环|标定|双目|语义|因子图/.test(
+      text
+    )
+  ) {
+    sources.push(videoCatalog.stachnissSlam, videoCatalog.stachnissPhotogrammetry);
+  }
+  if (/nerf|3dgs|gaussian|occupancy|bev|world-model|world model|latent|spatial|空间|世界模型/.test(text)) {
+    sources.push(videoCatalog.berkeleyCs285, videoCatalog.nerfDemo, videoCatalog.stachnissPhotogrammetry);
+  }
+  if (item.track === "ielts" || /ielts/.test(text)) {
+    sources.push(videoCatalog.ieltsBritishCouncil);
+  }
+  if (/philosophy|ethics|argument|ai ethics|哲学|伦理|论证/.test(text)) {
+    sources.push(videoCatalog.yalePhilosophy, videoCatalog.mitPhilosophy, videoCatalog.mitEthicsComputing);
+  }
+  if (/work-validation|stable validation|simctl|evidence|kpi|验证/.test(text)) {
+    sources.push(videoCatalog.missingSemester);
+  }
+
+  return sources;
+}
+
+export function videoSourcesForLearningItem(item: { id: string; title: string; track: TrackId }) {
+  return uniqueSources([...topicVideoSources(item), ...trackVideoSources(item.track)]);
+}
+
+function withVideoSources<T extends { id: string; title: string; track: TrackId; videoSources?: KnowledgeSource[] }>(
+  item: T
+): T & { videoSources: KnowledgeSource[] } {
+  return {
+    ...item,
+    videoSources: uniqueSources([...(item.videoSources ?? []), ...videoSourcesForLearningItem(item)])
+  };
+}
+
+const deepStudyCardSeeds: DeepStudyCardSeed[] = [
   {
     id: "deep-linear-algebra-state-space",
     track: "tsinghua-automation",
@@ -1833,7 +2005,9 @@ export const deepStudyCards: DeepStudyCard[] = [
   }
 ];
 
-export const knowledgeModules: KnowledgeModule[] = [
+export const deepStudyCards: DeepStudyCard[] = deepStudyCardSeeds.map(withVideoSources);
+
+const knowledgeModuleSeeds: KnowledgeModuleSeed[] = [
   {
     id: "tsinghua-undergraduate-full-path",
     track: "tsinghua-automation",
@@ -2706,6 +2880,8 @@ export const knowledgeModules: KnowledgeModule[] = [
     ]
   }
 ];
+
+export const knowledgeModules: KnowledgeModule[] = knowledgeModuleSeeds.map(withVideoSources);
 
 export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
   {

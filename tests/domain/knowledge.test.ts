@@ -34,6 +34,35 @@ describe("knowledge seeds", () => {
     }
   });
 
+  it("provides video entry points for every module and deep study card", () => {
+    const moduleVideoSources = knowledgeModules.map((module) => ({
+      id: module.id,
+      videoSources: (module as { videoSources?: { title: string; url: string }[] }).videoSources ?? []
+    }));
+    const cardVideoSources = deepStudyCards.map((card) => ({
+      id: card.id,
+      videoSources: (card as { videoSources?: { title: string; url: string }[] }).videoSources ?? []
+    }));
+
+    expect(moduleVideoSources.every((module) => module.videoSources.length > 0)).toBe(true);
+    expect(cardVideoSources.every((card) => card.videoSources.length > 0)).toBe(true);
+    expect(
+      [...moduleVideoSources, ...cardVideoSources].every((entry) =>
+        entry.videoSources.every((source) => source.title.length > 0 && source.url.startsWith("https://"))
+      )
+    ).toBe(true);
+  });
+
+  it("does not leak IELTS videos into philosophy reading modules", () => {
+    const philosophyReading = knowledgeModules.find((module) => module.id === "philosophy-reading-ladder");
+
+    expect(philosophyReading?.videoSources.map((source) => source.title)).toEqual([
+      "Open Yale Philosophy video lectures",
+      "MITx Philosophy course videos",
+      "MIT Ethics and Computing lecture series"
+    ]);
+  });
+
   it("includes initial executable tasks for every track", () => {
     const trackIds = new Set(tracks.map((track) => track.id));
     const taskTrackIds = new Set(knowledgeSeedTasks.map((task) => task.track));

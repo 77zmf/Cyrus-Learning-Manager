@@ -153,6 +153,20 @@
   margin-top: 6px;
 }
 
+.source-link-group {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.source-link-group > span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .module-block em {
   color: var(--ink-soft);
   font-size: 0.84rem;

@@ -14,6 +14,11 @@ describe("StudyLab", () => {
     expect(screen.getByText("World and Spatial Models")).toBeInTheDocument();
     expect(screen.getByText("Paper reading and reproduction")).toBeInTheDocument();
     expect(screen.getByText(/representation, objective, failure mode/i)).toBeInTheDocument();
+    expect(screen.getByText("Video links")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Berkeley CS 285 lecture videos" })).toHaveAttribute(
+      "href",
+      "https://rail.eecs.berkeley.edu/deeprlcourse/"
+    );
     expect(screen.getByRole("link", { name: "PlaNet" })).toHaveAttribute(
       "href",
       "https://arxiv.org/abs/1811.04551"
@@ -137,6 +142,10 @@ describe("StudyLab", () => {
     });
 
     expect(screen.getByText("3Blue1Brown video note")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "3Blue1Brown YouTube playlists" })).toHaveAttribute(
+      "href",
+      "https://www.youtube.com/c/3blue1brown/playlists"
+    );
     expect(screen.getByLabelText("Formula visual: First 3Blue1Brown video formula")).toBeInTheDocument();
     expect(screen.getByText("坐标变换链")).toBeInTheDocument();
     expect(container.querySelectorAll(".math-inline .katex").length).toBeGreaterThan(0);

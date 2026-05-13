@@ -4,7 +4,8 @@ import {
   deepStudyCards,
   modulesForTrack,
   type DeepStudyCard,
-  type DeepStudyFormulaChoice
+  type DeepStudyFormulaChoice,
+  type KnowledgeSource
 } from "../domain/knowledge";
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
@@ -87,13 +88,8 @@ export function CoursesView({ onCreateTask = () => undefined }: CoursesViewProps
                 <em>{card.notion}</em>
               </div>
               <DeepStudyPractice card={card} />
-              <div className="source-links">
-                {card.sources.map((source) => (
-                  <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
-                    {source.title}
-                  </a>
-                ))}
-              </div>
+              <SourceLinkGroup label="Sources" sources={card.sources} />
+              <SourceLinkGroup label="Video links" sources={card.videoSources} />
             </article>
           ))}
         </div>
@@ -132,13 +128,8 @@ export function CoursesView({ onCreateTask = () => undefined }: CoursesViewProps
                           </em>
                         ))}
                       </div>
-                      <div className="source-links">
-                        {module.sources.map((source) => (
-                          <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
-                            {source.title}
-                          </a>
-                        ))}
-                      </div>
+                      <SourceLinkGroup label="Sources" sources={module.sources} />
+                      <SourceLinkGroup label="Video links" sources={module.videoSources} />
                     </li>
                   ))}
                 </ul>
@@ -148,6 +139,21 @@ export function CoursesView({ onCreateTask = () => undefined }: CoursesViewProps
         })}
       </div>
     </section>
+  );
+}
+
+function SourceLinkGroup({ label, sources }: { label: string; sources: KnowledgeSource[] }) {
+  return (
+    <div className="source-link-group">
+      <span>{label}</span>
+      <div className="source-links">
+        {sources.map((source) => (
+          <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
+            {source.title}
+          </a>
+        ))}
+      </div>
+    </div>
   );
 }
 

@@ -123,4 +123,16 @@ describe("CoursesView", () => {
     expect(screen.getByLabelText("Formula visual: First 3Blue1Brown video formula")).toBeInTheDocument();
     expect(screen.getByText("坐标变换链")).toBeInTheDocument();
   });
+
+  it("renders dedicated video links across the library", () => {
+    render(<CoursesView />);
+
+    expect(screen.getAllByText("Video links").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("MIT 6.006 lecture videos").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("MIT RES.6-007 video lectures").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Underactuated Robotics lecture videos").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Cyrill Stachniss SLAM course").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("3Blue1Brown YouTube playlists").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Tsinghua automatic control video set").length).toBeGreaterThan(0);
+  });
 });

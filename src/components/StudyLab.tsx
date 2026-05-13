@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import type { CreateTaskInput } from "../api/client";
+import { type KnowledgeSource, videoSourcesForLearningItem } from "../domain/knowledge";
 import {
   findStudyPlan,
   hermesCloseoutFields,
@@ -24,6 +25,14 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
   const availableModes = useMemo(() => modesForTrack(track), [track]);
   const plan = findStudyPlan(track, mode) ?? studyPlans.find((item) => item.track === track) ?? studyPlans[0];
   const activeTrack = tracks.find((item) => item.id === plan.track);
+  const videoSources = useMemo(
+    () => videoSourcesForLearningItem({ id: plan.id, title: plan.title, track: plan.track }),
+    [plan.id, plan.title, plan.track]
+  );
+  const referenceSources = useMemo(
+    () => withoutDuplicatedVideoSources(plan.sources, videoSources),
+    [plan.sources, videoSources]
+  );
 
   function changeTrack(nextTrack: TrackId) {
     const nextMode = modesForTrack(nextTrack)[0] ?? "course";
@@ -134,10 +143,23 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
           </dl>
         </article>
 
+        {referenceSources.length > 0 ? (
+          <article className="study-card">
+            <h3>Sources</h3>
+            <div className="source-links">
+              {referenceSources.map((source) => (
+                <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
+                  {source.title}
+                </a>
+              ))}
+            </div>
+          </article>
+        ) : null}
+
         <article className="study-card">
-          <h3>Sources</h3>
+          <h3>Video links</h3>
           <div className="source-links">
-            {plan.sources.map((source) => (
+            {videoSources.map((source) => (
               <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
                 {source.title}
               </a>
@@ -158,6 +180,12 @@ function templateLines(template: string) {
 
 function displayTrackName(name: string) {
   return name === "World & Spatial Models" ? "World and Spatial Models" : name;
+}
+
+function withoutDuplicatedVideoSources(sources: KnowledgeSource[], videoSources: KnowledgeSource[]) {
+  const videoUrls = new Set(videoSources.map((source) => source.url));
+
+  return sources.filter((source) => !videoUrls.has(source.url));
 }
 
 function closeoutHint(field: string) {
