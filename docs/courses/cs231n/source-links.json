@@ -1,0 +1,68 @@
+{
+  "course": "Stanford CS231n",
+  "title": "Deep Learning for Computer Vision",
+  "interpretedFromUserLabel": "Li Fei-Fei CS23DN",
+  "officialCoursePage": "https://cs231n.stanford.edu/",
+  "officialNotesPage": "https://cs231n.github.io/",
+  "officialSchedule": "https://cs231n.stanford.edu/schedule.html",
+  "localGuidedPdf": "docs/courses/cs231n/build/cyrus-cs231n-guided-notes.pdf",
+  "publicGuidedPdf": "/Cyrus-Learning-Manager/courses/cs231n/cyrus-cs231n-guided-notes.pdf",
+  "sources": [
+    {
+      "title": "Course Home",
+      "url": "https://cs231n.stanford.edu/"
+    },
+    {
+      "title": "Schedule and Slides",
+      "url": "https://cs231n.stanford.edu/schedule.html"
+    },
+    {
+      "title": "Course Notes Index",
+      "url": "https://cs231n.github.io/"
+    },
+    {
+      "title": "Image Classification",
+      "url": "https://cs231n.github.io/classification/"
+    },
+    {
+      "title": "Linear Classification",
+      "url": "https://cs231n.github.io/linear-classify/"
+    },
+    {
+      "title": "Optimization: SGD",
+      "url": "https://cs231n.github.io/optimization-1/"
+    },
+    {
+      "title": "Backpropagation",
+      "url": "https://cs231n.github.io/optimization-2/"
+    },
+    {
+      "title": "Neural Networks Part 1",
+      "url": "https://cs231n.github.io/neural-networks-1/"
+    },
+    {
+      "title": "Neural Networks Part 2",
+      "url": "https://cs231n.github.io/neural-networks-2/"
+    },
+    {
+      "title": "Neural Networks Part 3",
+      "url": "https://cs231n.github.io/neural-networks-3/"
+    },
+    {
+      "title": "CNNs",
+      "url": "https://cs231n.github.io/convolutional-networks/"
+    },
+    {
+      "title": "Understanding CNNs",
+      "url": "https://cs231n.github.io/understanding-cnn/"
+    },
+    {
+      "title": "Transfer Learning",
+      "url": "https://cs231n.github.io/transfer-learning/"
+    },
+    {
+      "title": "RNNs",
+      "url": "https://cs231n.github.io/rnn/"
+    }
+  ]
+}

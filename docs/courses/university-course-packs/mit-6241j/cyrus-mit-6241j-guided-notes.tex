@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: MIT 6.241J Dynamic Systems and Control}
+\author{MIT course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/}
+
+\textbf{Why this course is in the system.} Core control course for state space, controllability, observability, stability, and feedback.
+
+\textbf{Learning output.} Priority course for a complete guided PDF connected to existing control formula visuals.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Linear algebra
+  \item Eigenvalues
+  \item Differential equations
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \dot{\bm{x}}=A\bm{x}+B\bm{u}\\
+  e^{At}=\mathcal{L}^{-1}\{(sI-A)^{-1}\}\\
+  \operatorname{rank}[B\;AB\;\cdots\;A^{n-1}B]=n\\
+  \bm{u}=-K\bm{x}
+\end{align*}
+
+\section*{Visual page}
+Make state propagation visible: A moves the state, B injects input, K closes feedback.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page MIT-C001: state space
+  \item Page MIT-C002: controllability
+  \item Page MIT-C003: feedback
+\end{itemize}
+
+\section*{Web interaction}
+A two-state system where dragging eigenvalues changes stability.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & MIT Control -> 6.241J dynamic systems \\
+Notion & Control gate status and solved derivation evidence. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

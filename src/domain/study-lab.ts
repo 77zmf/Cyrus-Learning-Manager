@@ -8,6 +8,7 @@ export type StudyMode =
   | "ielts-output"
   | "argument"
   | "closure"
+  | "spatial-intelligence"
   | "loop-closure"
   | "reconstruction";
 
@@ -42,6 +43,7 @@ export const studyModeLabels: Record<StudyMode, string> = {
   "ielts-output": "IELTS Output",
   argument: "Argument",
   closure: "Closure",
+  "spatial-intelligence": "Spatial Intelligence",
   "loop-closure": "Loop Closure",
   reconstruction: "Reconstruction"
 };
@@ -166,6 +168,47 @@ export const studyPlans: StudyPlan[] = [
       }
     ],
     taskTitle: "3Blue1Brown video note: math intuition to engineering intuition",
+    priority: "high"
+  },
+  {
+    id: "spatial-intelligence-route",
+    track: "world-spatial-models",
+    mode: "spatial-intelligence",
+    title: "Spatial intelligence route",
+    question: "Which spatial-intelligence question are you closing today: location, scene content, motion, action, or evidence?",
+    prompt:
+      "Use the five-question loop as the learning unit. Pick one scene, write the coordinate frames and representation, define the action interface, then decide whether the result is learning material, shadow/reconstruction exploration, regression evidence, or stable validation evidence.",
+    checklist: [
+      "Draw the camera, ego, map, and BEV frame chain before discussing models.",
+      "Choose exactly one representation: point cloud, BEV, occupancy, mesh, 3DGS, or world model.",
+      "Name the action interface: planner cost, trajectory, control target, VLA action, or case generation.",
+      "Mark the validation boundary: learning, shadow, reconstruction, regression, or stable evidence."
+    ],
+    template:
+      "Scene:\nQuestion: where | what | motion | action | evidence\nCoordinate frames:\nRepresentation:\nAction interface:\nFailure mode:\nEvidence path:\nValidation boundary:\nNext experiment:",
+    sources: [
+      {
+        title: "Spatial Intelligence Learning Route",
+        url: "20_Courses/World-Spatial-Models/12-Spatial-Intelligence-Learning-Route.md"
+      },
+      {
+        title: "World Labs World API",
+        url: "https://www.worldlabs.ai/blog/announcing-the-world-api"
+      },
+      {
+        title: "DeepMind Genie 3",
+        url: "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/"
+      },
+      {
+        title: "Waymo World Model",
+        url: "https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation/"
+      },
+      {
+        title: "OpenVLA",
+        url: "https://openvla.github.io/"
+      }
+    ],
+    taskTitle: "Spatial intelligence route: one validation-ready case card",
     priority: "high"
   },
   {

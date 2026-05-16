@@ -10,6 +10,7 @@
     "learning:new-card": "node scripts/learning/new-card.mjs",
     "learning:new-session": "node scripts/learning/new-session.mjs",
     "manim:render": "node scripts/manim/render.mjs",
+    "courses:build-pdfs": "tsx scripts/courses/generate-university-course-pdfs.ts",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "test:watch": "vitest",

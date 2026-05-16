@@ -130,6 +130,38 @@ export const videoCatalog = {
     title: "Berkeley CS 285 lecture videos",
     url: "https://rail.eecs.berkeley.edu/deeprlcourse/"
   },
+  stanfordCs231A: {
+    title: "Stanford CS231A",
+    url: "https://web.stanford.edu/class/cs231a/"
+  },
+  stanfordCs231n: {
+    title: "Stanford CS231n",
+    url: "https://cs231n.stanford.edu/"
+  },
+  worldLabsApi: {
+    title: "World Labs World API",
+    url: "https://www.worldlabs.ai/blog/announcing-the-world-api"
+  },
+  deepMindGenie3: {
+    title: "DeepMind Genie 3",
+    url: "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/"
+  },
+  geminiRobotics15: {
+    title: "Gemini Robotics 1.5",
+    url: "https://deepmind.google/discover/blog/gemini-robotics-15-brings-ai-agents-into-the-physical-world/"
+  },
+  nvidiaCosmos: {
+    title: "NVIDIA Cosmos",
+    url: "https://www.nvidia.com/en-us/ai/cosmos/"
+  },
+  waymoWorldModel: {
+    title: "Waymo World Model",
+    url: "https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation/"
+  },
+  openVla: {
+    title: "OpenVLA",
+    url: "https://openvla.github.io/"
+  },
   ieltsBritishCouncil: {
     title: "British Council IELTS preparation videos",
     url: "https://takeielts.britishcouncil.org/take-ielts/prepare/videos"
@@ -173,7 +205,12 @@ function trackVideoSources(track: TrackId): KnowledgeSource[] {
     case "3blue1brown":
       return [videoCatalog.threeBlueOneBrown, videoCatalog.threeBlueOneBrownLinearAlgebra];
     case "world-spatial-models":
-      return [videoCatalog.stachnissSlam, videoCatalog.stachnissPhotogrammetry];
+      return [
+        videoCatalog.stanfordCs231A,
+        videoCatalog.stachnissSlam,
+        videoCatalog.stachnissPhotogrammetry,
+        videoCatalog.worldLabsApi
+      ];
     case "ielts":
       return [videoCatalog.ieltsBritishCouncil];
     case "philosophy":
@@ -209,6 +246,15 @@ function topicVideoSources(item: { id: string; title: string; track: TrackId }):
     )
   ) {
     sources.push(videoCatalog.stachnissSlam, videoCatalog.stachnissPhotogrammetry);
+  }
+  if (/spatial-intelligence|spatial intelligence|空间智能|world api|genie|cosmos|openvla|vla/.test(text)) {
+    sources.push(
+      videoCatalog.stanfordCs231A,
+      videoCatalog.worldLabsApi,
+      videoCatalog.deepMindGenie3,
+      videoCatalog.nvidiaCosmos,
+      videoCatalog.openVla
+    );
   }
   if (/nerf|3dgs|gaussian|occupancy|bev|world-model|world model|latent|spatial|空间|世界模型/.test(text)) {
     sources.push(videoCatalog.berkeleyCs285, videoCatalog.nerfDemo, videoCatalog.stachnissPhotogrammetry);
@@ -795,6 +841,10 @@ const deepStudyCardSeeds: DeepStudyCardSeed[] = [
       {
         title: "Stanford CS231A",
         url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "Stanford CS231n",
+        url: "https://cs231n.stanford.edu/"
       },
       {
         title: "BEVFormer",
@@ -2313,6 +2363,80 @@ const knowledgeModuleSeeds: KnowledgeModuleSeed[] = [
     ]
   },
   {
+    id: "spatial-intelligence-learning-route",
+    track: "world-spatial-models",
+    title: "Spatial intelligence learning route",
+    stage: "Spatial intelligence to validation loop",
+    focus:
+      "Learn spatial intelligence as a validation-ready loop: coordinate frames, spatial representation, prediction, action interface, and evidence boundary for AI Superbody, CARLA, simctl, and robotics work.",
+    outputs: [
+      "one camera -> ego -> map -> BEV coordinate-chain diagram",
+      "one point cloud / BEV / occupancy / mesh / 3DGS / world-model representation comparison",
+      "one spatial case card with action interface, failure mode, KPI evidence path, and validation boundary"
+    ],
+    sources: [
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "Stanford CS231n",
+        url: "https://cs231n.stanford.edu/"
+      },
+      {
+        title: "World Labs World API",
+        url: "https://www.worldlabs.ai/blog/announcing-the-world-api"
+      },
+      {
+        title: "DeepMind Genie 3",
+        url: "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/"
+      },
+      {
+        title: "NVIDIA Cosmos",
+        url: "https://www.nvidia.com/en-us/ai/cosmos/"
+      },
+      {
+        title: "Waymo World Model",
+        url: "https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation/"
+      },
+      {
+        title: "OpenVLA",
+        url: "https://openvla.github.io/"
+      }
+    ]
+  },
+  {
+    id: "spatial-intelligence-180-day-mainline",
+    track: "world-spatial-models",
+    title: "Spatial intelligence 180-day mainline",
+    stage: "Spatial AI evaluation and data loop",
+    focus:
+      "Freeze exam prep as the main line and turn road-test evidence, SLAM, BEV, world models, simulation, and AI agent workflows into a 180-day spatial-intelligence execution track.",
+    outputs: [
+      "one coordinate-chain diagram for camera, LiDAR, ego, map, and BEV",
+      "one spatial case card from a real road-test or validation symptom",
+      "one portfolio-ready evidence page with problem, data, representation, validation, and result"
+    ],
+    sources: [
+      {
+        title: "Spatial Intelligence 180-Day Mainline",
+        url: "https://www.notion.so/362ef7e6aaa98177adecdc3802901d18"
+      },
+      {
+        title: "Stanford CS231A",
+        url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "NVIDIA Cosmos",
+        url: "https://www.nvidia.com/en-us/ai/cosmos/"
+      },
+      {
+        title: "OpenVLA",
+        url: "https://openvla.github.io/"
+      }
+    ]
+  },
+  {
     id: "world-latent-dynamics",
     track: "world-spatial-models",
     title: "World models and latent dynamics",
@@ -2359,6 +2483,10 @@ const knowledgeModuleSeeds: KnowledgeModuleSeed[] = [
       {
         title: "Stanford CS231A",
         url: "https://web.stanford.edu/class/cs231a/"
+      },
+      {
+        title: "Stanford CS231n",
+        url: "https://cs231n.stanford.edu/"
       },
       {
         title: "Occupancy Networks",
@@ -2583,6 +2711,10 @@ const knowledgeModuleSeeds: KnowledgeModuleSeed[] = [
       {
         title: "Kimera",
         url: "https://arxiv.org/abs/1910.02490"
+      },
+      {
+        title: "Stanford CS231n",
+        url: "https://cs231n.stanford.edu/"
       },
       {
         title: "SemanticFusion",
@@ -2991,6 +3123,30 @@ export const knowledgeSeedTasks: KnowledgeSeedTask[] = [
     source: "https://doi.org/10.1115/1.3662552",
     notes:
       "Write a paper card with problem, assumptions, derivation, result, reproduction idea, and Autoware/CARLA connection."
+  },
+  {
+    id: "seed_spatial_intelligence_route",
+    title: "Create a spatial intelligence route card",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://web.stanford.edu/class/cs231a/",
+    notes:
+      "Build one reusable card around the five questions: where am I, what is around me, how will it move, what action should be taken, and what evidence proves the result."
+  },
+  {
+    id: "seed_spatial_intelligence_180_day_mainline",
+    title: "Run the Spatial Intelligence 180-Day Mainline",
+    track: "world-spatial-models",
+    status: "active",
+    priority: "high",
+    dueDate: null,
+    progress: 0,
+    source: "https://www.notion.so/362ef7e6aaa98177adecdc3802901d18",
+    notes:
+      "Freeze exam prep as the main line, then produce one weekly reusable spatial-intelligence output: coordinate chain, representation comparison, spatial case card, paper card, or validation-boundary table."
   },
   {
     id: "seed_world_model_latent_dynamics",

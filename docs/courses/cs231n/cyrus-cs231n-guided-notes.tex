@@ -1,0 +1,580 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=22mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+
+\setmainfont{Helvetica Neue}
+\setsansfont{Helvetica Neue}
+\setmonofont{Menlo}
+\setCJKmainfont{Songti SC}
+\setCJKsansfont{PingFang SC}
+\setCJKmonofont{PingFang SC}
+
+\hypersetup{
+  pdftitle={Cyrus CS231n Guided Notes},
+  pdfauthor={Cyrus Learning Manager},
+  pdfsubject={Stanford CS231n guided study notes},
+  pdfkeywords={computer vision, deep learning, CNN, spatial intelligence}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Cyrus CS231n Guided Notes}
+\rhead{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.2em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.2em,topsep=0.2em}
+\sloppy
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\softmax}{\operatorname{softmax}}
+\newcommand{\ReLU}{\operatorname{ReLU}}
+\newcommand{\BN}{\operatorname{BN}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\goodnotes}[1]{\textbf{GoodNotes 任务：}#1}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  {\sffamily\bfseries\Huge Cyrus CS231n 导学讲义\par}
+  \vspace{0.8em}
+  {\Large Deep Learning for Computer Vision\par}
+  \vspace{1.2em}
+  {\large 按“李飞飞 CS231n / CS23DN”学习需求整理的中文路线版\par}
+  \vfill
+  \begin{tabular}{ll}
+    官方课程 & \href{https://cs231n.stanford.edu/}{Stanford CS231n} \\
+    官方 notes & \href{https://cs231n.github.io/}{cs231n.github.io} \\
+    本地课程目录 & \texttt{docs/courses/cs231n/} \\
+    学习方式 & 网页交互 + GoodNotes 推导 + Obsidian 概念图 + Notion 证据记录 \\
+  \end{tabular}
+  \vfill
+  {\small 本文是原创导学笔记和公式索引，不替代官方课程页面、slides、assignments 或 notes。}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section*{怎么用这份讲义}
+\addcontentsline{toc}{section}{怎么用这份讲义}
+
+CS231A 解决“相机和几何如何恢复 3D”；CS231n 解决“神经网络如何从图像中学习表示”。你的空间智能路线需要二者合起来：
+\[
+  \text{CS231A geometry} + \text{CS231n visual representation}
+  \Rightarrow
+  \text{modern spatial intelligence}.
+\]
+
+每一章按四件事学习：
+\begin{enumerate}
+  \item 概念：它解决什么视觉问题。
+  \item 公式：损失函数、梯度、层结构或概率目标。
+  \item GoodNotes：手抄核心公式并画一张结构图。
+  \item 网页/Notion：记录掌握度、错题、作业输出和下一步。
+\end{enumerate}
+
+\section{课程地图}
+
+\begin{center}
+\begin{tabular}{p{0.08\linewidth}p{0.32\linewidth}p{0.50\linewidth}}
+\toprule
+编号 & 模块 & 学习目标 \\
+\midrule
+1 & Image Classification & 数据驱动分类、kNN、train/val/test。 \\
+2 & Linear Classifiers & SVM、Softmax、正则化和概率解释。 \\
+3 & Optimization and Backprop & SGD、链式法则、计算图反向传播。 \\
+4 & Neural Networks & 多层网络、激活函数、loss、初始化。 \\
+5 & CNNs & 卷积、池化、感受野、经典架构。 \\
+6 & Training Tricks & BatchNorm、Dropout、优化器、迁移学习。 \\
+7 & Dense Prediction & Detection、segmentation、IoU、NMS。 \\
+8 & Sequence and Attention & RNN、LSTM、attention、Transformer。 \\
+9 & Generative Models & Autoencoder、VAE、GAN、diffusion 入口。 \\
+10 & Self-supervised Vision & Contrastive learning、CLIP/ViT 入口、空间智能连接。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Image Classification}
+
+\subsection{数据驱动视觉}
+
+传统视觉会手工设计边缘、角点、纹理等特征；CS231n 的起点是数据驱动：给训练集
+\[
+  \{(x_i,y_i)\}_{i=1}^{N},
+\]
+学习一个函数
+\[
+  f_\theta(x)\rightarrow y.
+\]
+图像分类的目标是把输入图像 $x$ 映射到类别标签 $y$。
+
+\subsection{kNN}
+
+kNN 不学习显式参数，只存训练样本。给新图像 $x$，计算它和训练图像 $x_i$ 的距离。常见距离：
+\[
+  d_1(x,x_i)=\sum_p |x_p-x_{i,p}|,
+\]
+\[
+  d_2(x,x_i)=\sqrt{\sum_p (x_p-x_{i,p})^2}.
+\]
+选择最近的 $k$ 个样本投票。它简单但测试慢，且像素距离并不等于语义相似。
+
+\subsection{数据划分}
+
+训练集用于拟合参数，验证集用于选超参数，测试集只做最后评估：
+\[
+  \text{train}\rightarrow \text{validation}\rightarrow \text{test}.
+\]
+空间智能里同理：训练数据、验证场景、最终验收路线不能混用。
+
+\goodnotes{画出 train/val/test 三块数据，写下 L1、L2 距离，并解释为什么像素近不代表语义近。}
+
+\section{Linear Classifiers}
+
+\subsection{线性打分函数}
+
+线性分类器把图像拉平成向量 $x\in\R^D$，输出每类分数：
+\[
+  s=f(x;W,b)=Wx+b,
+\]
+其中 $W\in\R^{C\times D}$，$b\in\R^C$。第 $j$ 类分数为 $s_j$。
+
+\subsection{Multiclass SVM Loss}
+
+若正确类别为 $y_i$，SVM 希望正确类分数比其他类至少高 $\Delta$：
+\[
+  L_i=
+  \sum_{j\neq y_i}
+  \max(0,s_j-s_{y_i}+\Delta).
+\]
+总损失加正则：
+\[
+  L=\frac{1}{N}\sum_i L_i+\lambda R(W),
+\qquad
+  R(W)=\sum_k W_k^2.
+\]
+直觉：分类器不仅要答对，还要答得有 margin。
+
+\subsection{Softmax and Cross Entropy}
+
+Softmax 把分数转成概率：
+\[
+  p(y=j\mid x)=\frac{e^{s_j}}{\sum_k e^{s_k}}.
+\]
+交叉熵损失：
+\[
+  L_i=-\log p(y_i\mid x_i)
+  =
+  -s_{y_i}+\log\sum_k e^{s_k}.
+\]
+SVM 强调 margin；Softmax 强调概率校准和最大似然。
+
+\goodnotes{写出 $s=Wx+b$，画出一个三分类分数向量，分别用 SVM 和 Softmax 判断损失。}
+
+\section{Optimization and Backpropagation}
+
+\subsection{梯度下降}
+
+训练就是最小化损失：
+\[
+  \theta^\star=\arg\min_\theta L(\theta).
+\]
+梯度下降更新：
+\[
+  \theta_{t+1}=\theta_t-\eta\nabla_\theta L(\theta_t),
+\]
+其中 $\eta$ 是 learning rate。SGD 用小批量估计梯度：
+\[
+  \nabla_\theta L(\theta)\approx
+  \frac{1}{B}\sum_{i\in\mathcal B}\nabla_\theta L_i(\theta).
+\]
+
+\subsection{链式法则}
+
+若
+\[
+  z=f(y),\qquad y=g(x),
+\]
+则
+\[
+  \frac{\partial z}{\partial x}
+  =
+  \frac{\partial z}{\partial y}
+  \frac{\partial y}{\partial x}.
+\]
+反向传播就是在计算图上反复使用链式法则，把最终 loss 的梯度传回每个参数。
+
+\subsection{反传的局部视角}
+
+每个节点只需要知道两件事：
+\begin{itemize}
+  \item 前向：自己的输出；
+  \item 反向：上游梯度乘本地导数。
+\end{itemize}
+例如乘法 $z=xy$：
+\[
+  \frac{\partial z}{\partial x}=y,\qquad
+  \frac{\partial z}{\partial y}=x.
+\]
+ReLU：
+\[
+  \ReLU(x)=\max(0,x),
+\qquad
+  \frac{\partial \ReLU}{\partial x}=
+  \begin{cases}
+    1,&x>0,\\
+    0,&x\le 0.
+  \end{cases}
+\]
+
+\goodnotes{画一个 $x\rightarrow y\rightarrow L$ 的计算图，标出前向值和反向梯度。}
+
+\section{Neural Networks}
+
+\subsection{从线性到非线性}
+
+线性分类器只能学习线性决策边界。多层网络堆叠 affine layer 和非线性激活：
+\[
+  h_1=\ReLU(W_1x+b_1),
+\]
+\[
+  s=W_2h_1+b_2.
+\]
+多层网络可表示更复杂的视觉模式，但也更难训练。
+
+\subsection{激活函数}
+
+Sigmoid：
+\[
+  \sigma(x)=\frac{1}{1+e^{-x}}.
+\]
+Tanh：
+\[
+  \tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}.
+\]
+ReLU：
+\[
+  \ReLU(x)=\max(0,x).
+\]
+现代视觉网络常用 ReLU/GELU/SiLU 类激活，因为梯度传播更稳定。
+
+\subsection{初始化和正则化}
+
+若初始化太小，信号逐层消失；太大，激活爆炸。常见初始化让方差在层间近似保持稳定，例如 He initialization：
+\[
+  W_{ij}\sim \mathcal N\left(0,\frac{2}{n_{\text{in}}}\right).
+\]
+正则化防止过拟合：
+\[
+  L_{\text{total}}=L_{\text{data}}+\lambda\|W\|_2^2.
+\]
+
+\section{Convolutional Neural Networks}
+
+\subsection{卷积层}
+
+卷积利用图像的局部性和平移共享。若输入空间尺寸为 $W$，卷积核尺寸为 $F$，padding 为 $P$，stride 为 $S$，输出尺寸：
+\[
+  W_{\text{out}}=\frac{W-F+2P}{S}+1.
+\]
+若卷积核数量为 $K$，输入通道为 $C$，参数量：
+\[
+  F\cdot F\cdot C\cdot K+K.
+\]
+共享参数让 CNN 比全连接层更适合图像。
+
+\subsection{Pooling and Receptive Field}
+
+Pooling 汇聚局部响应，降低空间尺寸并增加局部不变性。感受野表示输出单元能看到输入图像的范围。层数越深，感受野越大，语义越抽象。
+
+\subsection{经典架构}
+
+\begin{itemize}
+  \item AlexNet：证明深度 CNN 在 ImageNet 上有效。
+  \item VGG：使用堆叠 $3\times3$ 卷积，结构规整。
+  \item GoogLeNet/Inception：多尺度分支与 $1\times1$ 卷积降维。
+  \item ResNet：残差连接
+  \[
+    y=F(x)+x
+  \]
+  缓解深层网络优化困难。
+\end{itemize}
+
+\goodnotes{画一条 CNN 流水线：image $\rightarrow$ conv $\rightarrow$ ReLU $\rightarrow$ pool $\rightarrow$ classifier。}
+
+\section{Training Tricks and Transfer Learning}
+
+\subsection{Batch Normalization}
+
+BatchNorm 对 mini-batch 内的激活标准化：
+\[
+  \mu_B=\frac{1}{m}\sum_i x_i,
+\qquad
+  \sigma_B^2=\frac{1}{m}\sum_i (x_i-\mu_B)^2,
+\]
+\[
+  \hat x_i=\frac{x_i-\mu_B}{\sqrt{\sigma_B^2+\epsilon}},
+\qquad
+  y_i=\gamma \hat x_i+\beta.
+\]
+它改善优化稳定性，也带来一定正则效果。
+
+\subsection{Dropout}
+
+训练时随机丢弃神经元：
+\[
+  m_i\sim \operatorname{Bernoulli}(p),
+\qquad
+  \tilde h_i=\frac{m_i h_i}{p}.
+\]
+这迫使网络不依赖单个特征。
+
+\subsection{Momentum and Adam}
+
+Momentum：
+\[
+  v_{t+1}=\mu v_t-\eta\nabla_\theta L(\theta_t),
+\qquad
+  \theta_{t+1}=\theta_t+v_{t+1}.
+\]
+Adam 使用一阶矩和二阶矩估计：
+\[
+  m_t=\beta_1m_{t-1}+(1-\beta_1)g_t,
+\]
+\[
+  v_t=\beta_2v_{t-1}+(1-\beta_2)g_t^2.
+\]
+
+\subsection{Transfer Learning}
+
+若数据少，直接从头训练大模型不现实。迁移学习流程：
+\[
+  \text{pretrained backbone}\rightarrow \text{freeze or finetune}\rightarrow \text{task head}.
+\]
+对你的空间智能路线，ImageNet/CLIP/DINO/ViT backbone 可以作为检测、分割、深度、地图语义的表示层。
+
+\section{Detection and Segmentation}
+
+\subsection{Detection}
+
+目标检测输出类别和边界框。框质量常用 IoU：
+\[
+  \operatorname{IoU}(A,B)=
+  \frac{|A\cap B|}{|A\cup B|}.
+\]
+NMS 过滤重复框：
+\[
+  \text{keep high score box, remove boxes with IoU}>\tau.
+\]
+Two-stage 检测器先提 proposals，再分类和回归；one-stage 检测器直接密集预测。
+
+\subsection{Segmentation}
+
+语义分割给每个像素类别：
+\[
+  f_\theta(I)_{u,v}\rightarrow c.
+\]
+实例分割还区分同类不同物体。对于空间智能，segmentation 是把图像转成可用于地图、规划和语言 grounding 的结构化表示。
+
+\subsection{Dense Prediction}
+
+深度估计、光流、分割都属于 dense prediction：输出不是一个类别，而是每个像素一个值或向量。典型结构是 encoder-decoder：
+\[
+  I\rightarrow z\rightarrow \hat Y.
+\]
+
+\section{RNN, Attention, and Transformers}
+
+\subsection{RNN}
+
+序列模型维护隐藏状态：
+\[
+  h_t=\phi(W_{xh}x_t+W_{hh}h_{t-1}+b_h),
+\]
+\[
+  y_t=W_{hy}h_t+b_y.
+\]
+RNN 可用于图像描述、视频理解和时序状态建模，但长序列训练困难。
+
+\subsection{LSTM}
+
+LSTM 用门控控制记忆：
+\[
+  f_t=\sigma(W_f[h_{t-1},x_t]+b_f),
+\]
+\[
+  i_t=\sigma(W_i[h_{t-1},x_t]+b_i),
+\]
+\[
+  o_t=\sigma(W_o[h_{t-1},x_t]+b_o),
+\]
+\[
+  c_t=f_t\odot c_{t-1}+i_t\odot \tilde c_t.
+\]
+
+\subsection{Attention}
+
+Scaled dot-product attention：
+\[
+  \operatorname{Attention}(Q,K,V)
+  =
+  \softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V.
+\]
+Transformer 把图像 patch 或 token 通过 self-attention 建模全局关系。ViT、DETR、CLIP、SAM 等现代视觉模型都来自这条线。
+
+\section{Generative Models}
+
+\subsection{Autoencoder}
+
+Autoencoder 学习压缩表示：
+\[
+  z=f_\theta(x),\qquad \hat x=g_\phi(z),
+\]
+\[
+  L=\|x-\hat x\|^2.
+\]
+瓶颈 $z$ 是对输入的低维表示。
+
+\subsection{VAE}
+
+VAE 学习概率潜变量：
+\[
+  q_\phi(z\mid x),\qquad p_\theta(x\mid z).
+\]
+优化 ELBO：
+\[
+  \mathcal L
+  =
+  \E_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)]
+  -
+  \KL(q_\phi(z\mid x)\|p(z)).
+\]
+
+\subsection{GAN}
+
+GAN 的 min-max 目标：
+\[
+  \min_G\max_D
+  \E_{x\sim p_{\text{data}}}[\log D(x)]
+  +
+  \E_{z\sim p_z}[\log(1-D(G(z)))].
+\]
+生成模型让视觉从“识别世界”进一步走向“想象和生成世界”。
+
+\section{Self-supervised Vision}
+
+\subsection{Contrastive Learning}
+
+对同一图像的不同增强视为正样本，对其他图像视为负样本。InfoNCE 形式：
+\[
+  \mathcal L_i=
+  -\log
+  \frac{\exp(\operatorname{sim}(z_i,z_i^+)/\tau)}
+  {\exp(\operatorname{sim}(z_i,z_i^+)/\tau)+
+  \sum_{j}\exp(\operatorname{sim}(z_i,z_j^-)/\tau)}.
+\]
+目标是让同一语义对象的表示靠近，不同对象远离。
+
+\subsection{Masked Modeling}
+
+Masked image modeling 随机遮挡 patch，让模型恢复缺失内容：
+\[
+  \hat x_{\mathcal M}=f_\theta(x_{\setminus \mathcal M}).
+\]
+这与空间智能里的世界模型很接近：系统要从部分观测推断完整世界。
+
+\subsection{Vision-Language Representation}
+
+CLIP 类模型把图像和文本投到同一空间。图像表示 $v$ 和文本表示 $t$ 的相似度：
+\[
+  s(v,t)=\frac{v^Tt}{\|v\|\|t\|}.
+\]
+这条线是空间智能从 perception 走向 language-grounded planning 的桥。
+
+\section{CS231n 到空间智能的连接}
+
+CS231n 给你神经视觉 backbone，CS231A 给你 3D 几何约束。现代空间智能通常是：
+\[
+  \text{image/video} \rightarrow \text{visual features}
+  \rightarrow \text{geometry / depth / motion}
+  \rightarrow \text{world state}
+  \rightarrow \text{action}.
+\]
+
+学习顺序建议：
+\begin{enumerate}
+  \item 用 CS231n 学会视觉表示：CNN、Transformer、self-supervised features。
+  \item 用 CS231A 学会几何：相机、对极、三角测量、SfM。
+  \item 用 SLAM/三维重建把表示和几何合并：feature matching、pose estimation、BA、dense map。
+  \item 用世界模型把视觉状态变成可预测、可决策的 latent state。
+\end{enumerate}
+
+\section*{公式速查}
+\addcontentsline{toc}{section}{公式速查}
+
+\begin{align*}
+  &\text{kNN L2:} &
+  d_2(x,x_i)&=\sqrt{\sum_p(x_p-x_{i,p})^2}.\\
+  &\text{Linear classifier:} &
+  s&=Wx+b.\\
+  &\text{SVM:} &
+  L_i&=\sum_{j\neq y_i}\max(0,s_j-s_{y_i}+\Delta).\\
+  &\text{Softmax:} &
+  p(y=j\mid x)&=\frac{e^{s_j}}{\sum_k e^{s_k}}.\\
+  &\text{Cross entropy:} &
+  L_i&=-\log p(y_i\mid x_i).\\
+  &\text{SGD:} &
+  \theta_{t+1}&=\theta_t-\eta\nabla_\theta L(\theta_t).\\
+  &\text{ReLU:} &
+  \ReLU(x)&=\max(0,x).\\
+  &\text{Conv output:} &
+  W_{\text{out}}&=\frac{W-F+2P}{S}+1.\\
+  &\text{BatchNorm:} &
+  \hat x_i&=\frac{x_i-\mu_B}{\sqrt{\sigma_B^2+\epsilon}}.\\
+  &\text{ResNet:} &
+  y&=F(x)+x.\\
+  &\text{IoU:} &
+  \operatorname{IoU}(A,B)&=\frac{|A\cap B|}{|A\cup B|}.\\
+  &\text{Attention:} &
+  \operatorname{Attention}(Q,K,V)&=\softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V.\\
+  &\text{VAE ELBO:} &
+  \mathcal L&=\E_{q_\phi}[\log p_\theta(x\mid z)]-\KL(q_\phi(z\mid x)\|p(z)).\\
+  &\text{GAN:} &
+  \min_G\max_D&\ \E_x[\log D(x)]+\E_z[\log(1-D(G(z)))].
+\end{align*}
+
+\section*{GoodNotes 页码建议}
+\addcontentsline{toc}{section}{GoodNotes 页码建议}
+
+\begin{center}
+\begin{tabular}{p{0.12\linewidth}p{0.34\linewidth}p{0.44\linewidth}}
+\toprule
+页码 & 标题 & 必画图 \\
+\midrule
+001 & Image Classification & train/val/test 和 kNN 投票。 \\
+002 & SVM and Softmax & 分数向量、margin、概率。 \\
+003 & Backprop & 计算图和局部梯度。 \\
+004 & Neural Network & affine-ReLU-affine 结构。 \\
+005 & CNN & 卷积核滑动、输出尺寸、参数量。 \\
+006 & Training Tricks & BatchNorm、Dropout、Momentum。 \\
+007 & Detection/Segmentation & box、IoU、mask。 \\
+008 & Attention & $Q,K,V$ 和 token 关系图。 \\
+009 & Generative Models & encoder/decoder、VAE、GAN。 \\
+010 & Spatial Bridge & CS231n feature 到 CS231A geometry 的连接图。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

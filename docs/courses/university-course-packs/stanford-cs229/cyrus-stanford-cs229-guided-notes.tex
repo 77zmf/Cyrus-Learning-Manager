@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Stanford CS229 Machine Learning}
+\author{Stanford course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://cs229.stanford.edu/}
+
+\textbf{Why this course is in the system.} Empirical risk, gradient descent, generative models, SVMs, neural networks, and generalization.
+
+\textbf{Learning output.} Next batch target for a machine-learning formula and problem route.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Calculus
+  \item Linear algebra
+  \item Probability
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \min_{\theta}\frac{1}{N}\sum_{i=1}^{N}\ell(f_{\theta}(\bm{x}_i),y_i)+\lambda\Omega(\theta)\\
+  \theta\leftarrow\theta-\alpha\nabla_{\theta}J(\theta)\\
+  p(y=1|\bm{x})=\sigma(\theta^{\mathsf T}\bm{x})\\
+  p(\bm{x}|y)=\mathcal{N}(\bm{x};\bm{\mu}_y,\Sigma_y)
+\end{align*}
+
+\section*{Visual page}
+Draw data, model, loss surface, gradient step, and validation error.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page ST-ML001: empirical risk
+  \item Page ST-ML002: gradient descent
+  \item Page ST-ML003: probabilistic model
+\end{itemize}
+
+\section*{Web interaction}
+A loss-landscape slider that changes learning rate and overfitting.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Stanford ML -> CS229 \\
+Notion & Problem-set status and formula mastery. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

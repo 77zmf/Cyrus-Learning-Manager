@@ -3,6 +3,36 @@ import { describe, expect, it, vi } from "vitest";
 import { StudyLab } from "../../src/components/StudyLab";
 
 describe("StudyLab", () => {
+  it("defaults to the spatial intelligence main route", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    expect(screen.getByLabelText("Track")).toHaveValue("world-spatial-models");
+    expect(screen.getByText("Spatial intelligence route")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Spatial Intelligence" })).toHaveClass("active");
+    expect(screen.getByRole("heading", { name: "CS231A Course Notes" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CS231n Course Notes" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Course Notes 1: Camera Models" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/cs231a/course-notes/01-camera-models.pdf"
+    );
+    expect(screen.getByRole("link", { name: "CS231n Cyrus CS231n Guided Notes" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/cs231n/cyrus-cs231n-guided-notes.pdf"
+    );
+  });
+
+  it("offers the spatial intelligence route under world and spatial models", () => {
+    render(<StudyLab onCreateTask={vi.fn()} />);
+
+    expect(screen.getByText("Spatial intelligence route")).toBeInTheDocument();
+    expect(screen.getByText(/location, scene content, motion, action, or evidence/i)).toBeInTheDocument();
+    expect(screen.getByText(/camera, ego, map, and BEV frame chain/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "World Labs World API" })).toHaveAttribute(
+      "href",
+      "https://www.worldlabs.ai/blog/announcing-the-world-api"
+    );
+  });
+
   it("switches track and mode to show a concrete learning prompt", () => {
     render(<StudyLab onCreateTask={vi.fn()} />);
 

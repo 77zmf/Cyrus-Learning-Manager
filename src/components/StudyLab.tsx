@@ -11,16 +11,19 @@ import {
 } from "../domain/study-lab";
 import { tracks } from "../domain/tracks";
 import type { TrackId } from "../domain/types";
+import { Cs231aCourseNotes } from "./Cs231aCourseNotes";
+import { Cs231nCourseNotes } from "./Cs231nCourseNotes";
 import { FormulaVisual } from "./FormulaVisual";
 import { MathLines, MathText } from "./MathText";
 
 interface StudyLabProps {
   onCreateTask: (input: CreateTaskInput) => void;
+  showCourseNotes?: boolean;
 }
 
-export function StudyLab({ onCreateTask }: StudyLabProps) {
-  const [track, setTrack] = useState<TrackId>("tsinghua-automation");
-  const [mode, setMode] = useState<StudyMode>("formula");
+export function StudyLab({ onCreateTask, showCourseNotes = true }: StudyLabProps) {
+  const [track, setTrack] = useState<TrackId>("world-spatial-models");
+  const [mode, setMode] = useState<StudyMode>("spatial-intelligence");
 
   const availableModes = useMemo(() => modesForTrack(track), [track]);
   const plan = findStudyPlan(track, mode) ?? studyPlans.find((item) => item.track === track) ?? studyPlans[0];
@@ -166,6 +169,13 @@ export function StudyLab({ onCreateTask }: StudyLabProps) {
             ))}
           </div>
         </article>
+
+        {showCourseNotes && plan.track === "world-spatial-models" ? (
+          <>
+            <Cs231aCourseNotes className="study-card cs231a-notes-card" />
+            <Cs231nCourseNotes className="study-card cs231n-notes-card" />
+          </>
+        ) : null}
       </div>
     </section>
   );

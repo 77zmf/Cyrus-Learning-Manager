@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Stanford AA228/CS238 Decision Making under Uncertainty}
+\author{Stanford course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://web.stanford.edu/class/aa228/}
+
+\textbf{Why this course is in the system.} MDPs, POMDPs, planning, risk, and decision-making under uncertainty.
+
+\textbf{Learning output.} Connect it to world models and autonomous-driving decision chapters.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Probability
+  \item Dynamic programming
+  \item Basic optimization
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  V^{\star}(s)=\max_a\left[R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^{\star}(s')\right]\\
+  \pi^{\star}(s)=\arg\max_a Q^{\star}(s,a)\\
+  b'(s')=\eta O(o|s',a)\sum_s P(s'|s,a)b(s)\\
+  \mathbb{E}\left[\sum_{t=0}^{\infty}\gamma^t r_t\right]
+\end{align*}
+
+\section*{Visual page}
+Draw state, action, transition, observation, belief, and value as a decision loop.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page ST-DM001: MDP
+  \item Page ST-DM002: POMDP belief update
+  \item Page ST-DM003: risk and planning
+\end{itemize}
+
+\section*{Web interaction}
+A grid-world widget where transition uncertainty changes the best action.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Stanford Decision Making -> AA228 CS238 \\
+Notion & World-model decision bridge. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

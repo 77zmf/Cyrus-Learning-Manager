@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Tsinghua control spine}
+\author{Tsinghua course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://www.au.tsinghua.edu.cn/}
+
+\textbf{Why this course is in the system.} Connect automatic control, modern control, optimization, estimation, robust control, and nonlinear control.
+
+\textbf{Learning output.} Generate individual guided PDFs in batches, with the roadmap as the current index.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Differential equations
+  \item Signals and systems
+  \item Matrix rank and eigenvalues
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \mathcal{C}=[B\;AB\;\cdots\;A^{n-1}B],\quad \operatorname{rank}(\mathcal{C})=n\\
+  \mathcal{O}=\begin{bmatrix}C\\CA\\\vdots\\CA^{n-1}\end{bmatrix}\\
+  V(\bm{x})=\bm{x}^{\mathsf T}P\bm{x},\quad \dot{V}(\bm{x})<0\\
+  A^{\mathsf T}P+PA-PBR^{-1}B^{\mathsf T}P+Q=0
+\end{align*}
+
+\section*{Visual page}
+Draw controllability, observability, stability, and LQR as four connected gates.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page THU-C001: controllability and observability
+  \item Page THU-C002: Lyapunov and LQR
+\end{itemize}
+
+\section*{Web interaction}
+A rank-gate visual where the learner toggles B and C and watches rank change.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Control Engineering -> Tsinghua control spine \\
+Notion & Mastery levels for control gates. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

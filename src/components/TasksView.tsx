@@ -34,7 +34,7 @@ export function TasksView({
   onStatusUpdate
 }: TasksViewProps) {
   const [title, setTitle] = useState("");
-  const [newTrack, setNewTrack] = useState<TrackId>("mit-eecs");
+  const [newTrack, setNewTrack] = useState<TrackId>("world-spatial-models");
   const [newPriority, setNewPriority] = useState<TaskPriority>("medium");
 
   function submitTask(event: React.FormEvent<HTMLFormElement>) {

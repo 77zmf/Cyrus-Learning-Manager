@@ -1,0 +1,968 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=22mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+
+\setmainfont{Helvetica Neue}
+\setsansfont{Helvetica Neue}
+\setmonofont{Menlo}
+\setCJKmainfont{Songti SC}
+\setCJKsansfont{PingFang SC}
+\setCJKmonofont{PingFang SC}
+
+\definecolor{ink}{HTML}{111111}
+\definecolor{muted}{HTML}{555555}
+\definecolor{linegray}{HTML}{DDDDDD}
+
+\hypersetup{
+  pdftitle={Cyrus CS231A Guided Notes},
+  pdfauthor={Cyrus Learning Manager},
+  pdfsubject={Stanford CS231A guided study notes},
+  pdfkeywords={computer vision, SLAM, 3D reconstruction, spatial intelligence}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Cyrus CS231A Guided Notes}
+\rhead{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.2em,topsep=0.2em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.2em,topsep=0.2em}
+\sloppy
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\K}{\mathbf{K}}
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\T}{\mathbf{T}}
+\newcommand{\M}{\mathbf{M}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\p}{\mathbf{p}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\goodnotes}[1]{\textbf{GoodNotes 任务：}#1}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  {\sffamily\bfseries\Huge Cyrus CS231A 导学讲义\par}
+  \vspace{0.8em}
+  {\Large Computer Vision, 3D Reconstruction, SLAM, Spatial Intelligence\par}
+  \vspace{1.2em}
+  {\large 基于 Stanford CS231A course notes 的中文学习版整理\par}
+  \vfill
+  \begin{tabular}{ll}
+    官方课程 & \href{https://web.stanford.edu/class/cs231a/}{Stanford CS231A} \\
+    本地 PDF & \texttt{public/courses/cs231a/course-notes/} \\
+    学习方式 & 网页交互 + GoodNotes 推导 + Obsidian 思维图 + Notion 进度证据 \\
+  \end{tabular}
+  \vfill
+  {\small 本文是学习导学笔记，不替代官方讲义。公式使用 LaTeX 源码编写并在 PDF 中渲染。}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section*{使用方式}
+\addcontentsline{toc}{section}{使用方式}
+
+这份 PDF 不是每日计划，而是自学时随时打开的路线图。每一章对应一份 CS231A course note。你在 iPad Pro 的 GoodNotes 里做两件事：
+\begin{enumerate}
+  \item 抄核心公式，不要求马上全会，但要知道每个符号代表什么。
+  \item 画一张几何直觉图，例如相机、射线、平面、点云、体素、状态估计链。
+\end{enumerate}
+
+Notion 负责记录证据：当前章节、GoodNotes 页码、掌握程度、仍不懂的问题。Obsidian 负责把概念连成图：camera model $\rightarrow$ epipolar geometry $\rightarrow$ triangulation $\rightarrow$ SfM $\rightarrow$ SLAM/state estimation。
+
+\section{课程总地图}
+
+\begin{center}
+\begin{tabular}{p{0.08\linewidth}p{0.28\linewidth}p{0.55\linewidth}}
+\toprule
+编号 & 讲义 & 学习目标 \\
+\midrule
+1 & Camera Models & 从 3D 点到 2D 像素，建立相机内参、外参和标定基础。 \\
+2 & Single View Metrology & 用单张图里的消失点、消失线推回 3D 方向和相机信息。 \\
+3 & Epipolar Geometry & 两张图之间的点线约束：$\E$、$\F$、八点法和校正。 \\
+4 & Stereo Systems and SfM & 三角测量、重投影误差、SfM、歧义和 Bundle Adjustment。 \\
+5 & Active and Volumetric Stereo & 主动双目、体素重建、space carving、voxel coloring。 \\
+6 & Fitting and Matching & 最小二乘、鲁棒拟合、RANSAC、Hough voting。 \\
+7 & Representation Learning & 状态、表示学习、生成式/判别式、自监督表示。 \\
+8 & Monocular Depth and Tracking & 单目深度、光度重建损失、特征跟踪、dense descriptors。 \\
+9 & Optical and Scene Flow & 光流约束、孔径问题、Lucas-Kanade、scene flow 入口。 \\
+10 & Optimal Estimation & Bayes filter、Kalman filter、EKF，连接 SLAM 后端。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Camera Models}
+
+\subsection{从针孔模型开始}
+
+相机模型的第一件事是把 3D 点投到 2D 平面。若 3D 点为 $(x,y,z)$，焦距为 $f$，针孔投影为
+\[
+  x' = f\frac{x}{z}, \qquad y' = f\frac{y}{z}.
+\]
+核心直觉：深度 $z$ 在分母里，所以物体越远，投影越小。单个像素并不能唯一确定 3D 点，它只确定一条从相机中心出发的射线。
+
+\subsection{从物理成像到像素坐标}
+
+数字图像不是连续平面，而是像素网格。主点为 $(c_x,c_y)$，像素尺度吸收到 $\alpha,\beta$ 后：
+\[
+  u = \alpha \frac{x}{z}+c_x,\qquad
+  v = \beta \frac{y}{z}+c_y.
+\]
+相机内参矩阵为
+\[
+  \K =
+  \begin{bmatrix}
+    \alpha & 0 & c_x\\
+    0 & \beta & c_y\\
+    0 & 0 & 1
+  \end{bmatrix}.
+\]
+若考虑 skew，可写成
+\[
+  \K =
+  \begin{bmatrix}
+    \alpha & -\alpha \cot \theta & c_x\\
+    0 & \beta/\sin\theta & c_y\\
+    0 & 0 & 1
+  \end{bmatrix}.
+\]
+
+\subsection{完整相机投影}
+
+外参描述世界坐标到相机坐标：
+\[
+  P_c = R P_w + T.
+\]
+完整投影写成
+\[
+  s
+  \begin{bmatrix}
+    u\\v\\1
+  \end{bmatrix}
+  =
+  \K
+  \begin{bmatrix}
+    R & T
+  \end{bmatrix}
+  \begin{bmatrix}
+    X_w\\Y_w\\Z_w\\1
+  \end{bmatrix}.
+\]
+一句话记忆：外参管相机在哪里，内参管相机怎么成像。
+
+\subsection{相机标定}
+
+已知一组 3D 标定点 $P_i$ 和图像点 $p_i$，要求相机矩阵 $\M$：
+\[
+  p_i \sim \M P_i.
+\]
+令 $\M$ 的三行分别为 $m_1,m_2,m_3$，则
+\[
+  u_i = \frac{m_1P_i}{m_3P_i},\qquad
+  v_i = \frac{m_2P_i}{m_3P_i}.
+\]
+整理成线性约束：
+\[
+  u_i(m_3P_i)-m_1P_i=0,\qquad
+  v_i(m_3P_i)-m_2P_i=0.
+\]
+因为 $\M$ 是 $3\times4$ 矩阵且整体尺度不重要，所以有 11 个自由度；每个对应点给 2 个方程，至少需要 6 个 3D--2D 对应点。
+
+\subsection{刚体变换、畸变和弱透视}
+
+旋转矩阵满足
+\[
+  R^TR=I,\qquad \det(R)=1.
+\]
+齐次坐标下的刚体变换为
+\[
+  \begin{bmatrix}
+    v'\\1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    R&t\\0&1
+  \end{bmatrix}
+  \begin{bmatrix}
+    v\\1
+  \end{bmatrix}.
+\]
+弱透视假设物体深度变化相对平均深度很小：
+\[
+  x' \approx \frac{f}{z_0}x,\qquad y' \approx \frac{f}{z_0}y.
+\]
+\goodnotes{画出相机中心、图像平面、3D 点、投影点。标出 $z$ 在分母里的位置。}
+
+\section{Single View Metrology}
+
+\subsection{四类 2D 变换}
+
+刚体变换保长度：
+\[
+  \begin{bmatrix}
+    x'\\y'\\1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    R&t\\0&1
+  \end{bmatrix}
+  \begin{bmatrix}
+    x\\y\\1
+  \end{bmatrix}.
+\]
+相似变换保角度和长度比例：
+\[
+  \begin{bmatrix}
+    x'\\y'\\1
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    sR&t\\0&1
+  \end{bmatrix}
+  \begin{bmatrix}
+    x\\y\\1
+  \end{bmatrix}.
+\]
+仿射变换保直线和平行性：
+\[
+  T(v)=Av+t.
+\]
+投影变换保直线，但不保平行性：
+\[
+  x' \sim Hx.
+\]
+
+\subsection{直线、交点和无穷远点}
+
+直线用齐次向量表示：
+\[
+  l =
+  \begin{bmatrix}
+    a\\b\\c
+  \end{bmatrix},\qquad
+  l^T
+  \begin{bmatrix}
+    x\\y\\1
+  \end{bmatrix}=0.
+\]
+两条线的交点：
+\[
+  x = l\times l'.
+\]
+平行线在齐次坐标里会交于无穷远点，其第三个坐标为 0。
+
+\subsection{消失点和消失线}
+
+若 3D 中一组平行线的方向为 $d$，在图像中的消失点为
+\[
+  v = \K d.
+\]
+若知道 $\K$，可反推出方向：
+\[
+  d = \frac{\K^{-1}v}{\|\K^{-1}v\|}.
+\]
+一个平面上的多组平行线会产生多个消失点，它们连成这个平面的消失线或地平线 $\ell_{\text{horiz}}$。平面法向量可由
+\[
+  n = \K^T\ell_{\text{horiz}}
+\]
+估计。
+
+\subsection{用消失点估计角度和内参}
+
+两组 3D 方向 $d_1,d_2$ 的夹角满足
+\[
+  \cos\theta =
+  \frac{d_1\cdot d_2}{\|d_1\|\|d_2\|}
+  =
+  \frac{v_1^T\omega v_2}
+  {\sqrt{v_1^T\omega v_1}\sqrt{v_2^T\omega v_2}},
+\qquad
+  \omega=(\K\K^T)^{-1}.
+\]
+若两组方向真实垂直：
+\[
+  v_1^T\omega v_2=0.
+\]
+房间、走廊、建筑非常适合单视图测量，因为它们包含大量平行和垂直结构。
+
+\goodnotes{画三组互相垂直的边线，分别求三个消失点，再写下 $v_i^T\omega v_j=0$。}
+
+\section{Epipolar Geometry}
+
+\subsection{为什么需要两张图}
+
+单张图的像素点只确定一条 3D 射线。第二张图加入后，第一张图中点 $\p$ 的对应点 $\p'$ 不再需要在整张图里搜索，而只需落在第二张图的一条对极线 $\ell'$ 上。
+
+两个相机中心 $O_1,O_2$ 和 3D 点 $P$ 确定对极平面。该平面与两张图像平面的交线就是对极线。基本约束为
+\[
+  \p' \in \ell'.
+\]
+
+\subsection{Essential Matrix}
+
+在归一化相机坐标里，相机间相对运动为 $R,T$。本质矩阵为
+\[
+  \E = [T_\times]R.
+\]
+叉乘矩阵定义为
+\[
+  a\times b =
+  [a_\times]b =
+  \begin{bmatrix}
+    0&-a_z&a_y\\
+    a_z&0&-a_x\\
+    -a_y&a_x&0
+  \end{bmatrix}
+  b.
+\]
+对极约束：
+\[
+  \p^T\E\p'=0.
+\]
+$\E$ 包含两个相机之间的相对旋转和平移，秩为 2，有 5 个自由度。
+
+\subsection{Fundamental Matrix}
+
+真实图像通常是像素坐标，内参不能忽略。基础矩阵 $\F$ 直接约束像素坐标：
+\[
+  \p^T\F\p'=0.
+\]
+与 $\E$ 的关系为
+\[
+  \F = \K^{-T}\E{\K'}^{-1},\qquad
+  \E = \K^T\F\K'.
+\]
+对极线可由
+\[
+  \ell'=\F^T\p,\qquad \ell=\F\p'
+\]
+计算。
+
+\subsection{八点法和归一化八点法}
+
+每对匹配点 $\p_i=(u_i,v_i,1)$ 与 $\p'_i=(u'_i,v'_i,1)$ 给出
+\[
+  \p_i^T\F\p'_i=0.
+\]
+展开后形成
+\[
+  Wf=0,
+\]
+其中 $f$ 是 $\F$ 拉平后的 9 维向量。$\F$ 只差整体尺度，所以最少需要 8 对匹配点。实际先用 SVD 得到 $\hat{\F}$，再强制
+\[
+  \operatorname{rank}(\F)=2,\qquad \det(\F)=0.
+\]
+归一化八点法先做
+\[
+  q_i=T\p_i,\qquad q'_i=T'\p'_i
+\]
+来改善数值条件，再反归一化：
+\[
+  \F={T'}^T\F_qT.
+\]
+
+\subsection{图像校正}
+
+图像校正寻找两个单应矩阵 $H_1,H_2$：
+\[
+  \tilde{\p}=H_1\p,\qquad \tilde{\p}'=H_2\p'.
+\]
+校正后，对应点在左右图中的纵坐标相同：
+\[
+  \tilde v=\tilde v'.
+\]
+这把二维搜索变成一维搜索，是双目深度估计的关键。
+
+\section{Stereo Systems and Structure from Motion}
+
+\subsection{三角测量}
+
+若两个相机都看到 3D 点 $P$，它们的图像点为 $\p,\p'$。已知相机矩阵 $\M,\M'$ 时，理想情况下两条反投影射线相交于 $P$。现实中有噪声，所以用重投影误差：
+\[
+  \min_{\hat P}
+  \|\M\hat P-\p\|^2+\|\M'\hat P-\p'\|^2.
+\]
+线性三角测量可写为
+\[
+  AP=0,
+\]
+其中
+\[
+  A=
+  \begin{bmatrix}
+    xM_3-M_1\\
+    yM_3-M_2\\
+    x'M'_3-M'_1\\
+    y'M'_3-M'_2
+  \end{bmatrix}.
+\]
+
+\subsection{非线性精修}
+
+投影要做齐次归一化，因此精修是非线性问题：
+\[
+  \min_{\hat P}\sum_i\|\M_i\hat P-\p_i\|^2.
+\]
+Gauss--Newton 在当前估计附近线性化：
+\[
+  e(\hat P+\delta P)\approx e(\hat P)+J\delta P.
+\]
+修正量为
+\[
+  \delta P=-(J^TJ)^{-1}J^Te,
+\qquad
+  \hat P\leftarrow \hat P+\delta P.
+\]
+
+\subsection{Affine Structure from Motion}
+
+仿射或弱透视模型下：
+\[
+  x_{ij}=A_iX_j+b_i.
+\]
+对每张图中心化：
+\[
+  \hat x_{ij}=x_{ij}-\bar x_i.
+\]
+平移项消失：
+\[
+  \hat x_{ij}=A_i\hat X_j.
+\]
+堆成测量矩阵：
+\[
+  D=MS,
+\]
+其中 $M$ 是 motion matrix，$S$ 是 structure matrix。理想情况下
+\[
+  \operatorname{rank}(D)=3.
+\]
+SVD 分解：
+\[
+  D\approx U_3\Sigma_3V_3^T.
+\]
+Tomasi--Kanade 常用
+\[
+  M=U_3\sqrt{\Sigma_3},\qquad S=\sqrt{\Sigma_3}V_3^T.
+\]
+
+\subsection{重建歧义}
+
+分解 $D=MS$ 不是唯一的，因为任意可逆矩阵 $A$ 可插入：
+\[
+  D=MAA^{-1}S=(MA)(A^{-1}S).
+\]
+仿射重建保平行关系，但长度、角度和尺度不一定真实。标定相机下，歧义通常缩小到 similarity ambiguity：整体旋转、平移和尺度。
+
+\subsection{Perspective SfM 与 Bundle Adjustment}
+
+从 $\F$ 可构造一组等价投影矩阵：
+\[
+  \tilde M_1=[I\mid0],\qquad
+  \tilde M_2=[-[e_\times]\F\mid e],
+\]
+其中 $e$ 是极点，满足 $\F e=0$。若相机已标定：
+\[
+  \E=\K'^T\F\K,\qquad
+  \E=[t_\times]R.
+\]
+从 $\E$ 分解 $R,t$ 会有 4 组候选；正确解让最多三角化点同时位于两个相机前方。
+
+Bundle Adjustment 同时优化相机和 3D 点：
+\[
+  \min_{\{M_i\},\{X_j\}}
+  \sum_{(i,j)\in\mathcal V}
+  \|\pi(M_iX_j)-x_{ij}\|^2.
+\]
+它是 SfM 和 SLAM 后端优化的核心思想。
+
+\section{Active and Volumetric Stereo}
+
+\subsection{主动双目}
+
+传统双目最大难点是对应关系：
+\[
+  \p\leftrightarrow\p'.
+\]
+主动双目把一台相机换成投影仪：
+\[
+  \text{projector}+\text{camera}.
+\]
+投影仪发出已知点、线、彩色条纹或红外 pattern，相机观察到对应点后即可三角测量：
+\[
+  P=\operatorname{triangulate}(p,p').
+\]
+优点是降低匹配难度；代价是投影仪和相机都要标定，且受反光、透明、强光等影响。
+
+\subsection{体素重建}
+
+Volumetric Stereo 从 3D 空间假设开始：先定义工作体积 $V$，划成 voxel grid，然后把每个 voxel 投影到多张图，检查一致性。
+
+Space carving 使用 silhouette。每张 silhouette 反投影成 visual cone，物体在多个视觉锥交集中：
+\[
+  \text{visual hull}=\bigcap_i \text{visual cone}_i.
+\]
+若一个 voxel 投影到任一视图的 silhouette 外，就删掉。
+
+Shadow carving 增加自阴影检查，帮助处理 concavity。Voxel coloring 使用颜色一致性：
+\[
+  \operatorname{color}(x_1)\approx \operatorname{color}(x_2)\approx\cdots\approx \operatorname{color}(x_n).
+\]
+它要求表面近似 Lambertian，即观察颜色不随视角大幅变化。
+
+\section{Fitting and Matching}
+
+\subsection{普通最小二乘}
+
+拟合直线
+\[
+  y=mx+b
+\]
+时，令
+\[
+  w=
+  \begin{bmatrix}
+    m\\b
+  \end{bmatrix},
+\qquad
+  E=\|Y-Xw\|^2.
+\]
+求导得到 normal equation：
+\[
+  X^TXw=X^TY,
+\]
+闭式解为
+\[
+  w=(X^TX)^{-1}X^TY.
+\]
+
+\subsection{Total Least Squares}
+
+普通最小二乘只看 $y$ 方向误差，不适合竖直线。使用一般直线：
+\[
+  ax+by+c=0.
+\]
+点到线距离：
+\[
+  d_i=\frac{|ax_i+by_i+c|}{\sqrt{a^2+b^2}}.
+\]
+加约束
+\[
+  a^2+b^2=1
+\]
+后，误差为
+\[
+  E=\sum_i(ax_i+by_i+c)^2.
+\]
+最优直线经过数据中心 $(\bar x,\bar y)$：
+\[
+  c=-a\bar x-b\bar y.
+\]
+中心化后用 SVD 解，最小奇异值对应方向给出法向量。
+
+\subsection{鲁棒代价与 RANSAC}
+
+平方误差
+\[
+  C(u_i)=u_i^2
+\]
+会让外点影响过大。鲁棒代价示例：
+\[
+  C(u_i,\sigma)=\frac{u_i^2}{\sigma^2+u_i^2}.
+\]
+RANSAC 反复随机采最小点集，拟合模型，统计 inliers：
+\[
+  P=\{x_i\mid r(x_i,w)<\delta\}.
+\]
+估计基础矩阵时最小样本数为 $s=8$；估计单应矩阵时 $s=4$。迭代次数可估计为
+\[
+  n=\frac{\log(1-p)}
+  {\log(1-(1-\epsilon)^s)}.
+\]
+
+\subsection{Hough Transform}
+
+Hough voting 把图像点映射到参数空间。普通斜截式参数无界，常用极坐标直线：
+\[
+  x\cos\theta+y\sin\theta=\rho.
+\]
+每个图像点在 $(\rho,\theta)$ 空间投票，峰值对应图像中的直线。
+
+\section{Representations and Representation Learning}
+
+\subsection{状态、Markov 性和观测}
+
+状态 $x_t$ 是系统当前足以预测未来的压缩描述。Markov 性：
+\[
+  P(x_{t+1}\mid x_t,x_{t-1},\dots,x_1)=P(x_{t+1}\mid x_t).
+\]
+若状态不可直接观测，引入观测 $z_t$：
+\[
+  P(z_t\mid x_t,x_{t-1},\dots)=P(z_t\mid x_t).
+\]
+这就是 HMM、POMDP、SLAM 状态估计的基础。
+
+\subsection{生成式与判别式}
+
+生成式模型描述联合分布：
+\[
+  p(z,x)=p(z\mid x)p(x).
+\]
+判别式模型直接描述
+\[
+  p(x\mid z).
+\]
+视觉任务里，生成式方法像“给定姿态渲染图像再比较”，判别式方法像“神经网络从图像直接回归姿态”。
+
+\subsection{什么是好的表示}
+
+好的表示应该：
+\begin{itemize}
+  \item compact：压缩但不丢关键因素；
+  \item explanatory：足以解释输入变化；
+  \item disentangled：不同因素尽量独立；
+  \item hierarchical：低级特征组合成高级概念；
+  \item useful：让下游推理、预测、决策更容易。
+\end{itemize}
+
+\subsection{自编码器和自监督}
+
+Autoencoder 学习瓶颈表示 $z$：
+\[
+  \hat X=F(X),\qquad L=\|X-\hat X\|.
+\]
+自监督学习把输入的一部分当标签，例如用图像下半部分预测上半部分。空间智能中的世界模型也在做类似事情：学习一个能预测、压缩和支持决策的 latent state。
+
+\section{Monocular Depth Estimation and Feature Tracking}
+
+\subsection{深度与视差}
+
+校正双目下，视差为
+\[
+  d=u_L-u_R.
+\]
+深度公式：
+\[
+  Z=\frac{fb}{d},
+\]
+其中 $f$ 是焦距，$b$ 是基线。近处视差大，远处视差小。
+
+单目深度在几何上欠约束，但可以利用透视、尺度、遮挡、光照等统计线索学习。
+
+\subsection{监督、无监督和自监督深度}
+
+监督单目深度直接最小化预测深度与真值深度的误差。无监督双目深度把深度或视差作为中间表示，用右图重建左图：
+\[
+  \tilde I_l(u,v)=I_r(u-d_l(u,v),v).
+\]
+典型损失含三部分：
+\[
+  C_s=\alpha_{ap}(C^l_{ap}+C^r_{ap})
+  +\alpha_{ds}(C^l_{ds}+C^r_{ds})
+  +\alpha_{lr}(C^l_{lr}+C^r_{lr}).
+\]
+外观重建损失：
+\[
+  C^l_{ap}=
+  \frac{1}{N}\sum_{i,j}
+  \alpha\frac{1-\operatorname{SSIM}(I^l_{ij},\tilde I^l_{ij})}{2}
+  +(1-\alpha)\|I^l_{ij}-\tilde I^l_{ij}\|_1.
+\]
+边缘感知平滑：
+\[
+  C^l_{ds}=
+  \frac{1}{N}\sum_{i,j}
+  |\partial_x d^l_{ij}|e^{-\|\partial_x I^l_{ij}\|}
+  +
+  |\partial_y d^l_{ij}|e^{-\|\partial_y I^l_{ij}\|}.
+\]
+左右一致性：
+\[
+  C^l_{lr}=
+  \frac{1}{N}\sum_{i,j}
+  |d^l_{ij}-d^r_{i,j+d^l_{ij}}|.
+\]
+
+自监督单目视频深度把深度和相邻帧位姿一起预测，通过 novel view synthesis 构造光度误差：
+\[
+  pe(I_a,I_b)=
+  \frac{\alpha}{2}(1-\operatorname{SSIM}(I_a,I_b))
+  +(1-\alpha)\|I_a-I_b\|_1,
+\]
+\[
+  L_p=\sum_{t'}pe(I_t,I_{t'\rightarrow t}).
+\]
+
+\subsection{Feature Tracking 和 Dense Descriptors}
+
+特征跟踪本质是跨帧对应关系问题。传统方法使用手工 keypoint 和 descriptor；现代方法学习每个像素的 dense descriptor：
+\[
+  f(I,u)\in\R^D.
+\]
+匹配点希望 descriptor 距离小：
+\[
+  L_{\text{matches}}=
+  \frac{1}{N_{\text{matches}}}
+  \sum D(I_a,u_a,I_b,u_b)^2.
+\]
+非匹配点希望距离大：
+\[
+  L_{\text{non-matches}}=
+  \frac{1}{N_{\text{non-matches}}}
+  \sum \max(0,M-D(I_a,u_a,I_b,u_b)^2).
+\]
+总损失：
+\[
+  L=L_{\text{matches}}+L_{\text{non-matches}}.
+\]
+
+\section{Optical and Scene Flow}
+
+\subsection{Optical Flow 与 Motion Field}
+
+Optical flow 是视频里每个像素的表观 2D 运动：
+\[
+  \bm u=
+  \begin{bmatrix}
+    u\\v
+  \end{bmatrix}.
+\]
+Motion field 是 3D 运动向量投影到图像平面的理想速度场。二者不总相同：光照变化可能产生 optical flow，但真实 3D 点未动；无纹理旋转可能有 motion field 但没有可见 optical flow。
+
+\subsection{光流约束方程}
+
+亮度恒定假设：
+\[
+  I(x,y,t)=I(x+\Delta x,y+\Delta y,t+\Delta t).
+\]
+小运动假设下，一阶 Taylor 展开：
+\[
+  I(x+\Delta x,y+\Delta y,t+\Delta t)
+  \approx
+  I(x,y,t)+I_x\Delta x+I_y\Delta y+I_t\Delta t.
+\]
+得到光流约束：
+\[
+  I_xu+I_yv+I_t=0,
+\]
+或
+\[
+  -I_t=\nabla I^T\bm u.
+\]
+一个像素只有一个方程，却有 $u,v$ 两个未知数，所以欠约束，只能得到 normal flow。
+
+\subsection{孔径问题与 Lucas--Kanade}
+
+沿边缘方向的运动无法由局部窗口唯一确定，这叫 aperture problem。Lucas--Kanade 假设邻域内像素共享同一个 flow：
+\[
+  A\bm u=b.
+\]
+最小二乘解：
+\[
+  \bm u_{\text{ls}}=(A^TA)^{-1}A^Tb.
+\]
+可解性取决于
+\[
+  A^TA=
+  \begin{bmatrix}
+    \sum I_x^2 & \sum I_xI_y\\
+    \sum I_xI_y & \sum I_y^2
+  \end{bmatrix}.
+\]
+纹理丰富、梯度方向多样的角点区域最适合跟踪。
+
+\section{Optimal Estimation}
+
+\subsection{状态估计目标}
+
+状态估计要递归地估计
+\[
+  p(x_t\mid z_{1:t},u_{1:t}),
+\]
+也叫 belief：
+\[
+  bel(t).
+\]
+Markov 转移模型：
+\[
+  p(x_t\mid x_{0:t-1},z_{1:t-1},u_{1:t})
+  =
+  p(x_t\mid x_{t-1},u_t).
+\]
+测量模型：
+\[
+  p(z_t\mid x_{0:t},z_{1:t-1},u_{1:t})
+  =
+  p(z_t\mid x_t).
+\]
+
+\subsection{Bayes Filter}
+
+Prediction：
+\[
+  \overline{bel}(x_t)
+  =
+  \int p(x_t\mid x_{t-1},u_t)bel(x_{t-1})\,dx_{t-1}.
+\]
+Update：
+\[
+  bel(x_t)=\eta p(z_t\mid x_t)\overline{bel}(x_t),
+\]
+其中 $\eta$ 是归一化常数。
+
+离散情形可以写成矩阵：
+\[
+  \widehat{bel}(t)=T(u_t)bel(t-1),
+\]
+\[
+  bel(t)=
+  \frac{M(z_t)\widehat{bel}(t)}
+  {\mathbf{1}^TM(z_t)\widehat{bel}(t)}.
+\]
+
+\subsection{Kalman Filter}
+
+线性高斯系统：
+\[
+  x_t=A_tx_{t-1}+B_tu_t+w_t,\qquad
+  z_t=C_tx_t+v_t.
+\]
+噪声：
+\[
+  w_t\sim\Normal(0,Q_t),\qquad v_t\sim\Normal(0,R_t).
+\]
+预测均值和协方差：
+\[
+  \mu_{t|t-1}=A_t\mu_{t-1|t-1}+B_tu_t,
+\]
+\[
+  \Sigma_{t|t-1}=A_t\Sigma_{t-1|t-1}A_t^T+Q_t.
+\]
+更新：
+\[
+  K_t=
+  \Sigma_{t|t-1}C_t^T
+  (C_t\Sigma_{t|t-1}C_t^T+R_t)^{-1},
+\]
+\[
+  \mu_{t|t}=\mu_{t|t-1}+K_t(z_t-C_t\mu_{t|t-1}),
+\]
+\[
+  \Sigma_{t|t}=\Sigma_{t|t-1}-K_tC_t\Sigma_{t|t-1}.
+\]
+这里
+\[
+  z_t-C_t\mu_{t|t-1}
+\]
+叫 innovation，表示真实观测和预测观测的差。
+
+\subsection{Extended Kalman Filter}
+
+非线性系统：
+\[
+  x_t=f(x_{t-1},u_t)+w_t,\qquad
+  z_t=g(x_t)+v_t.
+\]
+EKF 在当前均值附近线性化：
+\[
+  A_t=
+  \left.
+  \frac{\partial f(x_t,u_t)}{\partial x_t}
+  \right|_{x_t=\mu_{t-1|t-1}},
+\qquad
+  C_t=
+  \left.
+  \frac{\partial g(x_t)}{\partial x_t}
+  \right|_{x_t=\mu_{t|t-1}}.
+\]
+然后使用 Kalman filter 的预测和更新形式。SLAM 中许多经典滤波器都可以看成这个框架的变体。
+
+\section{SLAM 与三维重建学习路线}
+
+\begin{enumerate}
+  \item 先会相机：$\K,[R\mid T]$，知道像素如何来自 3D 点。
+  \item 再会两视图：$\E,\F$，知道点如何约束对极线。
+  \item 再会深度：rectification、disparity、triangulation。
+  \item 再会鲁棒前端：matching、RANSAC、optical flow。
+  \item 再会后端：reprojection error、Gauss--Newton、Bundle Adjustment。
+  \item 最后接状态估计：Bayes filter、Kalman filter、EKF、factor graph。
+\end{enumerate}
+
+你学习时不需要一天学完。每次只要完成一个闭环：
+\[
+  \text{公式} \rightarrow \text{几何图} \rightarrow \text{一句话解释} \rightarrow \text{一个失败模式}.
+\]
+
+\section*{公式速查}
+\addcontentsline{toc}{section}{公式速查}
+
+\begin{align*}
+  &\text{Pinhole:} &
+  x'&=f\frac{x}{z},&
+  y'&=f\frac{y}{z}.\\
+  &\text{Camera projection:} &
+  s\begin{bmatrix}u\\v\\1\end{bmatrix}
+  &=\K[R\mid T]\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix}.\\
+  &\text{Vanishing point:} &
+  v&=\K d,&
+  d&=\frac{\K^{-1}v}{\|\K^{-1}v\|}.\\
+  &\text{Epipolar:} &
+  \p^T\E\p'&=0,&
+  \p^T\F\p'&=0.\\
+  &\text{Essential:} &
+  \E&=[t_\times]R.\\
+  &\text{Fundamental:} &
+  \F&=\K^{-T}\E{\K'}^{-1}.\\
+  &\text{Stereo depth:} &
+  Z&=\frac{fb}{d}.\\
+  &\text{Triangulation:} &
+  AP&=0.\\
+  &\text{Bundle adjustment:} &
+  \min_{\{M_i\},\{X_j\}}
+  &\sum_{(i,j)\in\mathcal V}
+  \|\pi(M_iX_j)-x_{ij}\|^2.\\
+  &\text{RANSAC iterations:} &
+  n&=\frac{\log(1-p)}{\log(1-(1-\epsilon)^s)}.\\
+  &\text{Optical flow:} &
+  I_xu+I_yv+I_t&=0.\\
+  &\text{Kalman gain:} &
+  K_t&=\Sigma_{t|t-1}C_t^T(C_t\Sigma_{t|t-1}C_t^T+R_t)^{-1}.
+\end{align*}
+
+\section*{GoodNotes 页码建议}
+\addcontentsline{toc}{section}{GoodNotes 页码建议}
+
+\begin{center}
+\begin{tabular}{p{0.12\linewidth}p{0.34\linewidth}p{0.44\linewidth}}
+\toprule
+页码 & 标题 & 必画图 \\
+\midrule
+001 & Pinhole Camera & 相机中心、图像平面、$z$ 深度。 \\
+002 & Camera Matrix & $\K$、$R,T$、世界坐标到像素。 \\
+003 & Vanishing Point & 马路两侧线汇聚到消失点。 \\
+004 & Epipolar Geometry & 点 $\rightarrow$ 对极线。 \\
+005 & Eight-Point and RANSAC & 匹配点、内点、外点。 \\
+006 & Triangulation & 两条射线交出 3D 点。 \\
+007 & SfM and BA & 相机轨迹、稀疏点云、重投影误差。 \\
+008 & Volumetric Stereo & voxel grid 和 visual hull。 \\
+009 & Depth and Flow & 视差、光流向量、孔径问题。 \\
+010 & Bayes/Kalman/EKF & predict-update 状态估计链。 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

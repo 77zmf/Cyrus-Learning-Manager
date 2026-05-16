@@ -9,8 +9,11 @@ import {
 } from "../domain/knowledge";
 import { libraryTrackRoutes } from "../domain/learning-workflow";
 import { tracks } from "../domain/tracks";
+import { Cs231aCourseNotes } from "./Cs231aCourseNotes";
+import { Cs231nCourseNotes } from "./Cs231nCourseNotes";
 import { MathText } from "./MathText";
 import { StudyLab } from "./StudyLab";
+import { UniversityCoursePacks } from "./UniversityCoursePacks";
 
 interface CoursesViewProps {
   onCreateTask?: (input: CreateTaskInput) => void;
@@ -25,7 +28,10 @@ export function CoursesView({ onCreateTask = () => undefined }: CoursesViewProps
           Course modules, source links, video entry points, derivation outputs, and paper queues.
         </p>
       </div>
-      <StudyLab onCreateTask={onCreateTask} />
+      <StudyLab onCreateTask={onCreateTask} showCourseNotes={false} />
+      <Cs231aCourseNotes />
+      <Cs231nCourseNotes />
+      <UniversityCoursePacks />
       <section className="subsection-block route-block">
         <div className="section-heading">
           <h2>Track Routes</h2>

@@ -2559,6 +2559,15 @@ function guidedLessonTrack(lesson: GuidedLessonSeed) {
 
 export const learningLaunchQueue: LearningLaunchItem[] = [
   {
+    title: "Spatial Intelligence 180-Day Mainline",
+    focus: "Treat spatial intelligence and embodied AI as the active career-learning line, with exam prep frozen as a side context.",
+    prompt:
+      "Pick one real road-test or validation symptom and turn it into a spatial case card: coordinate chain, representation, action interface, failure mode, evidence path, and next experiment.",
+    goodNotes: "GoodNotes: SI-180-001 Spatial Case Card",
+    obsidian: "Obsidian: World-Spatial -> Spatial Intelligence 180-Day Mainline",
+    notion: "Notion: Spatial Intelligence 180-Day Mainline task, Status=Active, Evidence=weekly reusable output"
+  },
+  {
     title: "State-space controllability sprint",
     focus: "Use the web tutor to answer rank-test questions before touching notes.",
     prompt: "Explain A, B, AB, C=[B AB], and rank(C)<n in your own words.",
@@ -3017,6 +3026,11 @@ export const libraryTrackRoutes: LibraryTrackRoute[] = [
     title: "World and spatial route",
     tracks: "World & Spatial Models",
     output: "SLAM projection, pose graph, COLMAP reconstruction, NeRF/3DGS asset boundary"
+  },
+  {
+    title: "Spatial intelligence validation route",
+    tracks: "World & Spatial Models + Work Validation",
+    output: "coordinate frame, representation comparison, action interface, spatial case card, validation boundary"
   },
   {
     title: "Output-first IELTS route",

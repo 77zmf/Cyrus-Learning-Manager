@@ -38,6 +38,18 @@ Please use $cyrus-testing-review. Update GitHub Pages CI so npm run test runs be
 Please use $cyrus-sync-development. Refactor environment loading in server/config.ts to remove personal defaults, validate env with Zod, update tests, and keep missing Notion config as a skipped sync state.
 ```
 
+## Tool boundary audit
+
+```text
+Please use $cyrus-repo-onboarding and $cyrus-testing-review as relevant. Read docs/codex/tool-boundaries.md, docs/codex/hermes-operating-boundaries.md, and AGENTS.md. Audit the current change for Obsidian/Notion/Hermes/Codex boundary drift, especially secrets, real-vault writes, live Notion calls in tests, app-key bypass, and unverified Done states. Analysis only unless I explicitly ask for edits.
+```
+
+## Bounded Codex task
+
+```text
+Use docs/codex/templates/codex-task-template.md. Turn my request into one bounded Codex task with Goal, Context, Allowed Files, Forbidden Files, Verification, Expected Output, No-Go Rules, and Risk. If any required boundary is missing, ask one concise clarification before editing.
+```
+
 ## README creation
 
 ```text

@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Tsinghua Automation undergraduate program PDF}
+\author{Tsinghua course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf}
+
+\textbf{Why this course is in the system.} Undergraduate curriculum source for signals, automatic control, pattern recognition, machine learning, and robotics.
+
+\textbf{Learning output.} Create a GoodNotes undergraduate spine page with prerequisites, formulas, and outputs.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Advanced mathematics
+  \item Linear algebra
+  \item Programming
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  y(t)=\int_{-\infty}^{\infty}x(\tau)h(t-\tau)d\tau\\
+  \dot{\bm{x}}=A\bm{x}+B\bm{u}\\
+  \min_{\theta}\frac{1}{N}\sum_{i=1}^{N}\ell(f_{\theta}(\bm{x}_i),y_i)\\
+  s\bm{u}=K[R\;\bm{t}]\bm{X}
+\end{align*}
+
+\section*{Visual page}
+Turn the undergraduate program into a prerequisite graph instead of a calendar.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page THU-B001: undergraduate course spine
+  \item Page THU-B002: where each formula first appears
+\end{itemize}
+
+\section*{Web interaction}
+A filterable curriculum map by math, control, AI, robotics, and spatial intelligence.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Tsinghua Automation -> undergraduate spine \\
+Notion & Course-source evidence and next PDF expansion status. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

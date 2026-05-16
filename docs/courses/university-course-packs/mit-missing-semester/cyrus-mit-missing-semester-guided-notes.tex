@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: MIT Missing Semester}
+\author{MIT course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://missing.csail.mit.edu/}
+
+\textbf{Why this course is in the system.} Engineering tools course for Git, shell, debugging, data processing, and learning-system maintenance.
+
+\textbf{Learning output.} Use Notion as the tool readiness checklist so environment blockers are visible.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Terminal basics
+  \item Files and paths
+  \item Git basics
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \text{pipeline}=f_n\circ f_{n-1}\circ\cdots\circ f_1\\
+  \text{commit}=H(\text{tree},\text{parents},\text{message})\\
+  \text{debugging}=\text{reproduce}\rightarrow\text{isolate}\rightarrow\text{verify}\\
+  \text{automation}=\text{input}\rightarrow\text{script}\rightarrow\text{checked output}
+\end{align*}
+
+\section*{Visual page}
+Draw shell, editor, git, tests, and browser as one reproducible learning loop.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page MIT-T001: shell and git workflow
+  \item Page MIT-T002: debugging checklist
+\end{itemize}
+
+\section*{Web interaction}
+A command checklist that marks environment readiness.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & MIT Tools -> Missing Semester \\
+Notion & Tool blocker, command evidence, and next action. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

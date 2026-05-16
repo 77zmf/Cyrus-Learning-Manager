@@ -111,6 +111,16 @@ describe("knowledge seeds", () => {
     expect(knowledgeModules).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          id: "spatial-intelligence-learning-route",
+          track: "world-spatial-models",
+          title: "Spatial intelligence learning route"
+        }),
+        expect.objectContaining({
+          id: "spatial-intelligence-180-day-mainline",
+          track: "world-spatial-models",
+          title: "Spatial intelligence 180-day mainline"
+        }),
+        expect.objectContaining({
           id: "slam-zero-to-map",
           track: "world-spatial-models",
           title: "SLAM zero-to-map first line"
@@ -175,6 +185,16 @@ describe("knowledge seeds", () => {
 
     expect(knowledgeSeedTasks).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({
+          id: "seed_spatial_intelligence_route",
+          track: "world-spatial-models",
+          status: "active"
+        }),
+        expect.objectContaining({
+          id: "seed_spatial_intelligence_180_day_mainline",
+          track: "world-spatial-models",
+          status: "active"
+        }),
         expect.objectContaining({
           id: "seed_slam_zero_to_map",
           track: "world-spatial-models",
@@ -245,6 +265,16 @@ describe("knowledge seeds", () => {
     expect(worldSpatialModules.length).toBeGreaterThanOrEqual(14);
     expect(worldSpatialModules.every((module) => module.outputs.length >= 3)).toBe(true);
     expect(worldSpatialModules.every((module) => module.sources.length >= 3)).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("World Labs"))
+      )
+    ).toBe(true);
+    expect(
+      worldSpatialModules.some((module) =>
+        module.sources.some((source) => source.title.includes("Stanford CS231n"))
+      )
+    ).toBe(true);
     expect(
       worldSpatialModules.some((module) =>
         module.sources.some((source) => source.title.includes("VINS-Mono"))

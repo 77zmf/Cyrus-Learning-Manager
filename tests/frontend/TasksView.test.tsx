@@ -50,7 +50,10 @@ describe("TasksView", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create task" }));
 
     expect(onCreateTask).toHaveBeenCalledWith(
-      expect.objectContaining({ title: "Read control chapter" })
+      expect.objectContaining({
+        title: "Read control chapter",
+        track: "world-spatial-models"
+      })
     );
   });
 });

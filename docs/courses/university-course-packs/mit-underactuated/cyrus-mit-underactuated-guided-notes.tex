@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: MIT Underactuated Robotics}
+\author{MIT course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://underactuated.mit.edu/}
+
+\textbf{Why this course is in the system.} Entry point for robot dynamics, optimal control, trajectories, stability, and nonlinear systems.
+
+\textbf{Learning output.} Build inverted-pendulum, phase-portrait, and trajectory-optimization interactions on the web.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Dynamics
+  \item Optimization
+  \item State-space control
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  M(\bm{q})\ddot{\bm{q}}+C(\bm{q},\dot{\bm{q}})\dot{\bm{q}}+\bm{g}(\bm{q})=B\bm{u}\\
+  J=\sum_{k=0}^{N}\ell(\bm{x}_k,\bm{u}_k)\\
+  V(\bm{x})>0,\quad \dot{V}(\bm{x})<0\\
+  \bm{x}_{k+1}=f(\bm{x}_k,\bm{u}_k)
+\end{align*}
+
+\section*{Visual page}
+Use an inverted pendulum phase portrait to show underactuation and stabilization.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page MIT-R001: underactuated dynamics
+  \item Page MIT-R002: trajectory optimization
+\end{itemize}
+
+\section*{Web interaction}
+A pendulum slider for angle and control effort.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & MIT Robotics -> underactuated robotics \\
+Notion & Robot-control concepts and experiment state. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

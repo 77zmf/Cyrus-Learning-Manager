@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-05-15",
+  "packs": [
+    {
+      "university": "Tsinghua",
+      "sources": [
+        {
+          "title": "Tsinghua Automation official site",
+          "url": "https://www.au.tsinghua.edu.cn/",
+          "role": "Department and research-direction entry point"
+        },
+        {
+          "title": "Tsinghua Automation undergraduate program PDF",
+          "url": "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf",
+          "role": "Undergraduate automation curriculum source"
+        }
+      ]
+    },
+    {
+      "university": "MIT",
+      "sources": [
+        {
+          "title": "MIT 6.006 Introduction to Algorithms",
+          "url": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/"
+        },
+        {
+          "title": "MIT 6.003 Signals and Systems",
+          "url": "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"
+        },
+        {
+          "title": "MIT 6.241J Dynamic Systems and Control",
+          "url": "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+        },
+        {
+          "title": "MIT 6.245 Multivariable Control Systems",
+          "url": "https://ocw.mit.edu/courses/6-245-multivariable-control-systems-spring-2004/"
+        },
+        {
+          "title": "MIT Underactuated Robotics",
+          "url": "https://underactuated.mit.edu/"
+        },
+        {
+          "title": "MIT Missing Semester",
+          "url": "https://missing.csail.mit.edu/"
+        }
+      ]
+    },
+    {
+      "university": "Stanford",
+      "sources": [
+        {
+          "title": "Stanford CS231A",
+          "url": "https://web.stanford.edu/class/cs231a/"
+        },
+        {
+          "title": "Stanford CS231n",
+          "url": "https://cs231n.stanford.edu/"
+        },
+        {
+          "title": "Stanford CS229 Machine Learning",
+          "url": "https://cs229.stanford.edu/"
+        },
+        {
+          "title": "Stanford CS224N",
+          "url": "https://web.stanford.edu/class/cs224n/"
+        },
+        {
+          "title": "Stanford AA228/CS238",
+          "url": "https://web.stanford.edu/class/aa228/"
+        }
+      ]
+    }
+  ]
+}
+

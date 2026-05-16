@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: MIT 6.006 Introduction to Algorithms}
+\author{MIT course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/}
+
+\textbf{Why this course is in the system.} Algorithm foundation for SLAM graph search, data structures, complexity, and validation scripts.
+
+\textbf{Learning output.} Write a graph, search, and heap formula page, then connect it to simctl data structures.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Discrete math
+  \item Python or pseudocode
+  \item Proof by induction
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  T(n)=aT(n/b)+f(n)\\
+  d[v]=\min_{(u,v)\in E}\{d[u]+w(u,v)\}\\
+  O((V+E)\log V)\\
+  \operatorname{heapify}=O(\log n)
+\end{align*}
+
+\section*{Visual page}
+Draw a graph search frontier and show why a priority queue changes the exploration order.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page MIT-A001: asymptotic notation
+  \item Page MIT-A002: graph search and Dijkstra
+\end{itemize}
+
+\section*{Web interaction}
+A draggable graph where edge weights update the shortest-path table.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & MIT EECS -> 6.006 algorithms \\
+Notion & Solved problem evidence and algorithm notes. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

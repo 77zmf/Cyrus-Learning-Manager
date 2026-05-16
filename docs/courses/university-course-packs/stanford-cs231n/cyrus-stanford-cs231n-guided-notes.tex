@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Stanford CS231n Deep Learning for Computer Vision}
+\author{Stanford course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://cs231n.stanford.edu/}
+
+\textbf{Why this course is in the system.} CNNs, optimization, backpropagation, visual representation, and spatial-intelligence transfer.
+
+\textbf{Learning output.} Already connected to guided PDF, notes index, and assignment links.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Linear algebra
+  \item Calculus
+  \item Python and NumPy
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  p_k=\frac{e^{s_k}}{\sum_j e^{s_j}}\\
+  L=-\log p_y\\
+  (I*K)_{i,j}=\sum_{m,n}I_{i+m,j+n}K_{m,n}\\
+  \frac{\partial L}{\partial W}=\frac{\partial L}{\partial s}\frac{\partial s}{\partial W}
+\end{align*}
+
+\section*{Visual page}
+Draw pixels -> convolution -> activation -> class score -> loss.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page ST-DL001: softmax and cross entropy
+  \item Page ST-DL002: convolution
+  \item Page ST-DL003: backprop
+\end{itemize}
+
+\section*{Web interaction}
+A small convolution kernel visual that updates feature responses.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Stanford Spatial AI -> CS231n \\
+Notion & Assignment and formula-progress status. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

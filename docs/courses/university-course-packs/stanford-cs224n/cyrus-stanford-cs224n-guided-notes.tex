@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Stanford CS224N Natural Language Processing with Deep Learning}
+\author{Stanford course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://web.stanford.edu/class/cs224n/}
+
+\textbf{Why this course is in the system.} Language and representation learning for Hermes interaction, tutoring, and multimodal reasoning.
+
+\textbf{Learning output.} Keep it as the NLP and Transformer side line after the spatial geometry first round.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Linear algebra
+  \item Probability
+  \item Neural networks
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \operatorname{sim}(\bm{u},\bm{v})=\frac{\bm{u}^{\mathsf T}\bm{v}}{\|\bm{u}\|\|\bm{v}\|}\\
+  \operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^{\mathsf T}}{\sqrt{d_k}}\right)V\\
+  \bm{h}_t=f(\bm{x}_t,\bm{h}_{t-1})\\
+  L=-\sum_t \log p(y_t|y_{<t},\bm{x})
+\end{align*}
+
+\section*{Visual page}
+Show tokens -> embeddings -> attention map -> context vector -> prediction.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page ST-NLP001: embeddings
+  \item Page ST-NLP002: attention
+  \item Page ST-NLP003: sequence loss
+\end{itemize}
+
+\section*{Web interaction}
+An attention heatmap that highlights which token reads which token.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Stanford NLP -> CS224N \\
+Notion & Hermes interaction bridge and assignment status. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

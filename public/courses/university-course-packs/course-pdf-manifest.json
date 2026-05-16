@@ -1,0 +1,142 @@
+[
+  {
+    "id": "tsinghua-au-home",
+    "title": "Tsinghua Automation official site",
+    "university": "Tsinghua",
+    "sourceUrl": "https://www.au.tsinghua.edu.cn/",
+    "docsTex": "docs/courses/university-course-packs/tsinghua-au-home/cyrus-tsinghua-au-home-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/tsinghua-au-home/build/cyrus-tsinghua-au-home-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/tsinghua-au-home/cyrus-tsinghua-au-home-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/tsinghua-au-home/cyrus-tsinghua-au-home-guided-notes.pdf"
+  },
+  {
+    "id": "tsinghua-undergrad-2023",
+    "title": "Tsinghua Automation undergraduate program PDF",
+    "university": "Tsinghua",
+    "sourceUrl": "https://www.tsinghua.edu.cn/jxjywj/bkzy2023/zxzy/27.pdf",
+    "docsTex": "docs/courses/university-course-packs/tsinghua-undergrad-2023/cyrus-tsinghua-undergrad-2023-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/tsinghua-undergrad-2023/build/cyrus-tsinghua-undergrad-2023-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/tsinghua-undergrad-2023/cyrus-tsinghua-undergrad-2023-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/tsinghua-undergrad-2023/cyrus-tsinghua-undergrad-2023-guided-notes.pdf"
+  },
+  {
+    "id": "tsinghua-control-spine",
+    "title": "Tsinghua control spine",
+    "university": "Tsinghua",
+    "sourceUrl": "https://www.au.tsinghua.edu.cn/",
+    "docsTex": "docs/courses/university-course-packs/tsinghua-control-spine/cyrus-tsinghua-control-spine-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/tsinghua-control-spine/build/cyrus-tsinghua-control-spine-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/tsinghua-control-spine/cyrus-tsinghua-control-spine-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/tsinghua-control-spine/cyrus-tsinghua-control-spine-guided-notes.pdf"
+  },
+  {
+    "id": "mit-6006",
+    "title": "MIT 6.006 Introduction to Algorithms",
+    "university": "MIT",
+    "sourceUrl": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/",
+    "docsTex": "docs/courses/university-course-packs/mit-6006/cyrus-mit-6006-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-6006/build/cyrus-mit-6006-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-6006/cyrus-mit-6006-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-6006/cyrus-mit-6006-guided-notes.pdf"
+  },
+  {
+    "id": "mit-6003",
+    "title": "MIT 6.003 Signals and Systems",
+    "university": "MIT",
+    "sourceUrl": "https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/",
+    "docsTex": "docs/courses/university-course-packs/mit-6003/cyrus-mit-6003-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-6003/build/cyrus-mit-6003-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-6003/cyrus-mit-6003-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-6003/cyrus-mit-6003-guided-notes.pdf"
+  },
+  {
+    "id": "mit-6241j",
+    "title": "MIT 6.241J Dynamic Systems and Control",
+    "university": "MIT",
+    "sourceUrl": "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/",
+    "docsTex": "docs/courses/university-course-packs/mit-6241j/cyrus-mit-6241j-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-6241j/build/cyrus-mit-6241j-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-6241j/cyrus-mit-6241j-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-6241j/cyrus-mit-6241j-guided-notes.pdf"
+  },
+  {
+    "id": "mit-6245",
+    "title": "MIT 6.245 Multivariable Control Systems",
+    "university": "MIT",
+    "sourceUrl": "https://ocw.mit.edu/courses/6-245-multivariable-control-systems-spring-2004/",
+    "docsTex": "docs/courses/university-course-packs/mit-6245/cyrus-mit-6245-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-6245/build/cyrus-mit-6245-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-6245/cyrus-mit-6245-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-6245/cyrus-mit-6245-guided-notes.pdf"
+  },
+  {
+    "id": "mit-underactuated",
+    "title": "MIT Underactuated Robotics",
+    "university": "MIT",
+    "sourceUrl": "https://underactuated.mit.edu/",
+    "docsTex": "docs/courses/university-course-packs/mit-underactuated/cyrus-mit-underactuated-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-underactuated/build/cyrus-mit-underactuated-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-underactuated/cyrus-mit-underactuated-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-underactuated/cyrus-mit-underactuated-guided-notes.pdf"
+  },
+  {
+    "id": "mit-missing-semester",
+    "title": "MIT Missing Semester",
+    "university": "MIT",
+    "sourceUrl": "https://missing.csail.mit.edu/",
+    "docsTex": "docs/courses/university-course-packs/mit-missing-semester/cyrus-mit-missing-semester-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/mit-missing-semester/build/cyrus-mit-missing-semester-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/mit-missing-semester/cyrus-mit-missing-semester-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/mit-missing-semester/cyrus-mit-missing-semester-guided-notes.pdf"
+  },
+  {
+    "id": "stanford-cs231a",
+    "title": "Stanford CS231A Computer Vision, From 3D Reconstruction to Recognition",
+    "university": "Stanford",
+    "sourceUrl": "https://web.stanford.edu/class/cs231a/",
+    "docsTex": "docs/courses/university-course-packs/stanford-cs231a/cyrus-stanford-cs231a-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/stanford-cs231a/build/cyrus-stanford-cs231a-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/stanford-cs231a/cyrus-stanford-cs231a-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-cs231a/cyrus-stanford-cs231a-guided-notes.pdf"
+  },
+  {
+    "id": "stanford-cs231n",
+    "title": "Stanford CS231n Deep Learning for Computer Vision",
+    "university": "Stanford",
+    "sourceUrl": "https://cs231n.stanford.edu/",
+    "docsTex": "docs/courses/university-course-packs/stanford-cs231n/cyrus-stanford-cs231n-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/stanford-cs231n/build/cyrus-stanford-cs231n-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/stanford-cs231n/cyrus-stanford-cs231n-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-cs231n/cyrus-stanford-cs231n-guided-notes.pdf"
+  },
+  {
+    "id": "stanford-cs229",
+    "title": "Stanford CS229 Machine Learning",
+    "university": "Stanford",
+    "sourceUrl": "https://cs229.stanford.edu/",
+    "docsTex": "docs/courses/university-course-packs/stanford-cs229/cyrus-stanford-cs229-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/stanford-cs229/build/cyrus-stanford-cs229-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/stanford-cs229/cyrus-stanford-cs229-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-cs229/cyrus-stanford-cs229-guided-notes.pdf"
+  },
+  {
+    "id": "stanford-cs224n",
+    "title": "Stanford CS224N Natural Language Processing with Deep Learning",
+    "university": "Stanford",
+    "sourceUrl": "https://web.stanford.edu/class/cs224n/",
+    "docsTex": "docs/courses/university-course-packs/stanford-cs224n/cyrus-stanford-cs224n-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/stanford-cs224n/build/cyrus-stanford-cs224n-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/stanford-cs224n/cyrus-stanford-cs224n-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-cs224n/cyrus-stanford-cs224n-guided-notes.pdf"
+  },
+  {
+    "id": "stanford-aa228",
+    "title": "Stanford AA228/CS238 Decision Making under Uncertainty",
+    "university": "Stanford",
+    "sourceUrl": "https://web.stanford.edu/class/aa228/",
+    "docsTex": "docs/courses/university-course-packs/stanford-aa228/cyrus-stanford-aa228-guided-notes.tex",
+    "docsPdf": "docs/courses/university-course-packs/stanford-aa228/build/cyrus-stanford-aa228-guided-notes.pdf",
+    "publicPdf": "public/courses/university-course-packs/stanford-aa228/cyrus-stanford-aa228-guided-notes.pdf",
+    "appHref": "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-aa228/cyrus-stanford-aa228-guided-notes.pdf"
+  }
+]

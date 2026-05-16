@@ -875,6 +875,167 @@ textarea {
   margin-bottom: 16px;
 }
 
+.cs231a-note-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.cs231a-note-grid a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 7px;
+  min-height: 118px;
+  padding: 14px;
+  text-decoration: none;
+}
+
+.cs231a-note-grid a:hover {
+  border-color: var(--ink);
+}
+
+.cs231a-note-grid span,
+.cs231a-note-grid em {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.cs231a-note-grid strong {
+  font-size: 0.98rem;
+  line-height: 1.26;
+}
+
+.course-pack-toolbar {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(260px, 1.3fr);
+  margin-bottom: 14px;
+}
+
+.course-pack-toolbar > a,
+.course-pack-toolbar > div,
+.university-course-pack,
+.university-course-item,
+.university-course-source,
+.course-guided-pdf-link {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 14px;
+}
+
+.course-pack-toolbar > a {
+  display: grid;
+  gap: 8px;
+  min-height: 112px;
+  text-decoration: none;
+}
+
+.course-pack-toolbar > div {
+  display: grid;
+  gap: 8px;
+}
+
+.course-pack-toolbar ul {
+  color: var(--ink-soft);
+  display: grid;
+  gap: 6px;
+  line-height: 1.45;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.course-pack-toolbar span,
+.university-course-pack > span,
+.university-course-list span,
+.university-course-list em {
+  color: var(--muted);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.university-course-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.university-course-pack {
+  display: grid;
+  gap: 12px;
+}
+
+.university-course-pack h3 {
+  font-family: "Noto Serif SC", "Playfair Display", Georgia, serif;
+  font-size: 1.18rem;
+  margin: 0;
+}
+
+.university-course-pack p,
+.university-course-pack > strong,
+.university-course-list p,
+.university-course-list small {
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.university-course-pack > strong {
+  font-weight: 700;
+}
+
+.university-course-list {
+  display: grid;
+  gap: 10px;
+}
+
+.university-course-item {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.university-course-source {
+  display: grid;
+  gap: 7px;
+  min-height: 168px;
+  text-decoration: none;
+}
+
+.course-guided-pdf-link {
+  background: rgba(8, 9, 11, 0.04);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 10px 12px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.university-course-source:hover,
+.course-guided-pdf-link:hover,
+.course-pack-toolbar > a:hover {
+  border-color: var(--ink);
+}
+
+.university-course-list strong {
+  font-size: 0.96rem;
+  line-height: 1.28;
+}
+
+.university-course-list p,
+.university-course-list small {
+  margin: 0;
+}
+
 .sync-recovery {
   display: grid;
   gap: 16px;
@@ -1798,7 +1959,8 @@ progress::-moz-progress-bar {
   .node-grid,
   .hermes-layout,
   .hermes-form,
-  .tutor-layout {
+  .tutor-layout,
+  .course-pack-toolbar {
     grid-template-columns: 1fr;
   }
 

@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: MIT 6.003 Signals and Systems}
+\author{MIT course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/}
+
+\textbf{Why this course is in the system.} Prerequisite for signals, systems, convolution, frequency response, filtering, and state space.
+
+\textbf{Learning output.} Write the time-domain to frequency-domain bridge in GoodNotes and add convolution visualization on the web.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Complex numbers
+  \item Calculus
+  \item Differential equations
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  y(t)=x(t)*h(t)=\int_{-\infty}^{\infty}x(\tau)h(t-\tau)d\tau\\
+  X(j\omega)=\int_{-\infty}^{\infty}x(t)e^{-j\omega t}dt\\
+  H(s)=\frac{Y(s)}{X(s)}\\
+  \dot{\bm{x}}=A\bm{x}+B\bm{u}
+\end{align*}
+
+\section*{Visual page}
+Show an input signal sliding across an impulse response to create convolution.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page MIT-S001: convolution
+  \item Page MIT-S002: frequency response
+\end{itemize}
+
+\section*{Web interaction}
+A slider for frequency that updates magnitude and phase.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & MIT EECS -> 6.003 signals systems \\
+Notion & Signal exercise and formula status. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

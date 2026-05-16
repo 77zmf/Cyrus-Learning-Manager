@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus University Course Roadmap}
+\author{Tsinghua Automation, MIT EECS, Stanford Spatial AI}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{How to use this roadmap}
+This PDF is the master index. A course becomes useful only when it has four outputs:
+\begin{enumerate}[leftmargin=1.4em]
+  \item a source link,
+  \item a formula page,
+  \item a GoodNotes page,
+  \item an Obsidian/Notion evidence node.
+\end{enumerate}
+
+The first individual course PDFs already wired into the web app are Stanford CS231A and CS231n. The next batch should expand MIT 6.241J, MIT 6.003, Stanford CS229, and MIT Underactuated Robotics.
+
+\section*{One spine for all three universities}
+\begin{tabular}{p{0.18\linewidth}p{0.3\linewidth}p{0.43\linewidth}}
+\toprule
+Source & Main role & Learning output \\
+\midrule
+Tsinghua Automation & Automation and control engineering backbone & State, signal, feedback, estimation, robotics, intelligent systems \\
+MIT EECS/OCW & Public engineering foundation & Algorithms, signals, dynamic systems, multivariable control, robotics tools \\
+Stanford AI/CV & Spatial intelligence and representation learning & Camera geometry, visual representation, ML, decision-making under uncertainty \\
+\bottomrule
+\end{tabular}
+
+\section*{Control formula spine}
+State-space starts the control path:
+\[
+  \dot{\bm{x}} = A\bm{x} + B\bm{u}, \qquad \bm{y}=C\bm{x}+D\bm{u}.
+\]
+Here $\bm{x}$ is state, $\bm{u}$ is input, $A$ is the system matrix, and $B$ is the control-input matrix.
+
+Controllability asks whether the input can reach all state directions:
+\[
+  \mathcal{C}=\begin{bmatrix}B & AB & A^2B & \cdots & A^{n-1}B\end{bmatrix},
+  \qquad \operatorname{rank}(\mathcal{C})=n.
+\]
+
+LQR turns control into an optimization problem:
+\[
+  J=\int_0^\infty \left(\bm{x}^{\mathsf T}Q\bm{x}+\bm{u}^{\mathsf T}R\bm{u}\right)\,dt,
+  \qquad \bm{u}=-K\bm{x}.
+\]
+The Riccati equation connects dynamics, cost, and feedback:
+\[
+  A^{\mathsf T}P+PA-PBR^{-1}B^{\mathsf T}P+Q=0.
+\]
+
+\section*{Estimation and spatial formula spine}
+Kalman filtering is the minimum estimation bridge:
+\[
+  \hat{\bm{x}}_{k|k-1}=A\hat{\bm{x}}_{k-1|k-1}+B\bm{u}_{k-1},
+  \qquad
+  \hat{\bm{x}}_{k|k}=\hat{\bm{x}}_{k|k-1}+K_k(\bm{z}_k-H\hat{\bm{x}}_{k|k-1}).
+\]
+
+Camera projection is the first spatial-intelligence formula:
+\[
+  s
+  \begin{bmatrix}
+    u\\v\\1
+  \end{bmatrix}
+  =
+  K
+  \begin{bmatrix}
+    R & \bm{t}
+  \end{bmatrix}
+  \begin{bmatrix}
+    X\\Y\\Z\\1
+  \end{bmatrix}.
+\]
+
+Bundle adjustment makes reconstruction an optimization problem:
+\[
+  \min_{\{T_i\},\{P_j\}}
+  \sum_{i,j}
+  \rho\left(
+    \left\|
+      \bm{u}_{ij}-\pi(T_iP_j)
+    \right\|_2^2
+  \right).
+\]
+
+\section*{Machine learning and decision spine}
+Stanford CS229 and CS231n enter through empirical risk:
+\[
+  \min_{\theta} \frac{1}{N}\sum_{i=1}^N \ell\left(f_{\theta}(\bm{x}_i), y_i\right)
+  + \lambda\Omega(\theta).
+\]
+The beginner translation is simple: choose parameters so predictions are less wrong, while regularization prevents the model from memorizing noise.
+
+Decision-making under uncertainty enters through Bellman recursion:
+\[
+  V^\star(s)=\max_a \left[
+    R(s,a)+\gamma\sum_{s'}P(s'|s,a)V^\star(s')
+  \right].
+\]
+This is the bridge from world models to planning: predict next states, score actions, then choose the action with the best long-term value.
+
+\section*{Course pack}
+\begin{tabular}{p{0.18\linewidth}p{0.36\linewidth}p{0.36\linewidth}}
+\toprule
+Priority & Course & Why it matters \\
+\midrule
+Ready & Stanford CS231A & Camera geometry, 3D reconstruction, optical flow, estimation \\
+Ready & Stanford CS231n & CNNs, backpropagation, visual representation, assignments \\
+Next & MIT 6.241J & Dynamic systems, state-space control, stability \\
+Next & MIT 6.003 & Signals, systems, convolution, frequency response \\
+Next & Stanford CS229 & Core ML math for spatial models and world models \\
+Next & MIT Underactuated Robotics & Nonlinear robotics, trajectory optimization, stability \\
+Later & MIT 6.245 & Multivariable and robust control \\
+Later & Stanford CS224N & Language and representation side for Hermes interaction \\
+Later & Stanford AA228/CS238 & MDP, POMDP, planning under uncertainty \\
+Expand & Tsinghua Automation & Official automation/control backbone, needs syllabus-by-syllabus expansion \\
+\bottomrule
+\end{tabular}
+
+\section*{GoodNotes template}
+For each course page, use this fixed structure:
+\begin{enumerate}[leftmargin=1.4em]
+  \item Course role: one sentence.
+  \item Prerequisites: three nodes only.
+  \item Core formulas: no more than five per page.
+  \item One visual: block diagram, projection chain, graph, or loss landscape.
+  \item One output: a solved problem, a derivation, or a small interactive web scene.
+\end{enumerate}
+
+\section*{Notion and Obsidian roles}
+Notion stores source status, PDF status, current blocker, and evidence path. Obsidian stores concept graphs and course-to-course links. GoodNotes stores handwritten derivations. The web app is the interactive front door.
+
+\end{document}

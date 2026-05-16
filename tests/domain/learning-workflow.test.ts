@@ -195,6 +195,10 @@ describe("beginner learning workflow", () => {
     expect(learningLaunchQueue).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          title: "Spatial Intelligence 180-Day Mainline",
+          prompt: expect.stringContaining("spatial case card")
+        }),
+        expect.objectContaining({
           title: "Factor graph optimizer sprint",
           prompt: expect.stringContaining("residual")
         }),

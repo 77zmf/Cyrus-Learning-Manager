@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Tsinghua Automation official site}
+\author{Tsinghua course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://www.au.tsinghua.edu.cn/}
+
+\textbf{Why this course is in the system.} Department and research-direction entry point for automation, control science, and intelligent systems.
+
+\textbf{Learning output.} Build an Obsidian field map covering math, signals, control, intelligence, and robotics.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Linear algebra
+  \item Calculus
+  \item Probability and signals
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  \dot{\bm{x}}=A\bm{x}+B\bm{u}\\
+  \bm{y}=C\bm{x}+D\bm{u}\\
+  \mathcal{C}=[B\;AB\;\cdots\;A^{n-1}B]\\
+  \hat{\bm{x}}_{k|k}=\hat{\bm{x}}_{k|k-1}+K_k(\bm{z}_k-H\hat{\bm{x}}_{k|k-1})
+\end{align*}
+
+\section*{Visual page}
+Draw one department map: math -> signals -> control -> estimation -> robotics -> spatial intelligence.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page THU-000: automation field map
+  \item Page THU-001: state/input/output vocabulary
+\end{itemize}
+
+\section*{Web interaction}
+A clickable concept graph that opens the correct course pack node.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Tsinghua Automation -> field map \\
+Notion & Source status, syllabus status, and expansion blocker. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

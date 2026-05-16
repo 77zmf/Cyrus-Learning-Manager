@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{Cyrus Guided Notes: Stanford CS231A Computer Vision, From 3D Reconstruction to Recognition}
+\author{Stanford course pack}
+\date{2026-05-15}
+
+\begin{document}
+\maketitle
+
+\section*{Course source}
+\textbf{Official source:} \url{https://web.stanford.edu/class/cs231a/}
+
+\textbf{Why this course is in the system.} Entry point for camera models, projection, epipolar geometry, optical flow, estimation, and 3D reconstruction.
+
+\textbf{Learning output.} Already connected to local course notes and a guided PDF.
+
+\section*{Prerequisite checkpoint}
+\begin{itemize}[leftmargin=1.4em]
+  \item Linear algebra
+  \item Projective geometry
+  \item Probability and estimation
+\end{itemize}
+
+\section*{Formula checkpoint}
+Do not memorize these first. Read each formula as a sentence: what changes, what is observed, what is optimized, and what output it produces.
+\begin{align*}
+  s\begin{bmatrix}u\\v\\1\end{bmatrix}=K[R\;\bm{t}]\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix}\\
+  \bm{x}'^{\mathsf T}F\bm{x}=0\\
+  E=[\bm{t}]_{\times}R\\
+  \min_{T_i,P_j}\sum_{i,j}\rho(\|\bm{u}_{ij}-\pi(T_iP_j)\|_2^2)
+\end{align*}
+
+\section*{Visual page}
+Show a 3D point, camera pose, image plane, and projection ray.
+
+\section*{GoodNotes pages}
+\begin{itemize}[leftmargin=1.4em]
+  \item Page ST-CV001: camera projection
+  \item Page ST-CV002: epipolar geometry
+  \item Page ST-CV003: bundle adjustment
+\end{itemize}
+
+\section*{Web interaction}
+A draggable projection lab showing how depth changes image coordinates.
+
+\section*{Obsidian and Notion}
+\begin{tabular}{p{0.22\linewidth}p{0.68\linewidth}}
+\toprule
+Layer & Output \\
+\midrule
+Obsidian & Stanford Spatial AI -> CS231A \\
+Notion & Geometry notes and PDF evidence. \\
+\bottomrule
+\end{tabular}
+
+\section*{First study move}
+Open the official source, copy the prerequisite checkpoint into GoodNotes, then write one formula in your own words before watching or reading more.
+
+\end{document}

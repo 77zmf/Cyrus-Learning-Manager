@@ -11,7 +11,55 @@ describe("CoursesView", () => {
     expect(screen.getAllByText("Control formula derivation ladder").length).toBeGreaterThan(0);
     expect(screen.getByText("MIT EECS full coverage map")).toBeInTheDocument();
     expect(screen.getByText("World models and latent dynamics")).toBeInTheDocument();
+    expect(screen.getByText("Spatial intelligence learning route")).toBeInTheDocument();
     expect(screen.getByText("Spatial models, 3D geometry, BEV, and occupancy")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CS231A Course Notes" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CS231n Course Notes" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "University Course Packs" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Course Notes 1: Camera Models" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/cs231a/course-notes/01-camera-models.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Course Notes 10: Optimal Estimation" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/cs231a/course-notes/10-optimal-estimation.pdf"
+    );
+    expect(screen.getByRole("link", { name: "CS231n Cyrus CS231n Guided Notes" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/cs231n/cyrus-cs231n-guided-notes.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Roadmap PDF Cyrus university course roadmap PDF" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/university-course-packs/cyrus-university-course-roadmap.pdf"
+    );
+    expect(screen.getByRole("link", { name: /Tsinghua Tsinghua Automation official site/ })).toHaveAttribute(
+      "href",
+      "https://www.au.tsinghua.edu.cn/"
+    );
+    expect(screen.getByRole("link", { name: /6.241J MIT 6.241J Dynamic Systems and Control/ })).toHaveAttribute(
+      "href",
+      "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
+    );
+    expect(screen.getByRole("link", { name: /CS229 Stanford CS229 Machine Learning/ })).toHaveAttribute(
+      "href",
+      "https://cs229.stanford.edu/"
+    );
+    expect(screen.getByRole("link", { name: "Guided PDF Stanford CS229 Machine Learning" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/university-course-packs/stanford-cs229/cyrus-stanford-cs229-guided-notes.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Guided PDF MIT 6.241J Dynamic Systems and Control" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/university-course-packs/mit-6241j/cyrus-mit-6241j-guided-notes.pdf"
+    );
+    expect(screen.getByRole("link", { name: "Guided PDF Tsinghua control spine" })).toHaveAttribute(
+      "href",
+      "/Cyrus-Learning-Manager/courses/university-course-packs/tsinghua-control-spine/cyrus-tsinghua-control-spine-guided-notes.pdf"
+    );
+    expect(screen.getByRole("link", { name: "CS231n Convolutional Neural Networks" })).toHaveAttribute(
+      "href",
+      "https://cs231n.github.io/convolutional-networks/"
+    );
     expect(screen.getByText("World and spatial paper reproduction ladder")).toBeInTheDocument();
     expect(screen.getByText("SLAM zero-to-map first line")).toBeInTheDocument();
     expect(screen.getByText("SfM, MVS, and COLMAP reconstruction lab")).toBeInTheDocument();
@@ -36,6 +84,7 @@ describe("CoursesView", () => {
     expect(screen.getByRole("heading", { name: "Track Routes" })).toBeInTheDocument();
     expect(screen.getByText("Control spine route")).toBeInTheDocument();
     expect(screen.getByText("World and spatial route")).toBeInTheDocument();
+    expect(screen.getByText("Spatial intelligence validation route")).toBeInTheDocument();
     expect(screen.getByText("Output-first IELTS route")).toBeInTheDocument();
     expect(screen.getByText("3Blue1Brown math-intuition route")).toBeInTheDocument();
     expect(screen.getByText("Deep Study Cards")).toBeInTheDocument();
@@ -91,7 +140,7 @@ describe("CoursesView", () => {
       "href",
       "https://www.notion.so/35cef7e6aaa981d09be6ffd935e7c748"
     );
-    expect(screen.getAllByText("MIT 6.241J Dynamic Systems and Control")[0]).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "MIT 6.241J Dynamic Systems and Control" })[0]).toHaveAttribute(
       "href",
       "https://ocw.mit.edu/courses/6-241j-dynamic-systems-and-control-spring-2011/"
     );
